@@ -12,9 +12,11 @@
     "depends": ["base", "website", "hr", "product", "stock", "crm", "account", "mail"],
     # always loaded
     "data": [
-        # 'security/ir.model.access.csv',
-        "views/views.xml",
-        "views/templates.xml",
+        'security/ir.model.access.csv',
+        "views/child_views.xml",
+        "views/classroom_views.xml",
+        "views/child_attendance_views.xml",
+       
     ],
     # only loaded in demonstration mode
     "demo": [
