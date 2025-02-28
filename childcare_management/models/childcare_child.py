@@ -95,3 +95,10 @@ class ChildcareChild(models.Model):
                 record.age = False
 
     
+    @api.constrains("classroom_id")
+    def _check_capacity(self):
+        for classroom in self.classroom_id:
+            if len(classroom.child_ids) > classroom.capacity:
+                raise exceptions.ValidationError(
+                    "El aula excede su capacidad máxima"
+                )
