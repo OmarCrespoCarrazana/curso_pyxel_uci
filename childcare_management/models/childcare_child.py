@@ -105,6 +105,11 @@ class ChildcareChild(models.Model):
                     age_parts.append(f"{months} mes{'es' if months != 1 else ''}")
                 
                 record.age = " y ".join(age_parts) if age_parts else "Recién nacido"
+
+                if years>=5:
+                    raise exceptions.ValidationError(
+                    "Edad máxima superada"
+                )
             else:
                 record.age = "Fecha de nacimiento desconocida"
 
