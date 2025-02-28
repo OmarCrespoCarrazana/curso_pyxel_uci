@@ -1,0 +1,51 @@
+<odoo>
+   <!-- Vista Tree para aulas -->
+    <record id="view_childcare_classroom_tree" model="ir.ui.view">
+        <field name="name">childcare.classroom.tree</field>
+        <field name="model">childcare.classroom</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" string="Aula"/>
+                <field name="capacity" string="Capacidad Máxima"/>
+                <field name="educator_id" string="Educadora"/>
+                <field name="child_count" 
+                    widget="progressbar" 
+                    options="{
+                        'max_value': 'capacity',
+                        'editable': False,
+                        'colors': {
+                            'success': 0.7,
+                            'warning': 0.9,
+                            'danger': 1.0
+                        }
+                    }"
+                    string="Ocupación"/>
+                <field name="child_ids" widget="many2many_tags" string="Niños" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Vista Form para aulas -->
+    <record id="view_childcare_classroom_form" model="ir.ui.view">
+        <field name="name">childcare.classroom.form</field>
+        <field name="model">childcare.classroom</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="capacity"/>
+                        <field name="educator_id"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_childcare_classroom" model="ir.actions.act_window">
+        <field name="name">Aulas</field>
+        <field name="res_model">childcare.classroom</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem id="menu_childcare_classroom" name="Classrooms" parent="menu_childcare_root" action="action_childcare_classroom" sequence="10"/>
+</odoo>
