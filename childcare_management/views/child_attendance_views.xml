@@ -1,0 +1,71 @@
+<odoo>
+    
+    <record id="view_childcare_attendance_tree" model="ir.ui.view">
+        <field name="name">childcare.attendance.tree</field>
+        <field name="model">childcare.attendance</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="child_id"/>
+                <field name="check_in"/>
+                <field name="check_out"/>
+                <field name="duration" string="Horas"/>                
+                <button name="button_set_check_out" class="btn-primary" invisible="current_status=='out'" string="Checkout" type="object" />                                            
+                <field name="current_status" decoration-success= "current_status == 'in'" decoration-danger="current_status == 'out'" string="Estado"/>                
+            </tree>
+        </field>
+    </record>
+
+    <!-- Vista Calendario de Asistencias -->
+    <record id="view_childcare_attendance_calendar" model="ir.ui.view">
+        <field name="name">childcare.attendance.calendar</field>
+        <field name="model">childcare.attendance</field>
+        <field name="arch" type="xml">
+            <calendar 
+                date_start="check_in" 
+                date_stop="check_out"
+                color="child_id"
+                mode="day">
+                <field name="child_id"/>
+            </calendar>
+        </field>
+    </record>
+    <!-- Vista Formulario de Asistencia -->
+    <record id="view_childcare_attendance_form" model="ir.ui.view">
+        <field name="name">childcare.attendance.form</field>
+        <field name="model">childcare.attendance</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                <header>
+                    <button name="button_set_check_out" class="btn-primary" invisible="current_status=='out'" string="Checkout" type="object"/>                                            
+                    <field name="current_status" widget="statusbar" statusbar_visible="in,out"/>
+
+                </header>
+                    <group>
+                        <field name="child_id" />
+                    </group>
+                    
+                    <group>
+                        <field name="check_in"/>
+                        <field name="check_out"/>
+                        <field name="duration" readonly="1"/>
+                    </group>
+                    
+                    
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_childcare_attendance" model="ir.actions.act_window">
+        <field name="name">Attendance</field>
+        <field name="res_model">childcare.attendance</field>
+        <field name="view_mode">tree,form,calendar</field>
+    </record>
+    
+    <menuitem 
+    id="menu_childcare_attendance" 
+    name="Attendance" 
+    parent="menu_childcare_root" 
+    action="action_childcare_attendance"
+    sequence="20"/>
+</odoo>
