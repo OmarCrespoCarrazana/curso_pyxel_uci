@@ -98,7 +98,6 @@ class ChildcareChild(models.Model):
                 years = delta.years
                 months = delta.months
                 
-                # Formatear la cadena
                 age_parts = []
                 if years > 0:
                     age_parts.append(f"{years} año{'s' if years != 1 else ''}")
