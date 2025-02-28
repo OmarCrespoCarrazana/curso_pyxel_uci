@@ -1,3 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from . import models
+from . import childcare_child
+from . import childcare_attendance
+from . import childcare_classroom
+from . import childcare_medical_history
