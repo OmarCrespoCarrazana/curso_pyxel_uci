@@ -1,6 +1,7 @@
 from odoo import models, fields, api, exceptions
 from odoo.exceptions import UserError
 from datetime import date, datetime
+from dateutil.relativedelta import relativedelta
 
 class ChildcareChild(models.Model):
     _name = "childcare.child"
@@ -9,7 +10,8 @@ class ChildcareChild(models.Model):
     name = fields.Char("Nombre", required=True)
     id_number = fields.Char("Número de Identificación")
     dob = fields.Date("Fecha de Nacimiento", compute="_compute_from_id_number", store=True)
-    age = fields.Integer("Edad", compute="_compute_age", store=True)
+    age = fields.Char("Edad",compute="_compute_age",store=True,help="Formato: X años Y meses")
+
     gender = fields.Selection(
         [('male', 'Masculino'), ('female', 'Femenino')],
         string="Sexo",
@@ -87,12 +89,25 @@ class ChildcareChild(models.Model):
 
     @api.depends('dob')
     def _compute_age(self):
+        """Calcula la edad en años y meses"""
         for record in self:
             if record.dob:
                 today = date.today()
-                record.age = today.year - record.dob.year - ((today.month, today.day) < (record.dob.month, record.dob.day))
+                delta = relativedelta(today, record.dob)
+                
+                years = delta.years
+                months = delta.months
+                
+                # Formatear la cadena
+                age_parts = []
+                if years > 0:
+                    age_parts.append(f"{years} año{'s' if years != 1 else ''}")
+                if months > 0:
+                    age_parts.append(f"{months} mes{'es' if months != 1 else ''}")
+                
+                record.age = " y ".join(age_parts) if age_parts else "Recién nacido"
             else:
-                record.age = False
+                record.age = "Fecha de nacimiento desconocida"
 
     
     @api.constrains("classroom_id")
