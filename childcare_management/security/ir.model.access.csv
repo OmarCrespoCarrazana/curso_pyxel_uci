@@ -1,1 +1,5 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_childcare_child,childcare.child,childcare_management.model_childcare_child,base.group_user,1,1,1,1
+access_childcare_classroom,childcare.classroom,childcare_management.model_childcare_classroom,base.group_user,1,1,1,1
+access_childcare_attendance,childcare.attendance,childcare_management.model_childcare_attendance,base.group_user,1,1,1,1
+access_childcare_medical_history,childcare.medical.history,childcare_management.model_childcare_medical_history,base.group_user,1,1,1,1
