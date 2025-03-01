@@ -19,7 +19,27 @@ class ChildcareChild(models.Model):
         store=True
     )
     classroom_id = fields.Many2one("childcare.classroom", "Aula")
-    tutor_ids = fields.Many2many("res.partner", string="Tutores")
+    tutor_ids = fields.Many2many(
+        "res.partner",
+        "childcare_child_res_partner_tutor_rel",  
+        "child_id",                               
+        "partner_id",                             
+        string="Tutores"
+    )
+    legal_guardian_ids = fields.Many2many(
+        "res.partner",
+        "childcare_child_res_partner_guardian_rel",  
+        "child_id",                                  
+        "partner_id",                                
+        string="Tutores Legales",
+        domain="[('id', 'in', possible_guardian_ids)]"
+    )
+    possible_guardian_ids = fields.Many2many(
+        "res.partner",
+        compute='_compute_possible_guardian_ids',string="Posibles Tutores Legales",store=False,readonly=True,invisible=True  
+    )
+
+
     medical_history_id = fields.Many2one(
         "childcare.medical.history",
         "Historia Clínica",
@@ -30,6 +50,11 @@ class ChildcareChild(models.Model):
         "child_id",
         "Asistencia"
     )
+
+    @api.depends('tutor_ids')
+    def _compute_possible_guardian_ids(self):
+        for record in self:
+            record.possible_guardian_ids = record.tutor_ids.ids
 
 
     @api.depends('id_number')
@@ -121,3 +146,19 @@ class ChildcareChild(models.Model):
                 raise exceptions.ValidationError(
                     "El aula excede su capacidad máxima"
                 )
+    
+    def action_contact_tutors(self):
+        self.ensure_one()
+        domain = repr([('id', 'in', self.tutor_ids.ids)])
+        
+        return {
+            'name': ('Contactar Tutores'),
+            'type': 'ir.actions.act_window',
+            'res_model': 'mailing.mailing',
+            'view_mode': 'form',
+            'target': 'current',
+            'context': {
+                'default_mailing_model_id': self.env.ref('base.model_res_partner').id,
+                'default_mailing_domain': domain,
+            },
+        }

@@ -6,6 +6,14 @@
         <field name="arch" type="xml">
             <form>
                 <sheet>
+                    <header>
+                        <button 
+                            name="action_contact_tutors" 
+                            string="Contactar Tutores" 
+                            type="object" 
+                            class="oe_highlight"
+                        />
+                     </header>
                     <group>
                         <field name="name"/>
                         <field name="id_number" required="1"/>
@@ -17,8 +25,9 @@
 
                     </group>
                     <group>
-                        <field name="tutor_ids" widget="many2many_tags"/>                       
-
+                        <field name="tutor_ids" widget="many2many_tags" domain="[('is_company', '=', False)]"/>                       
+                        <field name="legal_guardian_ids" widget="many2many_tags"/>
+                        <field name="possible_guardian_ids" invisible="1" readonly="1" widget="many2many_tags"/>
                     </group>
                     
                     <notebook>
@@ -54,6 +63,7 @@
                 <field name="age"/>
                 <field name="classroom_id" />
                 <field name="tutor_ids" widget="many2many_tags"/>
+                <field name="legal_guardian_ids" widget="many2many_tags"/>
             </tree>
         </field>
     </record>
@@ -90,7 +100,7 @@
   </record>
   <!-- Menuitems -->
   <menuitem id="menu_childcare_root" name="Daycare"
-              sequence="10" groups="base.group_user"/>
+              sequence="10" groups="childcare_management.group_daycare_educator"/>
 
   <menuitem id="menu_child" name="Daycare" parent="menu_childcare_root" action="action_childcare_child"
               sequence="10"/>
