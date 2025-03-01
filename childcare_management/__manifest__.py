@@ -9,7 +9,7 @@
     "category": "Services",
     "version": "0.1",
     # any module necessary for this one to work correctly
-    "depends": ["base","mass_mailing", "website", "hr", "product", "stock", "crm", "account", "mail"],
+    "depends": ["base","web","mass_mailing", "website", "hr", "product", "stock", "crm", "account", "mail"],
     # always loaded
     "data": [
         'security/daycare_security.xml',
@@ -17,6 +17,7 @@
         "views/child_views.xml",
         "views/classroom_views.xml",
         "views/child_attendance_views.xml",
+        "views/reports.xml",
        
     ],
     # only loaded in demonstration mode
