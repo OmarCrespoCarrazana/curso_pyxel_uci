@@ -16,16 +16,17 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    "depends": ["base", "website", "hr", "product", "stock", "crm", "account", "mail","childcare_management"],
+    "depends": ["base", "website", "hr", "product", "stock", "crm", "account", "mail", "childcare_management"],
 
     # always loaded
     'data': [
         'security/ir.model.access.csv',
-        #'views/views.xml',
-        #'views/templates.xml',
+        # 'views/views.xml',
+        # 'views/templates.xml',
         'data/sequences.xml',
         'views/nursery_menu_views.xml',
-        'views/nursery_clinical_history_views.xml'
+        'views/nursery_clinical_history_views.xml',
+        'views/nursery_medical_supply_views.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
@@ -36,4 +37,3 @@
     "auto_install": False,
     "license": "LGPL-3",
 }
-

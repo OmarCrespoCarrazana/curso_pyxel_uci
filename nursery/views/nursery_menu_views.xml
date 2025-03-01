@@ -7,6 +7,12 @@
         <field name="view_mode">tree,form</field>
     </record>
 
+    <record id="action_nursery_medical_supply" model="ir.actions.act_window">
+        <field name="name">Insumos Médicos</field>
+        <field name="res_model">nursery.medical.supply</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
     <menuitem 
     id="menu_nursery_root" 
     name="Enfermería"
@@ -18,4 +24,12 @@
     parent="menu_nursery_root" 
     action="action_nursery_clinical_history"
     sequence="9"/>
+
+     <menuitem
+    id="menu_nursery_medical_supply"
+    name="Insumos Médicos"
+    parent="menu_nursery_root"
+    action="action_nursery_medical_supply"
+    sequence="9"/>
+
 </odoo>
