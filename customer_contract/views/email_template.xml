@@ -1,0 +1,17 @@
+<odoo>
+    <record id="email_template_contract_expiration" model="mail.template">
+        <field name="name">Contract Expiration Notification</field>
+        <field name="email_from">${(object.partner_id.email or '').strip()}</field>
+        <field name="email_to">${(object.partner_id.email or '').strip()}</field>
+        <field name="subject">Contract Expiration Notice</field>
+        <field name="body_html">
+            <![CDATA[
+            <p>Estimado/a ${object.partner_id.name},</p>
+            <p>Le informamos que el contrato ${object.name} ha expirado 
+            sín posibilidad de renovación dado que su hijo ya tiene mas de 5 años</p>
+            <p>Saludos,</p>
+            <p>De mi para tu.</p>
+            ]]>
+        </field>
+    </record>
+</odoo>

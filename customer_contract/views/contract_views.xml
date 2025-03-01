@@ -1,0 +1,55 @@
+<odoo>
+   <record id="view_customer_contract_form" model="ir.ui.view">
+        <field name="name">customer.contract.form</field>
+        <field name="model">customer.contract</field>
+        <field name="arch" type="xml">
+            <form string="Contract">
+                <header>
+                    <button name="action_renew_contract"
+                            string="Renew Contract"
+                            class="oe_highlight"
+                            type="object"
+                            invisible="not id or state != 'expired'"
+                             />
+                    <button name="action_valid_contract"
+                            string="Valid Contract"
+                            class="oe_highlight"
+                            type="object"
+                            invisible="not id or state != 'in_process'"
+                             />
+                </header>
+                <sheet>
+                    <group>
+                        <field name="state" widget="statusbar" statusbar_visible="in_process,valid,expired,finalized" readonly="1"/>
+                        <group>
+                            <field name="name" readonly="1"/>
+                            <field name="partner_id"/>
+                            <field name="start_date" />
+                            <field name="end_date"/>
+                            <field name="total_payment_amount"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids" options="{'post_refresh': 'recipients'}"/>
+                    </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_customer_contract_tree" model="ir.ui.view">
+        <field name="name">customer.contract.tree</field>
+        <field name="model">customer.contract</field>
+        <field name="arch" type="xml">
+            <tree string="Contracts" >
+                <field name="name" readonly="1"/>
+                <field name="start_date" readonly="1"/>
+                <field name="end_date" readonly="1"/>
+                <field name="total_payment_amount" readonly="1"/>
+                <field name="state" widget="statusbar" statusbar_visible="in_process,valid,expired,finalized" readonly="1"/>
+            </tree>
+        </field>
+    </record>
+</odoo>
