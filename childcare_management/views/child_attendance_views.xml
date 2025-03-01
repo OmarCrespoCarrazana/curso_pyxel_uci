@@ -8,7 +8,7 @@
                 <field name="child_id"/>
                 <field name="check_in"/>
                 <field name="check_out"/>
-                <field name="duration" string="Horas"/>                
+                <field name="extra_hours" string="Horas Extra"/>              
                 <button name="button_set_check_out" class="btn-primary" invisible="current_status=='out'" string="Checkout" type="object" />                                            
                 <field name="current_status" decoration-success= "current_status == 'in'" decoration-danger="current_status == 'out'" string="Estado"/>                
             </tree>
@@ -48,7 +48,7 @@
                     <group>
                         <field name="check_in"/>
                         <field name="check_out"/>
-                        <field name="duration" readonly="1"/>
+                        <field name="extra_hours" string="Horas Extra"/> 
                     </group>
                     
                     
