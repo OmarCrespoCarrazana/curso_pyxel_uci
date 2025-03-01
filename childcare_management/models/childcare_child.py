@@ -39,6 +39,12 @@ class ChildcareChild(models.Model):
         compute='_compute_possible_guardian_ids',string="Posibles Tutores Legales",store=False,readonly=True,invisible=True  
     )
 
+    total_extra_hours = fields.Float(
+        string="Horas Extra Totales",
+        compute="_compute_total_extra_hours",
+        store=True,  
+        help="Total de horas extra acumuladas por el niño."
+    )
 
     medical_history_id = fields.Many2one(
         "childcare.medical.history",
@@ -146,6 +152,12 @@ class ChildcareChild(models.Model):
                 raise exceptions.ValidationError(
                     "El aula excede su capacidad máxima"
                 )
+
+    @api.depends('attendance_ids.extra_hours')  
+    def _compute_total_extra_hours(self):
+        for child in self:
+            # Sumar todas las horas extra de los registros de asistencia del niño
+            child.total_extra_hours = sum(child.attendance_ids.mapped('extra_hours'))
     
     def action_contact_tutors(self):
         self.ensure_one()
