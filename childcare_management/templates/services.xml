@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="services_page" name="Services">
+        <t t-call="childcare_management.base_layout">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="h2 mb-0">Services</h1>
+                
+                <!-- Usando el modal base con el botón integrado -->
+                <t t-call="childcare_management.modal_base">
+                    <t t-set="modal_id" t-value="'serviceModal'"/>
+                    <t t-set="modal_title" t-value="'Request New Service'"/>
+                    <t t-set="button_id" t-value="'newServiceBtn'"/>
+                    <t t-set="button_text" t-value="'Request Service'"/>
+                    <t t-set="button_icon" t-value="'fa-plus'"/>
+                    
+                    <!-- Contenido del modal: formulario de servicio -->
+                    <t t-call="childcare_management.service_form"/>
+                </t>
+            </div>
+
+            <!-- Mensaje de éxito (se muestra si hay un parámetro success en la URL) -->
+            <div t-if="success_message" class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+                <i class="fas fa-check-circle mr-2"></i>
+                <span t-esc="success_message"/>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&amp;times;</span>
+                </button>
+            </div>
+
+            <div class="row g-4 mb-4">
+                <div class="col-md-4">
+                    <div class="card border-primary shadow-sm">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div class="bg-primary text-white p-3 rounded mr-3">
+                                    <i class="fas fa-check-circle fa-2x"></i>
+                                </div>
+                                <div>
+                                    <p class="text-muted mb-0">Active Services</p>
+                                    <h3 class="mb-0">2</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <t t-set="columns" t-value="[
+                {'title': 'Service', 'field': 'name'},
+                {'title': 'Child', 'field': 'child'},
+                {'title': 'Start Date', 'field': 'start_date'},
+                {'title': 'Status', 'field': 'status'}
+            ]"/>
+            
+            <t t-set="actions" t-value="[
+                {'name': 'view', 'icon': 'fa-eye', 'classes': 'btn-outline-primary'},
+            ]"/>
+            
+            <t t-call="childcare_management.reusable_table">
+                <t t-set="data" t-value="services or []"/>
+            </t>
+        </t>
+    </template>
+</odoo>
