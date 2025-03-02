@@ -1,0 +1,63 @@
+<odoo>
+    <!-- Extender la vista de lista de hr.department -->
+    <record id="view_department_tree_inherit" model="ir.ui.view">
+        <field name="name">hr.department.tree.inherit</field>
+        <field name="model">hr.department</field>
+        <field name="inherit_id" ref="hr.view_department_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="codigo"/>
+                <field name="centro_costo"/>
+                <field name="area_nomina"/>
+                <field name="deactivation_date"/>
+                <field name="state"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_department_search_inherit" model="ir.ui.view">
+        <field name="name">hr.department.search.inherit</field>
+        <field name="model">hr.department</field>
+        <field name="inherit_id" ref="hr.view_department_filter"/>
+        <field name="arch" type="xml">
+            <!-- Agregar filtros para estados Activo e Inactivo -->
+            <xpath expr="//search" position="inside">
+                <filter string="Departamentos Activos" name="active_departments" domain="[('state', '=', 'active')]" />
+                <filter string="Departamentos Inactivos" name="inactive_departments" domain="[('state', '=', 'inactive')]" />
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Extender la vista de formulario de hr.department -->
+    <record id="view_department_form_inherit" model="ir.ui.view">
+        <field name="name">hr.department.form.inherit</field>
+        <field name="model">hr.department</field>
+        <field name="inherit_id" ref="hr.view_department_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="codigo"/>
+                <field name="centro_costo"/>
+                <field name="area_nomina"/>
+                <field name="deactivation_date"/>
+                <field name="state"/>
+            </xpath>
+            <xpath expr="//field[@name='state']" position="after">
+                <button
+                    name="action_change_state"
+                    type="object"
+                    string="Desactivar Departamento"
+                    class="btn-danger"
+                    invisible="state == 'inactive'"
+                />
+                <button
+                    name="action_change_state"
+                    type="object"
+                    string="Reactivar Departamento"
+                    class="btn-success"
+                    invisible="state == 'active'"
+                />
+            </xpath>
+        </field>
+    </record>
+    
+</odoo>

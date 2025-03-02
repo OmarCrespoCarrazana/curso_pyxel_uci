@@ -1,0 +1,58 @@
+<odoo>
+    <!-- Plantilla del informe en PDF -->
+    <template id="report_hr_department_template">
+        <t t-call="web.html_container">
+            <t t-call="web.internal_layout">
+                <div class="page">
+                    <h2>Informe de Plantilla del Departamento</h2>
+                    <h3>Datos del Departamento</h3>
+                    <p><strong>Nombre del Departamento:</strong> <span t-esc="department_name"/></p>
+                    <p><strong>Centro de Costo:</strong> <span t-esc="centro_costo"/></p>
+                    <p><strong>Área de Nómina:</strong> <span t-esc="area_nomina"/></p>
+
+                    <h3>Empleados Asignados</h3>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Id de Empleados</th>
+                                <th>Nombre</th>
+                                <th>Apellidos</th>
+                                <th>Cargo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="employees" t-as="employee">
+                            <tr>
+                                <td><span t-esc="employee.get('id_empleado', 'N/A')"/></td>
+                                <td><span t-esc="employee.get('name', 'N/A')"/></td>
+                                <td><span t-esc="employee.get('surnames', 'N/A')"/></td>
+                                <td><span t-esc="employee.get('job_title', 'N/A')"/></td>
+                            </tr>
+                        </t>
+                        </tbody>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <!-- Acción del informe -->
+    <report
+        id="action_hr_department_report"
+        model="hr.department.report.wizard"
+        string="Informe de Plantilla del Departamento"
+        report_type="qweb-pdf"
+        name="hr_department_management.report_hr_department_template"
+        file="hr_department_management.report_hr_department_template"
+    />
+
+    <record id="action_hr_department_report" model="ir.actions.report">
+        <field name="name">Informe de Plantilla del Departamento</field>
+        <field name="model">hr.department.report.wizard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">hr_department_management.report_hr_department_template</field>
+        <field name="report_file">hr_department_management.report_hr_department_template</field>
+        <field name="binding_model_id" ref="hr_department_management.model_hr_department"/>
+    </record>
+
+</odoo>
