@@ -9,7 +9,7 @@
                             string="Renew Contract"
                             class="oe_highlight"
                             type="object"
-                            invisible="not id or state != 'expired'"
+                            invisible="not id or state == 'expired'"
                              />
                   </header>              
                 <sheet>
@@ -17,9 +17,12 @@
                         <field name="state" widget="statusbar" statusbar_visible="valid,expired" readonly="1"/>
                         <group>
                             <field name="name" readonly="1"/>
-                            <field name="partner_id"/>
+                            <field name="lead_id"/>
                             <field name="payment_day"/>
                             <field name="start_date" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="partner_id" readonly="1"/>
                         </group>
                     </group>
                 </sheet>

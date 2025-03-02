@@ -1,5 +1,6 @@
 from odoo import models, fields, api
 from datetime import date
+from datetime import datetime
 from odoo.exceptions import ValidationError
 from dateutil.relativedelta import relativedelta
 from calendar import monthrange
@@ -9,23 +10,38 @@ class CustomerContract(models.Model):
     _description = 'Clients contracts'
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
-    name = fields.Char(string='Code', default=lambda self: self.env['ir.sequence'].next_by_code('customer.contract'), readonly=True )
+    name = fields.Char(string='Code', copy=False, readonly=False, store=True )
     start_date = fields.Date(string='Start of contract', required=True, readonly=True, default=fields.Date.today)
     end_date = fields.Date(string='End of contract', required=True, readonly=True)
-    partner_id = fields.Many2one('res.partner', string='Tutor', required=True)
+    
+    lead_id = fields.Many2one('crm.lead', string="Lead", required=True)
+    partner_id = fields.Many2one('res.partner', string='Tutor', required=True, related='lead_id.partner_id', readonly=True)
+    
     state = fields.Selection(selection=[
         ('valid', 'Valid'),
         ('expired', 'Expired'),
     ], string='Contract state', default='valid')
+    
     invoice_id = fields.Many2many('account.move', string='Invoice', readonly=True, required=False)
     
     payment_day = fields.Integer(string="Day to issue the invoice.", required=True)
+    
+    
+    #child_id = fields.Many2one('childcare.child', string="child", required=True)
     
     @api.constrains("payment_day")
     def _check_payment_day_range(self):
         for record in self:
             if record.payment_day < 1 or record.payment_day > 24:
                 raise ValidationError("The number of hours must be between 1 and 24.")
+
+    @api.onchange('partner_id')
+    def _onchange_partner_id(self):
+        if self.partner_id:
+            nit = self.partner_id.vat or "000000"  
+            sequence = self.env['ir.sequence'].next_by_code('customer.contract') or '000'
+            year = datetime.today().year
+            self.name = f'C-{nit}-{sequence}-{year}'
 
     @api.model
     def create(self, vals):
@@ -46,7 +62,8 @@ class CustomerContract(models.Model):
             if contract.end_date and contract.end_date < today:
                 contract.state = 'expired'
                 
-                #self.send_expiration_email(contract)
+                #if int(shild_id.age.split(' ',1)) >= 5: 
+                #   self.send_expiration_email(contract)
                 
         
         contracts_to_invoice = self.search([
@@ -78,21 +95,18 @@ class CustomerContract(models.Model):
         invoice = self.env["account.move"].create(invoice_vals)
         contract.invoice_id = [(4, invoice.id)]
 
+
+
     def send_expiration_email(self, contract):
         template = self.env.ref('customer_contract.email_template_contract_expiration')
         if template:
-            email_values = {
-                'email_to': contract.partner_id.email,  
-                #'email_cc': coordinator_email,  
-                'partner_ids': [(6, 0, [contract.partner_id.id])],
-            }
-            template.send_mail(contract.id, email_values=email_values)
+            template.send_mail(contract.id, force_send=True)
         
     
                 
     def action_renew_contract(self):
         for contract in self:
-            if contract.state != 'expired':
+            if contract.state != 'valid':
                 raise ValidationError("Only expired contracts can be renewed.")
             
             new_start_date = fields.Date.today()
