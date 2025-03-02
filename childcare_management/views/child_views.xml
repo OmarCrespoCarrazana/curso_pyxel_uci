@@ -32,19 +32,13 @@
                     
                     <notebook>
                         <page string="Salud">
-                            <field name="medical_history_id" mode="form">
-                                <form>
-                                    <field name="allergies"/>
-                                    <field name="chronic_conditions"/>
-                                    <field name="emergency_contact_id"/>
-                                    <field name="vaccination_ids" mode="tree">
-                                        <tree>
-                                            <field name="name"/>
-                                            <field name="date"/>
-                                        </tree>
-                                    </field>
-                                </form>
-                            </field>
+                            <field name="medical_history_id" invisible="1"/>
+                            <group>
+                                <field name="medical_history_height" readonly="1"/>
+                                <field name="medical_history_weight" readonly="1"/>
+                                <field name="medical_history_vaccines" readonly="1"/>
+                                <field name="medical_history_doctor_id" readonly="1"/>
+                            </group>
                         </page>
                                         
                         
