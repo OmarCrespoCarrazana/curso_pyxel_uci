@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="portal_account_custom" name="My Account" inherit_id="portal.portal_layout">
+        <xpath expr="//div[@id='wrap']" position="replace">
+            <div class="container mt-5">
+                <div class="row">
+                    <!-- Menú lateral -->
+                    <div class="col-md-3">
+                        <div class="card shadow-sm">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="mb-0">Mi Cuenta</h5>
+                            </div>
+                            <div class="list-group list-group-flush">
+                                <a href="/my/account" class="list-group-item list-group-item-action active">
+                                    <i class="fas fa-user me-2"></i>Perfil
+                                </a>
+                                <a href="/my/security" class="list-group-item list-group-item-action">
+                                    <i class="fas fa-lock me-2"></i>Seguridad
+                                </a>
+                                <a href="/web/session/logout" class="list-group-item list-group-item-action text-danger">
+                                    <i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Contenido principal -->
+                    <div class="col-md-9">
+                        <div class="card shadow-sm">
+                            <div class="card-header bg-white border-bottom">
+                                <h4 class="mb-0">Información del Perfil</h4>
+                            </div>
+                            <div class="card-body">
+                                <t t-call="portal.portal_details"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+</odoo>
