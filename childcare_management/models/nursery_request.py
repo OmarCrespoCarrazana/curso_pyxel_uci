@@ -2,8 +2,7 @@
 import logging
 
 from odoo import models, fields, api, _
-from odoo.exceptions import ValidationError, UserError
-from datetime import date
+from odoo.exceptions import UserError
 
 _logger = logging.getLogger(__name__)
 
@@ -16,11 +15,11 @@ class NurseryRequest(models.Model):
 
     # Ensures unique reference per request
     name = fields.Char(
-        string="Request Reference",
+        string="Request Code",
         required=True,
         copy=False,
         readonly=True,
-        default=lambda self: _("New"),
+        default=lambda self: self.env["ir.sequence"].next_by_code("nursery.request"),
     )
     nurse_id = fields.Many2one(
         string=_("Requested by"),
@@ -30,8 +29,9 @@ class NurseryRequest(models.Model):
     )
     doctor_id = fields.Many2one(
         "hr.employee",
-        string="Doctor Approval",
+        string="Approved by",
         required=True,
+        domain="[('job_id.name', '=', 'Doctor')]"  # Show only employees whose job title is "Doctor"
     )
     date_requested = fields.Datetime(string="Request Date", default=fields.Datetime.now)
     date_processed = fields.Datetime(string="Process Date")
@@ -58,7 +58,7 @@ class NurseryRequest(models.Model):
     def action_approve(self):
         for request in self:
             for line in request.request_line_ids:
-                if line.product_id.categ_id.name not in [
+                if line.product_id.categ_id.complete_name not in [
                     "Medical Supplies",
                     "Child Medications",
                 ]:
@@ -79,52 +79,73 @@ class NurseryRequest(models.Model):
                     {"qty_available": line.product_id.qty_available - line.quantity}
                 )
                 request.write({"state": "approved"})
-                request.write({"date_processed": "%s" % date.today().strftime('%Y-%m-%d')})
+                request.write({"date_processed": "%s" % fields.Datetime.now()})
                 # Notifying both nurse and doctor
-                request.message_post(
-                    body=_("Your request for product: %s has been approved." % line.product_id.name),
-                    partner_ids=[request.nurse_id.partner_id.id],
-                )
-                request.message_post(
-                    body=_("A request you approved for product: %s has been processed." % line.product_id.name),
-                    partner_ids=[request.doctor_id.partner_id.id],
-                )
+                if (
+                    request.nurse_id
+                    and request.nurse_id.user_id
+                    and request.nurse_id.user_id.partner_id
+                ):
+                    request.message_post(
+                        body=_(
+                            "Your request for product: %s has been approved."
+                            % line.product_id.name
+                        ),
+                        partner_ids=[request.nurse_id.user_id.partner_id.id],
+                    )
+                else:
+                    _logger.warning(
+                        "No valid partner found for the nurse on request %s",
+                        request.id,
+                    )
+                if (
+                    request.doctor_id
+                    and request.doctor_id.user_id
+                    and request.doctor_id.user_id.partner_id
+                ):
+                    request.message_post(
+                        body=_(
+                            "A request you approved for product: %s has been processed."
+                            % line.product_id.name
+                        ),
+                        partner_ids=[request.doctor_id.user_id.partner_id.id],
+                    )
+                else:
+                    _logger.warning(
+                        "No valid partner found for the doctor on request %s",
+                        request.id,
+                    )
 
     def action_deny(self):
         for request in self:
             request.write({"state": "denied"})
+            request.write({"date_processed": "%s" % fields.Datetime.now()})
             # Notifying both nurse and doctor
-            request.message_post(
-                body=_("Your request has been denied."),
-                partner_ids=[request.nurse_id.partner_id.id],
-            )
-            request.message_post(
-                body=_("A request you approved has been denied."),
-                partner_ids=[request.doctor_id.partner_id.id],
-            )
-
-
-class NurseryRequestLine(models.Model):
-    _name = "nursery.request.line"
-    _description = "Nursery Request Line"
-
-    request_id = fields.Many2one(
-        string=_("Request reference"),
-        comodel_name="nursery.request",
-        required=True,
-        ondelete="cascade",
-    )
-    product_id = fields.Many2one(
-        string=_("Product"),
-        comodel_name="product.product",
-        required=True,
-        # Retrieve only products from this categories
-        domain=[("categ_id.name"), "in", ["Medical Supplies", "Child Medications"]],
-    )
-    quantity = fields.Float(string=_("Requested Quantity"), required=True, default=1)
-
-    @api.constrains("quantity")
-    def _check_quantity(self):
-        for rec in self:
-            if rec.quantity <= 0:
-                raise ValidationError(_("Quantity must be greater than zero"))
+            if (
+                request.nurse_id
+                and request.nurse_id.user_id
+                and request.nurse_id.user_id.partner_id
+            ):
+                request.message_post(
+                    body=_("Your request has been denied."),
+                    partner_ids=[request.nurse_id.user_id.partner_id.id],
+                )
+            else:
+                _logger.warning(
+                    "No valid partner found for the nurse on request %s",
+                    request.id,
+                )
+            if (
+                request.doctor_id
+                and request.doctor_id.user_id
+                and request.doctor_id.user_id.partner_id
+            ):
+                request.message_post(
+                    body=_("A request you approved has been denied."),
+                    partner_ids=[request.doctor_id.user_id.partner_id.id],
+                )
+            else:
+                _logger.warning(
+                    "No valid partner found for the doctor on request %s",
+                    request.id,
+                )
