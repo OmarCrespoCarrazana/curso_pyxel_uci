@@ -5,7 +5,7 @@
     'summary': 'Contract invoice managment',
     'author': 'Ing.José Ramón Fidalgo García, M.Sc.Yadira Ramírez Rodríguez',
     'category': 'Services',
-    'depends': ['base', 'calendar', 'website', 'mail', 'account','payment', 'crm', 'childcare_management'],
+    'depends': ['base', 'calendar', 'website', 'mail', 'account','payment', 'crm'],
     'data': [
         'security/ir.model.access.csv',
         'data/sequences.xml',
