@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="medical_records_page" name="Medical Records">
+        <t t-call="childcare_management.base_layout">
+             <t t-set="columns" t-value="[
+                {'title': 'Date', 'field': 'date'},
+                {'title': 'Child', 'field': 'child'},
+                {'title': 'Type', 'field': 'type'},
+                {'title': 'Description', 'field': 'description'},
+                {'title': 'Status', 'field': 'status'}
+            ]"/>
+            
+            <t t-set="actions" t-value="[
+                {'name': 'view', 'icon': 'fa-eye', 'classes': 'btn-outline-primary'},
+            ]"/>
+            
+            <t t-call="childcare_management.reusable_table">
+                <t t-set="data" t-value="medical_records or []"/>
+            </t>
+            
+        </t>
+    </template>
+</odoo>
