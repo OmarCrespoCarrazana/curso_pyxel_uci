@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Acción del Reporte PDF -->
+    <record id="action_report_child_details" model="ir.actions.report">
+        <field name="name">Ficha del Niño</field>
+        <field name="model">childcare.child</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">childcare_management.child_details_report</field>
+        <field name="report_file">childcare_management.child_details_report</field>
+        <field name="binding_model_id" ref="model_childcare_child"/>
+        <field name="binding_type">report</field>
+        <field name="binding_view_types">list,form</field>
+    </record>
+
+    <!-- Plantilla del Reporte -->
+    <template id="child_details_report">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <t t-foreach="docs" t-as="child">
+                        <div style="margin-top">  <!-- Espacio para el header -->
+                            
+                            <!-- Sección de Información Básica -->
+                            <div class="text-center mb-4">
+                                <h1 style="color: #2c3e50;">Ficha del Niño</h1>
+                                <h3><t t-esc="child.name"/></h3>
+                            </div>
+                            
+                            <table class="table table-bordered">
+                                <tr>
+                                    <th colspan="4" class="text-center bg-primary text-white">Datos Generales</th>
+                                </tr>
+                                <tr>
+                                    <td width="25%"><strong>Identificación:</strong></td>
+                                    <td width="25%"><t t-esc="child.id_number"/></td>
+                                    <td width="25%"><strong>Fecha Nacimiento:</strong></td>
+                                    <td width="25%"><t t-esc="child.dob"/></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Edad:</strong></td>
+                                    <td><t t-esc="child.age"/></td>
+                                    <td><strong>Género:</strong></td>
+                                    <td><t t-esc="dict(child._fields['gender'].selection).get(child.gender)"/></td>
+                                </tr>
+                            </table>
+
+                            <!-- Sección del Aula -->
+                            <table class="table table-bordered mt-4">
+                                <tr>
+                                    <th colspan="4" class="text-center bg-info text-white">Información del Aula</th>
+                                </tr>
+                                <tr>
+                                    <td width="25%"><strong>Aula:</strong></td>
+                                    <td width="25%"><t t-esc="child.classroom_id.name"/></td>
+                                    <td width="25%"><strong>Capacidad:</strong></td>
+                                    <td width="25%"><t t-esc="child.classroom_id.capacity"/></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Educadora:</strong></td>
+                                    <td colspan="3"><t t-esc="child.classroom_id.educator_id.name"/></td>
+                                </tr>
+                            </table>
+
+                            <!-- Sección de Tutores -->
+                            <div class="mt-4">
+                                <h4 class="bg-warning p-2">Tutores y Responsables</h4>
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Nombre</th>
+                                            <th>Teléfono</th>
+                                            <th>Email</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="child.tutor_ids" t-as="tutor">
+                                            <tr>
+                                                <td><t t-esc="tutor.name"/></td>
+                                                <td><t t-esc="tutor.phone"/></td>
+                                                <td><t t-esc="tutor.email"/></td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Sección de Asistencia -->
+                            <div class="mt-4">
+                                <h4 class="bg-success p-2 text-white">Registro de Asistencias</h4>
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Fecha Entrada</th>
+                                            <th>Fecha Salida</th>
+                                            <th>Horas Extra</th>
+                                            <th>Educadora</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="child.attendance_ids" t-as="attendance">
+                                            <tr>
+                                                <td><t t-esc="attendance.check_in"/></td>
+                                                <td><t t-esc="attendance.check_out"/></td>
+                                                <td><t t-esc="attendance.extra_hours"/></td>
+                                                <td><t t-esc="attendance.educator_id.name"/></td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Salto de página entre niños -->
+                            <div style="page-break-after: always;"></div>
+                        </div>
+                    </t>
+                </div>
+            </t>
+        </t>
+    </template>
+
+</odoo>

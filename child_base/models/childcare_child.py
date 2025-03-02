@@ -18,7 +18,6 @@ class ChildcareChild(models.Model):
         compute="_compute_from_id_number",
         store=True
     )
-    classroom_id = fields.Many2one("childcare.classroom", "Aula")
     tutor_ids = fields.Many2many(
         "res.partner",
         "childcare_child_res_partner_tutor_rel",  
@@ -39,24 +38,9 @@ class ChildcareChild(models.Model):
         compute='_compute_possible_guardian_ids',string="Posibles Tutores Legales",store=False,readonly=True,invisible=True  
     )
 
-    total_extra_hours = fields.Float(
-        string="Horas Extra Totales",
-        compute="_compute_total_extra_hours",
-        store=True,  
-        help="Total de horas extra acumuladas por el niño."
-    )
+   
 
-    medical_history_id = fields.Many2one(
-        "childcare.medical.history",
-        "Historia Clínica",
-        ondelete="cascade"
-    )
-    attendance_ids = fields.One2many(
-        "childcare.attendance",
-        "child_id",
-        "Asistencia"
-    )
-
+   
     @api.depends('tutor_ids')
     def _compute_possible_guardian_ids(self):
         for record in self:
@@ -143,34 +127,3 @@ class ChildcareChild(models.Model):
                 )
             else:
                 record.age = "Fecha de nacimiento desconocida"
-
-    
-    @api.constrains("classroom_id")
-    def _check_capacity(self):
-        for classroom in self.classroom_id:
-            if len(classroom.child_ids) > classroom.capacity:
-                raise exceptions.ValidationError(
-                    "El aula excede su capacidad máxima"
-                )
-
-    @api.depends('attendance_ids.extra_hours')  
-    def _compute_total_extra_hours(self):
-        for child in self:
-            # Sumar todas las horas extra de los registros de asistencia del niño
-            child.total_extra_hours = sum(child.attendance_ids.mapped('extra_hours'))
-    
-    def action_contact_tutors(self):
-        self.ensure_one()
-        domain = repr([('id', 'in', self.tutor_ids.ids)])
-        
-        return {
-            'name': ('Contactar Tutores'),
-            'type': 'ir.actions.act_window',
-            'res_model': 'mailing.mailing',
-            'view_mode': 'form',
-            'target': 'current',
-            'context': {
-                'default_mailing_model_id': self.env.ref('base.model_res_partner').id,
-                'default_mailing_domain': domain,
-            },
-        }

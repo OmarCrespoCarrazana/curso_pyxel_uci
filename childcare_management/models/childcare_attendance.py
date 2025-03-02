@@ -1,7 +1,7 @@
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
-from datetime import datetime
-
+from datetime import datetime,timedelta,time
+import pytz
 class ChildcareAttendance(models.Model):
     _name = "childcare.attendance"
     _description = "Asistencia de Niños"
@@ -19,7 +19,7 @@ class ChildcareAttendance(models.Model):
     )
     check_in = fields.Datetime("Entrada", default=fields.Datetime.now)
     check_out = fields.Datetime("Salida")
-    duration = fields.Float("Duración (horas)", compute="_compute_duration")
+    extra_hours = fields.Float("Horas Extra", compute="_compute_extra_hours")
     current_status = fields.Selection(
         [('in', 'En guardería'), ('out', 'Retirado')], 
         string="Estado",
@@ -31,14 +31,51 @@ class ChildcareAttendance(models.Model):
         for record in self:
             record.current_status = 'out' if record.check_out else 'in'
 
-    @api.onchange("check_in", "check_out")
-    def _compute_duration(self):
+    @api.depends('check_in', 'check_out')
+    def _compute_extra_hours(self):
         for record in self:
-            if record.check_out and record.check_in:
-                delta = record.check_out - record.check_in
-                record.duration = delta.total_seconds() / 3600
-            else:
-                record.duration = 0
+            if not record.check_in or not record.check_out:
+                record.extra_hours = 0.0
+                continue
+
+            # Obtener zona horaria del usuario
+            tz = record.env.user.tz or 'UTC'
+            local_tz = pytz.timezone(tz)
+
+            # Convertir fechas UTC a datetime con zona horaria
+            check_in_utc = pytz.utc.localize(record.check_in)
+            check_out_utc = pytz.utc.localize(record.check_out)
+
+            # Convertir a la zona horaria del usuario
+            check_in_local = check_in_utc.astimezone(local_tz)
+            check_out_local = check_out_utc.astimezone(local_tz)
+
+            if check_out_local <= check_in_local:
+                record.extra_hours = 0.0
+                continue
+
+            extra_hours = 0.0
+            current_date = check_in_local.date()
+            end_date = check_out_local.date()
+
+            while current_date <= end_date:
+                # Calcular 6 PM del día actual en la zona horaria local
+                day_start = local_tz.localize(datetime.combine(current_date, time(18, 0)))
+                # Calcular medianoche del día siguiente (fin del día actual)
+                next_day = current_date + timedelta(days=1)
+                day_end = local_tz.localize(datetime.combine(next_day, time(0, 0)))
+
+                # Calcular solapamiento entre el registro y el intervalo [6 PM, 12 AM]
+                start = max(check_in_local, day_start)
+                end = min(check_out_local, day_end)
+
+                if start < end:
+                    delta = end - start
+                    extra_hours += delta.total_seconds() / 3600  # Convertir segundos a horas
+
+                current_date = next_day  # Siguiente día
+
+            record.extra_hours = extra_hours
 
     def button_set_check_out(self):
         self.ensure_one()

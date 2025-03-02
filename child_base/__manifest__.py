@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
-    "name": "Childcare Management",
-    "summary": """ Childcare Management Module """,
+    "name": "Childcare Base",
+    "summary": """ Childcare Base Module """,
     "description": """
     """,
     "author": "Pyxel SLR Odoo`s Trainees  Team",
@@ -12,17 +12,14 @@
     "depends": ["base","web","mass_mailing", "website", "hr", "product", "stock", "crm", "account", "mail"],
     # always loaded
     "data": [
-        'security/daycare_security.xml',
-        'security/ir.model.access.csv',
-        "views/child_views.xml",
-        "views/classroom_views.xml",
-        "views/child_attendance_views.xml",
-        "views/reports.xml",
+     #   'security/ir.model.access.csv',
+     #   "views/child_views.xml",
+        'data/cron_jobs.xml',
        
     ],
     # only loaded in demonstration mode
     "demo": [
-        "demo/demo.xml",
+    #    "demo/demo.xml",
     ],
     "assets": {
         "web.assets_backend": [],
