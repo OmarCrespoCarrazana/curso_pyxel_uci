@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Menu Item for Nursery Requests (Only Visible to Nurses & Storekeepers) -->
+    <menuitem id="menu_nursery_requests_root" name="Nursery Requests" parent="stock.menu_stock_root"
+        action="action_nursery_request"
+        sequence="100" />
+
+    <menuitem id="menu_nursery_requests" name="Nursery Requests" parent="menu_nursery_requests_root"
+        action="action_nursery_request"
+        sequence="10" />
+</odoo>
