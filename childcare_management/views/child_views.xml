@@ -13,6 +13,12 @@
                             type="object" 
                             class="oe_highlight"
                         />
+                         <button 
+                            name="action_assign_best_classroom" 
+                            string="Asignar Mejor Aula" 
+                            type="object" 
+                            class="oe_highlight"
+                        />
                      </header>
                     <group>
                         <field name="name"/>

@@ -70,3 +70,16 @@ class ChildcareChild(models.Model):
                 'default_mailing_domain': domain,
             },
         }
+    
+    def action_assign_best_classroom(self):
+        self.ensure_one()  
+        classrooms = self.env['childcare.classroom'].search([])
+        available_classrooms = classrooms.filtered(lambda c: c.child_count < c.capacity)
+        
+        if not available_classrooms:
+            raise exceptions.UserError("¡No hay aulas disponibles con capacidad suficiente!")
+                
+        sorted_classrooms = available_classrooms.sorted(
+            key=lambda c: (c.child_count, -c.capacity)
+        )                
+        self.classroom_id = sorted_classrooms[0]
