@@ -20,7 +20,7 @@ class ChildcareChild(models.Model):
         store=True,  
         help="Total de horas extra acumuladas por el niño."
     )
-    # Campos relacionados para la historia clínica
+    
     medical_history_height = fields.Float(
         related='medical_history_id.height',
         string="Estatura (cm)",
