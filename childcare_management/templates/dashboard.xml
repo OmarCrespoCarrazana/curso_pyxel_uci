@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Dashboard Home Template -->
+    <template id="childcare_home" name="Childcare Dashboard">
+        <t t-call="childcare_management.base_layout">
+            <div class="row g-4 mb-4">
+                <!-- Children Card -->
+                <div class="col-md-4">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div class="bg-primary text-white rounded-circle p-3 mr-3">
+                                    <i class="fas fa-child fa-2x"></i>
+                                </div>
+                                <div>
+                                    <h5 class="card-title mb-1">Children</h5>
+                                    <div class="display-4 fw-bold">
+                                        <t t-esc="children_count or 3"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-transparent">
+                            <a href="/childcare" class="text-decoration-none">
+                                View Details <i class="fas fa-arrow-right ms-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Medical Records Card -->
+                <div class="col-md-4">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div class="bg-success text-white rounded-circle p-3 mr-3">
+                                    <i class="fas fa-heartbeat fa-2x"></i>
+                                </div>
+                                <div>
+                                    <h5 class="card-title mb-1">Medical Records</h5>
+                                    <div class="display-4 fw-bold">
+                                        <t t-esc="medical_records_count or 8"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-transparent">
+                            <a href="/medical-records" class="text-decoration-none">
+                                View Records <i class="fas fa-arrow-right ms-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Services Card -->
+                <div class="col-md-4">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div class="bg-success text-white rounded-circle p-3 mr-3">
+                                    <i class="fas fa-list-alt fa-2x"></i>
+                                </div>
+                                <div>
+                                    <h5 class="card-title mb-1">Active Services</h5>
+                                    <div class="display-4 fw-bold">
+                                        <t t-esc="active_services_count or 2"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-transparent">
+                            <a href="/services" class="text-decoration-none">
+                                View Services <i class="fas fa-arrow-right ms-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity Section -->
+            <div class="card shadow-sm">
+                <div class="card-header bg-white border-bottom">
+                    <h5 class="mb-0">Recent Activity</h5>
+                </div>
+                <div class="list-group list-group-flush">
+                    <div class="list-group-item">
+                        <div class="d-flex align-items-center">
+                            <div class="bg-primary text-white rounded-circle p-2 me-3">
+                                <i class="fas fa-user-plus"></i>
+                            </div>
+                            <div>
+                                <p class="mb-1 fw-semibold">New child registration</p>
+                                <small class="text-muted">Jane Doe - March 1, 2025</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-group-item">
+                        <div class="d-flex align-items-center">
+                            <div class="bg-success text-white rounded-circle p-2 me-3">
+                                <i class="fas fa-calendar-check"></i>
+                            </div>
+                            <div>
+                                <p class="mb-1 fw-semibold">Medical appointment completed</p>
+                                <small class="text-muted">John Doe - February 28, 2025</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-group-item">
+                        <div class="d-flex align-items-center">
+                            <div class="bg-purple text-white rounded-circle p-2 me-3">
+                                <i class="fas fa-money-check-dollar"></i>
+                            </div>
+                            <div>
+                                <p class="mb-1 fw-semibold">Service subscription updated</p>
+                                <small class="text-muted">After School Care 1 - February 25, 2025</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>
