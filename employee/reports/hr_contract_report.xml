@@ -1,0 +1,60 @@
+<odoo>
+    
+    <report
+        id="report_hr_contract"
+        model="hr.contrat"
+        string="Contratos de Empleados"
+        report_type="qweb-pdf"
+        name="hr_contract.report_contract"
+        file="hr_contract.report_contract"
+        print_report_name="'Reporte_' + object.name"
+    />
+    <!-- Plantilla QWeb para el diseño del reporte -->
+    <template id="report_contract">
+        <t t-call="web.html_container">
+            <t t-call="web.internal_layout">
+                <div class="page">
+                    <h2>Reporte de Contratos</h2>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Nombre del Empleado</th>
+                                <th>Título del Contrato</th>
+                                <th>Fecha de Inicio</th>
+                                <th>Fecha de Fin</th>
+                                <th>Salario</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="docs" t-as="contract">
+                                <tr>
+                                    <td><span t-field="contract.employee_id.name"/></td>
+                                    <td><span t-field="contract.name"/></td>
+                                    <td><span t-field="contract.date_start"/></td>
+                                    <td><span t-field="contract.date_end"/></td>
+                                    <td><span t-field="contract.wage"/></td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </template>
+
+
+    <!-- Definición del reporte -->
+    <record id="action_report_contract" model="ir.actions.report">
+        <field name="name">Contratos de Empleados</field>
+        <field name="model">hr.contract</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">hr_contract.report_contract</field>
+        <field name="report_file">hr_contract.report_contract</field>
+        <field name="print_report_name">'Contratos_' + object.name</field>
+        <field name="binding_model_id" ref="hr.model_hr_employee"/>
+    </record>
+    
+
+
+
+</odoo>
