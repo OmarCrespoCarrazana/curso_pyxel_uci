@@ -1,0 +1,44 @@
+<odoo>
+    
+
+    <!-- Vista Tree para historia clínica -->
+    <record id="view_nursery_clinical_history_tree" model="ir.ui.view">
+        <field name="name">nursery.clinical.history.tree</field>
+        <field name="model">nursery.clinical.history</field>
+        <field name="arch" type="xml">
+            <tree string="Historia Clínica">
+                <field name="name"/>
+                <field name="child_id"/>
+                <field name="date"/>
+                <field name="doctor_id"/>
+            </tree>
+        </field>
+    </record>
+
+    
+    <!-- Vista Form para historia clínica -->
+    <record id="view_nursery_clinical_history_form" model="ir.ui.view">
+        <field name="name">nursery.clinical.history.form</field>
+        <field name="model">nursery.clinical.history</field>
+        <field name="arch" type="xml">
+            <form string="Historia Clínica">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="child_id"/>
+                            <field name="date"/>
+                            <field name="doctor_id"/>
+                        </group>
+                        <group>
+                            <field name="height"/>
+                            <field name="weight"/>
+                            <field name="vaccines"/>
+                            <field name="medical_events"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

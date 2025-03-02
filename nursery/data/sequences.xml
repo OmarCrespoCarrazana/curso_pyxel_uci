@@ -1,0 +1,11 @@
+<odoo>
+    <data>
+        <record id="seq_nursery_clinical_history" model="ir.sequence">
+            <field name="name">Nursery Clinical History</field>
+            <field name="code">nursery.clinical.history</field>
+            <field name="prefix">HC-</field>
+            <field name="suffix">-%(year)s</field>
+            <field name="padding">4</field>
+        </record>
+    </data>
+</odoo>
