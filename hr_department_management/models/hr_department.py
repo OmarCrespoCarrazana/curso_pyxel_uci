@@ -1,15 +1,54 @@
-from odoo import models, fields
+from odoo import models, fields, api
 from odoo.exceptions import UserError
 
 class HrDepartment(models.Model):
-    _inherit = 'hr.department'  # Extiende el modelo hr.department
+    _inherit = 'hr.department'
 
-    # Campos adicionales
-    codigo = fields.Char(string='Código Único del Departamento', required=True, copy=False)
+    codigo = fields.Char(
+        string='Código Único del Departamento',
+        required=True,
+        copy=False,
+        unique=True,
+        readonly=True,
+        default=lambda self: self._generate_codigo(),
+    )
     centro_costo = fields.Char(string='Centro de Costo', required=True)
     area_nomina = fields.Char(string='Área de Nómina', required=True)
     state = fields.Selection([('active', 'Activo'), ('inactive', 'Inactivo')], string='Estado', default='active', readonly= True)
     deactivation_date = fields.Date(string='Fecha de Desactivación', readonly=True)
+
+    @api.model
+    def _generate_codigo(self):
+        """
+        Genera un código único en formato AÑO/MES/SECUENCIAL (por ejemplo, 231001).
+        """
+        today = fields.Date.today()
+        year = str(today.year)[-2:] 
+        month = f"{today.month:02d}"  
+
+        last_code = self.search(
+            [('codigo', 'like', f"{year}{month}")],
+            order='codigo DESC',
+            limit=1,
+        ).codigo
+
+        if last_code:
+            sequential = int(last_code[-3:]) + 1
+        else:
+            sequential = 1 
+
+        codigo = f"{year}{month}{sequential:03d}"
+        return codigo
+
+    @api.model
+    def create(self, vals):
+        """
+        Sobrescribe el método create para asegurar que el código se genere automáticamente.
+        """
+        if 'codigo' not in vals or not vals['codigo']:
+            vals['codigo'] = self._generate_codigo()
+        return super(HrDepartment, self).create(vals)
+
 
     def action_change_state(self):
         """Método para abrir la ventana emergente de confirmación."""
