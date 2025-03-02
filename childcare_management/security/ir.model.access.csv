@@ -2,3 +2,6 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_nursery_request_nurse,nursery_request_nurse,model_nursery_request,group_nurse,1,0,1,0
 access_nursery_request_storekeeper,nursery_request_storekeeper,model_nursery_request,group_storekeeper,1,1,0,0
 access_nursery_request_manager,nursery_request_manager,model_nursery_request,group_manager,1,1,1,1
+access_nursery_request_line_nurse,nursery_request_line_nurse,model_nursery_request_line,group_nurse,1,0,1,0
+access_nursery_request_line_storekeeper,nursery_request_line_storekeeper,model_nursery_request_line,group_storekeeper,1,1,0,0
+access_nursery_request_line_nurse,nursery_request_line_manager,model_nursery_request_line,group_manager,1,1,1,1

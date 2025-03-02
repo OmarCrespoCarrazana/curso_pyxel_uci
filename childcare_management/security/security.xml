@@ -1,38 +1,26 @@
 <odoo>
     <!-- Security Groups -->
+
+    <!-- Nurse Group -->
+    <!--Can read and create nursery requests-->
     <record id="group_nurse" model="res.groups">
         <field name="name">Nurse</field>
+        <field name="category_id" ref="base.module_category_inventory"/>
     </record>
-    
+
+    <!-- Storekeeper Group -->
+    <!--Can read and write nursery requests.-->
     <record id="group_storekeeper" model="res.groups">
         <field name="name">Storekeeper</field>
+        <field name="category_id" ref="base.module_category_inventory"/>
     </record>
-    
+
+    <!-- Manager Group -->
+    <!--Full control over nursery requests (can read, create, update, delete). -->
     <record id="group_manager" model="res.groups">
         <field name="name">Manager</field>
         <field name="category_id" ref="base.module_category_inventory"/>
-    </record>
-    
-    <!-- Record Rules -->
-    <record id="nursery_request_nurse_rule" model="ir.rule">
-        <field name="name">Nursery Requests: Nurses Can Only See Their Own Requests</field>
-        <field name="model_id" ref="model_nursery_request"/>
-        <field name="domain_force">[['nurse_id', '=', user.id]]</field>
-        <field name="groups" eval="[(4, ref('group_nurse'))]"/>
-    </record>
-
-    <record id="nursery_request_storekeeper_rule" model="ir.rule">
-        <field name="name">Nursery Requests: Storekeepers Can See All</field>
-        <field name="model_id" ref="model_nursery_request"/>
-        <field name="domain_force">[]</field>
-        <field name="groups" eval="[(4, ref('group_storekeeper'))]"/>
-    </record>
-
-    <record id="nursery_request_manager_rule" model="ir.rule">
-        <field name="name">Manager Requests: Managers Can See and Manage All Requests</field>
-        <field name="model_id" ref="model_nursery_request"/>
-        <field name="domain_force">[]</field>
-        <field name="groups" eval="[(4, ref('group_manager'))]"/>
+        <field name="implied_ids" eval="[(4, ref('group_storekeeper'))]"/>
     </record>
 </odoo>
   
