@@ -19,7 +19,7 @@
             <t t-call="web.external_layout">
                 <div class="page">
                     <t t-foreach="docs" t-as="child">
-                        <div style="margin-top: 100px;">  <!-- Espacio para el header -->
+                        <div style="margin-top">  <!-- Espacio para el header -->
                             
                             <!-- Sección de Información Básica -->
                             <div class="text-center mb-4">
