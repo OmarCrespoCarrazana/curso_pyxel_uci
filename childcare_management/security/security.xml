@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <!-- Portal Access Group -->
+        <record id="childcare_portal_access" model="res.groups">
+            <field name="name">Childcare Portal Access</field>
+            <field name="category_id" ref="base.module_category_services"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_portal'))]"/>
+        </record>
+
+        <!-- Internal User Group -->
+        <record id="childcare_internal_access" model="res.groups">
+            <field name="name">Childcare Internal Access</field>
+            <field name="category_id" ref="base.module_category_services"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+    </data>
+</odoo>
