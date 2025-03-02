@@ -1,0 +1,109 @@
+<odoo>
+    <!-- Vista Formulario Niño -->
+    <record id="view_child_form" model="ir.ui.view">
+        <field name="name">childcare.child.form</field>
+        <field name="model">childcare.child</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <header>
+                        <button 
+                            name="action_contact_tutors" 
+                            string="Contactar Tutores" 
+                            type="object" 
+                            class="oe_highlight"
+                        />
+                     </header>
+                    <group>
+                        <field name="name"/>
+                        <field name="id_number" required="1"/>
+                        <field name="dob" readonly="1"/>
+                        <field name="age" readonly="1"/>
+                        <field name="gender" readonly="1"/>
+                        <field name="classroom_id"/>
+                                                
+
+                    </group>
+                    <group>
+                        <field name="tutor_ids" widget="many2many_tags" domain="[('is_company', '=', False)]"/>                       
+                        <field name="legal_guardian_ids" widget="many2many_tags"/>
+                        <field name="possible_guardian_ids" invisible="1" readonly="1" widget="many2many_tags"/>
+                    </group>
+                    
+                    <notebook>
+                        <page string="Salud">
+                            <field name="medical_history_id" mode="form">
+                                <form>
+                                    <field name="allergies"/>
+                                    <field name="chronic_conditions"/>
+                                    <field name="emergency_contact_id"/>
+                                    <field name="vaccination_ids" mode="tree">
+                                        <tree>
+                                            <field name="name"/>
+                                            <field name="date"/>
+                                        </tree>
+                                    </field>
+                                </form>
+                            </field>
+                        </page>
+                                        
+                        
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_child_tree" model="ir.ui.view">
+        <field name="name">childcare.child.tree</field>
+        <field name="model">childcare.child</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="age"/>
+                <field name="classroom_id" />
+                <field name="tutor_ids" widget="many2many_tags"/>
+                <field name="legal_guardian_ids" widget="many2many_tags"/>
+                <field name="total_extra_hours" readonly="1"/>
+            </tree>
+        </field>
+    </record>
+    
+    <record id="view_child_kanban" model="ir.ui.view">
+      <field name="name">childcare.child.kanban</field>
+      <field name="model">childcare.child</field>
+      <field name="arch" type="xml">
+          <kanban default_group_by="classroom_id">
+              <templates>
+                  <t t-name="kanban-box">
+                      <div class="oe_kanban_global_click">                         
+                          <div class="kanban_content">
+                              <div class="oe_kanban_details">
+                                  <strong><field name="name"/></strong>
+                                  <div>Edad: <field name="age"/></div>
+                                  <div>Aula: <field name="classroom_id"/></div>                                  
+                              </div>
+                              <div class="kanban_footer">
+                                  <field name="tutor_ids" widget="many2many_tags" options="{'no_color': True}"/>
+                              </div>
+                          </div>
+                      </div>
+                  </t>
+              </templates>
+          </kanban>
+      </field>
+  </record>
+
+  <record id="action_childcare_child" model="ir.actions.act_window">
+    <field name="name">Niños</field>
+    <field name="res_model">childcare.child</field>
+    <field name="view_mode">tree,kanban,form</field>
+  </record>
+  <!-- Menuitems -->
+  <menuitem id="menu_childcare_root" name="Daycare"
+              sequence="10" groups="childcare_management.group_daycare_educator"/>
+
+  <menuitem id="menu_child" name="Daycare" parent="menu_childcare_root" action="action_childcare_child"
+              sequence="10"/>
+    
+</odoo>
