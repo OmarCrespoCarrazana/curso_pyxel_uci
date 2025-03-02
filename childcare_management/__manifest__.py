@@ -20,7 +20,10 @@
     "data": [
         "security/security.xml",
         "security/ir.model.access.csv",
+        "data/sequences.xml",
+        "views/nursery_request_menu_views.xml",
         "views/nursery_request_views.xml",
+        "views/actions.xml",
     ],
     "application": True,
     "installable": True,
