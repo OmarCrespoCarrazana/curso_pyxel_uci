@@ -27,12 +27,6 @@ class NurseryRequest(models.Model):
         required=True,
         default=lambda self: self.env.user.employee_id.id,
     )
-    doctor_id = fields.Many2one(
-        "hr.employee",
-        string="Approved by",
-        required=True,
-        domain="[('job_id.name', '=', 'Doctor')]"  # Show only employees whose job title is "Doctor"
-    )
     date_requested = fields.Datetime(string="Request Date", default=fields.Datetime.now)
     date_processed = fields.Datetime(string="Process Date")
     state = fields.Selection(
@@ -76,7 +70,7 @@ class NurseryRequest(models.Model):
                 )
                 request.write({"state": "approved"})
                 request.write({"date_processed": "%s" % fields.Datetime.now()})
-                # Notifying both nurse and doctor
+                # Notifying the nurse
                 if (
                     request.nurse_id
                     and request.nurse_id.user_id
@@ -94,29 +88,12 @@ class NurseryRequest(models.Model):
                         "No valid partner found for the nurse on request %s",
                         request.id,
                     )
-                if (
-                    request.doctor_id
-                    and request.doctor_id.user_id
-                    and request.doctor_id.user_id.partner_id
-                ):
-                    request.message_post(
-                        body=_(
-                            "A request you approved for product: %s has been processed."
-                            % line.product_id.name
-                        ),
-                        partner_ids=[request.doctor_id.user_id.partner_id.id],
-                    )
-                else:
-                    _logger.warning(
-                        "No valid partner found for the doctor on request %s",
-                        request.id,
-                    )
 
     def action_deny(self):
         for request in self:
             request.write({"state": "denied"})
             request.write({"date_processed": "%s" % fields.Datetime.now()})
-            # Notifying both nurse and doctor
+            # Notifying the nurse
             if (
                 request.nurse_id
                 and request.nurse_id.user_id
@@ -129,19 +106,5 @@ class NurseryRequest(models.Model):
             else:
                 _logger.warning(
                     "No valid partner found for the nurse on request %s",
-                    request.id,
-                )
-            if (
-                request.doctor_id
-                and request.doctor_id.user_id
-                and request.doctor_id.user_id.partner_id
-            ):
-                request.message_post(
-                    body=_("A request you approved has been denied."),
-                    partner_ids=[request.doctor_id.user_id.partner_id.id],
-                )
-            else:
-                _logger.warning(
-                    "No valid partner found for the doctor on request %s",
                     request.id,
                 )

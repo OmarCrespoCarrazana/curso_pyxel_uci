@@ -20,3 +20,6 @@ status
 adult_daycare_center/
 loan_service_management/
 tools_inventory/
+
+# Help files
+guide.md

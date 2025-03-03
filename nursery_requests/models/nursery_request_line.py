@@ -22,7 +22,7 @@ class NurseryRequestLine(models.Model):
         comodel_name="product.product",
         required=True,
         # Retrieve only products from this categories
-        domain=lambda self: [("categ_id", "in", self._get_nursery_category_ids())],
+        # domain=[("categ_id.complete_name"), "in", ["Medical Supplies", "Child Medications"]],
     )
     quantity = fields.Float(string=_("Requested Quantity"), required=True)
 
@@ -31,23 +31,3 @@ class NurseryRequestLine(models.Model):
         for rec in self:
             if rec.quantity <= 0:
                 raise ValidationError(_("Quantity must be greater than zero"))
-
-    @api.model
-    def _get_nursery_category_ids(self):
-        """Retrieve nursery related category IDs dynamically instead of hardcoding names"""
-        categories = self.env["product.category"].search(
-            [
-                "|",
-                ("complete_name", "ilike", "Medical Supplies"),
-                ("complete_name", "ilike", "Child Medications"),
-            ]
-        )
-        return categories.ids
-
-    @api.model
-    def default_get(self, fields_list):
-        """Ensure request_id is auto-filled when adding a new request line."""
-        defaults = super().default_get(fields_list)
-        if self.env.context.get("default_request_id"):
-            defaults["request_id"] = self.env.context["default_request_id"]
-        return defaults

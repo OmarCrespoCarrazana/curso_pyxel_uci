@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
 {
-    "name": "Childcare Management",
-    "summary": """ Childcare Management Module """,
-    "description": """
+    "name": "Nursery Requests",
+    "summary": """ Childcare Management Nursery Request Module """,
+    "description":
+    """ 
+    This module process all the requests made 
+    by the nursery staff over Medical Supplies and Child Medication stock products
     """,
-    "author": "Pyxel SLR Odoo`s Trainees  Team",
+    "author": "LeudiX (Odoo Junior Developer)",
     "website": "",
     "category": "Services",
     "version": "1.0",
@@ -15,11 +18,11 @@
         "product",  # Product categories and minimal stock
         "purchase",  # Supply Procurement
         "stock",    # Inventory & Warehouse
-        "mail"],    # Messaging & Notifications
+        "mail"],    # Messaging & Notifications for system users
     # always loaded
     "data": [
-        "security/nursery_request_security.xml",  # Groups & Record Rules (MUST load before access rights)
-        "security/ir.model.access.csv",  # Model Access Rights (Must load after groups are defined)
+        "security/security.xml",
+        "security/ir.model.access.csv",
         "data/sequences.xml",
         "views/nursery_request_menu_views.xml",
         "views/nursery_request_views.xml",

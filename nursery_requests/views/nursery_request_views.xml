@@ -23,7 +23,6 @@
                 decoration-success="state == 'approved'" decoration-danger="state == 'denied'">
                 <field name="name" readonly='1' />
                 <field name="nurse_id" readonly='1' />
-                <field name="doctor_id" readonly='1' />
                 <field name="date_requested" readonly='1' />
                 <field name="date_processed" readonly='1' />
                 <field name="state" widget="badge" decoration-info="state == 'draft'"
@@ -39,22 +38,23 @@
         <field name="arch" type="xml">
             <form string="Nursery Supply Request">
                 <header>
-                    <button 
-                            name="action_approve" 
-                            string="Approve" 
-                            type="object" 
-                            class="oe_highlight"
-                    />
                     <field name="state" widget="statusbar"
-                        decoration-info="state == 'draft'"
-                        decoration-success="state == 'approved'"
-                        decoration-danger="state == 'denied'" />
+                        options="{'yellow': 'draft', 'green': 'approved', 'red': 'denied'}" />
+                    <button
+                        name="action_approve"
+                        string="Approve"
+                        type="object"
+                        class="oe_highlight"
+                    />
+                    <button name="action_approve" string="Approve" type="object"
+                        class="oe_highlight" invisible="[('state', '!=', 'draft')]" />
+                    <button name="action_deny" string="Deny" type="object" class="oe_secondary"
+                        invisible="[('state', '!=', 'draft')]" />
                 </header>
                 <sheet>
                     <group>
                         <field name="name" />
                         <field name="nurse_id" readonly="1" />
-                        <field name="doctor_id" domain="[('job_id.name', '=', 'Doctor')]" />
                         <field name="date_requested" readonly="1" />
                     </group>
                     <notebook>
@@ -62,7 +62,7 @@
                             <field name="request_line_ids" context="{'default_request_id': id}">
                                 <tree editable="bottom">
                                     <field name="product_id"
-                                        groups="childcare_management.group_nurse,base.group_system" />
+                                    groups="group_nurse,base.group_system"/>
                                     <field name="quantity" />
                                 </tree>
                             </field>
@@ -85,7 +85,7 @@
         <field name="arch" type="xml">
             <search string="Search Nursery Requests">
                 <field name="name"
-                    filter_domain="['|','|', ('name', 'ilike', self), ('state', 'ilike', self), ('nurse_id','ilike', self), ('doctor_id','ilike', self)]" />
+                    filter_domain="['|','|', ('name', 'ilike', self), ('state', 'ilike', self), ('nurse_id','ilike', self)]" />
                 <group expand="1" string="Group By">
                     <filter string="Name" name="name" domain="[]"
                         context="{'group_by':'name'}" />
@@ -93,8 +93,6 @@
                         context="{'group_by':'state'}" />
                     <filter string="Nurse" name="nurse_id" domain="[]"
                         context="{'group_by':'nurse_id'}" />
-                    <filter string="Doctor" name="doctor_id" domain="[]"
-                        context="{'group_by':'doctor_id'}" />
                 </group>
             </search>
         </field>
