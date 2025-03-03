@@ -35,7 +35,7 @@ class ChildcareChild(models.Model):
     )
     possible_guardian_ids = fields.Many2many(
         "res.partner",
-        compute='_compute_possible_guardian_ids',string="Posibles Tutores Legales",store=False,readonly=True,invisible=True  
+        compute='_compute_possible_guardian_ids',string="Posibles Tutores Legales",store=False,readonly=True  
     )
 
    
