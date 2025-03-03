@@ -18,8 +18,8 @@
         "mail"],    # Messaging & Notifications
     # always loaded
     "data": [
-        "security/security.xml",
-        "security/ir.model.access.csv",
+        "security/nursery_request_security.xml",  # Groups & Record Rules (MUST load before access rights)
+        "security/ir.model.access.csv",  # Model Access Rights (Must load after groups are defined)
         "data/sequences.xml",
         "views/nursery_request_menu_views.xml",
         "views/nursery_request_views.xml",

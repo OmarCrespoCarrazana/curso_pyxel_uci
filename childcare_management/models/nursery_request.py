@@ -49,10 +49,6 @@ class NurseryRequest(models.Model):
 
     @api.model
     def create(self, vals):
-        if vals.get("name", _("New")) == _("New"):
-            vals["name"] = self.env["ir.sequence"].next_by_code("nursery.request") or _(
-                "New"  # Generating sequence when saving a Nursery request
-            )
         return super(NurseryRequest, self).create(vals)
 
     def action_approve(self):
