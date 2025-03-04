@@ -28,10 +28,10 @@ class NurseryClinicalHistory(models.Model):
     vaccines = fields.Text(string="Vacunas")
     medical_events = fields.Text(string="Eventos Médicos")
     doctor_id = fields.Many2one(
-        "res.partner",
+        "hr.employee",
         string="Doctor",
         required=True,
-        domain=[('is_doctor', '=', True)]
+        domain=[('job_id', '=', 'Doctor')]
     )
 
 
