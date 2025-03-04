@@ -48,15 +48,6 @@ class NurseryRequest(models.Model):
     def action_approve(self):
         for request in self:
             for line in request.request_line_ids:
-                if line.product_id.categ_id.complete_name not in [
-                    "Medical Supplies",
-                    "Child Medications",
-                ]:
-                    raise UserError(
-                        _(
-                            "Only medical supplies and child medications can be requested."
-                        )
-                    )
                 if line.product_id.qty_available < line.quantity:
                     raise UserError(
                         _(
