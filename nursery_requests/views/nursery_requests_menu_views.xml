@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_nursery_requests_root" name="Nursery Requests"
+        parent="stock.menu_stock_root"
+        groups="nursery_requests.group_nurse,nursery_requests.group_storekeeper,nursery_requests.group_manager,base.group_system"
+        action="action_nursery_request"
+        sequence="100" />
+    <!-- Restrict Full Inventory Access (Only for Storekeepers & Admins) -->
+    <menuitem id="menu_stock_main"
+        groups="nursery_requests.group_storekeeper,nursery_requests.group_manager,base.group_system"
+    />
+    <menuitem id="menu_nursery_requests" name="Nursery Requests" parent="menu_nursery_requests_root"
+        action="nursery_requests.action_nursery_request"
+        sequence="10" />
+    <menuitem id="menu_nursery_requests_line" name="Nursing Request Lines" parent="menu_nursery_requests_root"
+        action="nursery_requests.action_nursery_request_line"
+        sequence="20" />
+</odoo>

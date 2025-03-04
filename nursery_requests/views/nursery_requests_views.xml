@@ -2,6 +2,7 @@
     <!-- Action nursery.request -->
     <record id="action_nursery_request" model="ir.actions.act_window">
         <field name="name">Nursery Request</field>
+        <field name="type">ir.actions.act_window</field>
         <field name="res_model">nursery.request</field>
         <field name="view_mode">tree,form,search</field>
         <field name="domain">[]</field>
@@ -62,7 +63,7 @@
                             <field name="request_line_ids" context="{'default_request_id': id}">
                                 <tree editable="bottom">
                                     <field name="product_id"
-                                    groups="group_nurse,base.group_system"/>
+                                    groups="nursery_requests.group_nurse,base.group_system"/>
                                     <field name="quantity" />
                                 </tree>
                             </field>
