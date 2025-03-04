@@ -4,14 +4,7 @@ from odoo.exceptions import UserError
 class HrDepartment(models.Model):
     _inherit = 'hr.department'
 
-    codigo = fields.Char(
-        string='Código Único del Departamento',
-        required=True,
-        copy=False,
-        unique=True,
-        readonly=True,
-        default=lambda self: self._generate_codigo(),
-    )
+    codigo = fields.Char(string='Código del Departamento',required=True,copy=False,unique=True,readonly=True,default=lambda self: self._generate_codigo(),)
     centro_costo = fields.Char(string='Centro de Costo', required=True)
     area_nomina = fields.Char(string='Área de Nómina', required=True)
     state = fields.Selection([('active', 'Activo'), ('inactive', 'Inactivo')], string='Estado', default='active', readonly= True)
@@ -73,7 +66,7 @@ class HrDepartment(models.Model):
             },
         }
     def action_open_report_wizard(self):
-        self.ensure_one()  # Asegura que solo se procese un departamento a la vez
+        self.ensure_one() 
         return {
             'type': 'ir.actions.act_window',
             'name': 'Generar Informe de Plantilla',
@@ -81,7 +74,7 @@ class HrDepartment(models.Model):
             'view_mode': 'form',
             'target': 'new',
             'context': {
-                'default_department_id': self.id,  # Pasa el departamento seleccionado al wizard
+                'default_department_id': self.id,
             },
         }
 

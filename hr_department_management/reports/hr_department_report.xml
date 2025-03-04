@@ -37,15 +37,6 @@
     </template>
 
     <!-- Acción del informe -->
-    <report
-        id="action_hr_department_report"
-        model="hr.department.report.wizard"
-        string="Informe de Plantilla del Departamento"
-        report_type="qweb-pdf"
-        name="hr_department_management.report_hr_department_template"
-        file="hr_department_management.report_hr_department_template"
-    />
-
     <record id="action_hr_department_report" model="ir.actions.report">
         <field name="name">Informe de Plantilla del Departamento</field>
         <field name="model">hr.department.report.wizard</field>

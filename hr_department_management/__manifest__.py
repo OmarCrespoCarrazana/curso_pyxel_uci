@@ -2,8 +2,9 @@
     'name': 'Gestión de Departamentos (Extensión)',
     'version': '1.0',
     'summary': 'Extensión del módulo de Departamentos',
-    'description': 'Agrega campos como Código único, Centro de costo y Área de nómina al modelo hr.department.',
+    'description': 'Nuevas funcionalidades para los departamentos de la guarderia',
     'author': 'Yilber Serrano Figueredo',
+    'category': 'Human Resources',
     'depends': ['hr'],
     'data': [
         'security/ir.model.access.csv',

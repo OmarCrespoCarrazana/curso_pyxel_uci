@@ -40,7 +40,7 @@
         id="menu_hr_department_report_wizard"
         name="Generar Informe de Plantilla"
         action="action_hr_department_report_wizard"
-        parent="hr.menu_hr_root"
+        parent="hr.hr_menu_hr_reports"
         sequence="10"
     />
 </odoo>

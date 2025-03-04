@@ -1,0 +1,14 @@
+<odoo>
+    <!-- Tarea programada para generar la nómina automáticamente -->
+    <record id="ir_cron_generate_monthly_payroll" model="ir.cron">
+        <field name="name">Generar Nómina Mensual</field>
+        <field name="model_id" ref="model_my_payroll_payroll"/>
+        <field name="state">code</field>
+        <field name="code">model.generate_monthly_payroll()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">months</field>
+        <field name="numbercall">-1</field>
+        <field name="doall">False</field>
+        <field name="nextcall" eval="(datetime.now() + timedelta(days=1)).strftime('%Y-%m-01 00:00:00')"/>
+    </record>
+</odoo>

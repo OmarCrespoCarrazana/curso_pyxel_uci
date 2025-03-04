@@ -2,7 +2,7 @@ from odoo import models, fields, api
 from odoo.exceptions import UserError
 
 class HrEmployee(models.Model):
-    _inherit = 'hr.employee'  # Extiende el modelo hr.employee
+    _inherit = 'hr.employee'
 
     centro_costo = fields.Char(string='Centro de Costo', compute="_compute_centro_costo_area_nomina", store=True)
     area_nomina = fields.Char(string='Área de Nómina', compute="_compute_centro_costo_area_nomina", store=True)

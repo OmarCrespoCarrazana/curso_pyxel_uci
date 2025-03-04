@@ -1,0 +1,69 @@
+<odoo>
+    <!-- Acción del menú -->
+    <record id="action_my_payroll_payroll" model="ir.actions.act_window">
+        <field name="name">Nóminas</field>
+        <field name="res_model">my_payroll.payroll</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No hay registros de nómina.
+            </p>
+        </field>
+    </record>
+
+    <!-- Vista Tree -->
+    <record id="view_my_payroll_payroll_tree" model="ir.ui.view">
+        <field name="name">my_payroll.payroll.tree</field>
+        <field name="model">my_payroll.payroll</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="employee_id" readonly="1"/>
+                <field name="base_salary" readonly="1"/>
+                <field name="extra_salary" readonly="1"/>
+                <field name="gross_salary" readonly="1"/>
+                <field name="deductions"/>
+                <field name="bonuses"/>
+                <field name="net_salary" readonly="1"/>
+                <field name="payroll_date" readonly="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Vista Form -->
+    <record id="view_my_payroll_payroll_form" model="ir.ui.view">
+        <field name="name">my_payroll.payroll.form</field>
+        <field name="model">my_payroll.payroll</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="employee_id"/>
+                            <field name="payroll_date"/>
+                        </group>
+                        <group>
+                            <field name="base_salary" readonly="1"/>
+                            <field name="extra_salary" readonly="1"/>
+                            <field name="gross_salary" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Detalles de Nómina">
+                            <group>
+                                <field name="deductions"/>
+                                <field name="bonuses"/>
+                                <field name="net_salary" readonly="1"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <!-- Menú principal -->
+    <menuitem id="menu_my_payroll_root" name="Nómina" sequence="10"/>
+
+    <!-- Submenú para Nómina -->
+    <menuitem id="menu_my_payroll_payroll" name="Nóminas" parent="menu_my_payroll_root" sequence="20" action="action_my_payroll_payroll"/>
+
+</odoo>
