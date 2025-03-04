@@ -30,7 +30,7 @@
     <record id="nursery_request_nurse_rule" model="ir.rule">
         <field name="name">Nurses Cannot Access Full Inventory</field>
         <field name="model_id" ref="stock.model_stock_picking" />
-        <field name="groups" eval="[(4, ref('childcare_management.group_nurse'))]" />
+        <field name="groups" eval="[(4, ref('nursery_requests.group_nurse'))]" />
         <field name="domain_force">[('id', '=', False)]</field>
     </record>
 </odoo>
