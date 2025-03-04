@@ -10,12 +10,13 @@ class CustomerContract(models.Model):
     _description = 'Clients contracts'
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
-    name = fields.Char(string='Code', copy=False, readonly=False, store=True )
+    name = fields.Char(string='Code',  copy=False, readonly=False, store=True )
     start_date = fields.Date(string='Start of contract', required=True, readonly=True, default=fields.Date.today)
     end_date = fields.Date(string='End of contract', required=True, readonly=True)
     
     lead_id = fields.Many2one('crm.lead', string="Lead", required=True)
-    partner_id = fields.Many2one('res.partner', string='Tutor', required=True, related='lead_id.partner_id', readonly=True)
+    partner_id = fields.Many2one('res.partner', string='Tutor', related='lead_id.partner_id', readonly=True)
+    child_id = fields.Many2one('childcare.child', string="Child", related='lead_id.child_id', readonly=True)
     
     state = fields.Selection(selection=[
         ('valid', 'Valid'),
@@ -24,10 +25,9 @@ class CustomerContract(models.Model):
     
     invoice_id = fields.Many2many('account.move', string='Invoice', readonly=True, required=False)
     
-    payment_day = fields.Integer(string="Day to issue the invoice.", required=True)
+    payment_day = fields.Integer(string="Day to issue the invoice.", required=True, default=1)
     
     
-    #child_id = fields.Many2one('childcare.child', string="child", required=True)
     
     @api.constrains("payment_day")
     def _check_payment_day_range(self):
@@ -38,10 +38,13 @@ class CustomerContract(models.Model):
     @api.onchange('partner_id')
     def _onchange_partner_id(self):
         if self.partner_id:
-            nit = self.partner_id.vat or "000000"  
-            sequence = self.env['ir.sequence'].next_by_code('customer.contract') or '000'
-            year = datetime.today().year
-            self.name = f'C-{nit}-{sequence}-{year}'
+            self.name = self.code_generation(self.partner_id.vat)
+            
+    def code_generation(self, vat=None):
+        nit = vat or "000000"  
+        sequence = self.env['ir.sequence'].next_by_code('customer.contract') or '000'
+        year = datetime.today().year
+        return f'C-{nit}-{sequence}-{year}'
 
     @api.model
     def create(self, vals):
@@ -49,6 +52,10 @@ class CustomerContract(models.Model):
             vals["start_date"] = fields.Date.today()
         if "end_date" not in vals:
             vals["end_date"] = vals["start_date"] + relativedelta(months=6)
+        
+        if not vals.get('name'):
+            partner = self.env['res.partner'].browse(vals.get('partner_id'))
+            vals['name'] = self.code_generation(partner.vat)
         contract = super(CustomerContract, self).create(vals)  
             
         return contract
