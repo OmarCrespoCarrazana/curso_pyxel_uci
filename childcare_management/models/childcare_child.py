@@ -20,9 +20,10 @@ class ChildcareChild(models.Model):
         store=True,  
         help="Total de horas extra acumuladas por el niño."
     )
-    medical_history_id = fields.Many2one(
-        "nursery.clinical.history",
-        "Historia Clínica",
+    medical_history_id = fields.One2many(
+        "nursery.clinical.history", 
+        "child_id",  
+        string="Historia Clínica",  
         ondelete="cascade"
     )
     medical_history_height = fields.Float(
