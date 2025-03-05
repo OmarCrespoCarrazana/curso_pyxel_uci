@@ -1,3 +1,8 @@
+<<<<<<< HEAD
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_hr_employee_all,access.hr.employee.all,model_hr_employee,,1,1,1,1
+=======
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hr_employee_all,access.hr.employee.all,model_hr_employee,,1,1,1,1
+>>>>>>> c481bcde8720d6ccbdd11842a5c0a27359ef42de
 access_hr_contract_all,access.hr.contract.all,model_hr_contract,,1,1,1,1

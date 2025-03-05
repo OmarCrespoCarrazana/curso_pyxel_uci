@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 <odoo>
 
@@ -20,4 +21,28 @@
               action="action_report_hr_contract"
               sequence="10"/>
 
+=======
+
+<odoo>
+
+
+    
+    <record id="action_report_hr_contract" model="ir.actions.report">
+        <field name="name">Contratos de Empleados</field>
+        <field name="model">hr.contract</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">hr_contract.report_contract</field>
+        <field name="report_file">hr_contract.report_contract</field>
+        <field name="print_report_name">'Contratos_' + object.name</field>
+        <field name="binding_model_id" ref="hr.model_hr_employee"/>
+    </record>
+    
+    
+    <menuitem id="menu_hr_contract_report"
+              name="Reporte de Contratos"
+              parent="hr.hr_menu_hr_reports"  
+              action="action_report_hr_contract"
+              sequence="10"/>
+
+>>>>>>> c481bcde8720d6ccbdd11842a5c0a27359ef42de
 </odoo>
