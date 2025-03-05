@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <odoo>
     <record id="view_hr_contract_form_inherit" model="ir.ui.view">
         <field name="name">hr.contract.form.inherit</field>
@@ -31,38 +30,4 @@
 
     
     
-=======
-<odoo>
-    <record id="view_hr_contract_form_inherit" model="ir.ui.view">
-        <field name="name">hr.contract.form.inherit</field>
-        <field name="model">hr.contract</field>
-        <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/> <!-- Usar el XML ID correcto -->
-        <field name="arch" type="xml">
-            <!-- Agregar el campo contract_code antes del campo name -->
-            <xpath expr="//field[@name='employee_id']" position="before">
-                <field name="contract_code" readonly="1"/>
-            </xpath>
-            <xpath expr="//field[@name='employee_id']" position="after">
-                <field name="employee_surnames" string="Apellidos" readonly="1"/>
-            </xpath>
-        </field>
-    </record>
-
-    <record id="view_hr_contract_tree_inherit" model="ir.ui.view">
-    <field name="name">hr.contract.tree.inherit</field>
-    <field name="model">hr.contract</field>
-    <field name="inherit_id" ref="hr_contract.hr_contract_view_tree"/>
-    <field name="arch" type="xml">
-        <!-- Agregar el campo employee_surnames después del campo employee_id -->
-        <xpath expr="//field[@name='employee_id']" position="after">
-            <field name="employee_surnames" string="Apellidos"/>
-        </xpath>
-    </field>
-</record>
-
-     
-
-    
-    
->>>>>>> c481bcde8720d6ccbdd11842a5c0a27359ef42de
 </odoo>

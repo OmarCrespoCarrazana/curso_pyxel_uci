@@ -1,60 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    
-    <report
-        id="report_hr_contract"
-        model="hr.contrat"
-        string="Contratos de Empleados"
-        report_type="qweb-pdf"
-        name="hr_contract.report_contract"
-        file="hr_contract.report_contract"
-        print_report_name="'Reporte_' + object.name"
-    />
-    <!-- Plantilla QWeb para el diseño del reporte -->
-    <template id="report_contract">
+    <!-- Definir el template del reporte -->
+    <template id="report_hr_contract_template">
         <t t-call="web.html_container">
-            <t t-call="web.internal_layout">
+            <t t-call="web.external_layout">
                 <div class="page">
-                    <h2>Reporte de Contratos</h2>
-                    <table class="table table-bordered">
+                    <!-- Logo -->
+                    <div style="text-align: center; margin-bottom: 20px;">
+                        <img src="/tu_modulo/static/img/logo.png" style="width: 150px; height: auto;"/>
+                    </div>
+
+                    <!-- Título del reporte -->
+                    <h2 style="text-align: center; color:rgb(46, 134, 193); font-size: 24px; margin-bottom: 20px;">
+                        Reporte de Contratos
+                    </h2>
+
+                    <!-- Tabla de contratos -->
+                    <table class="table" style="width: 100%; border-collapse: collapse; margin-top: 20px;">
                         <thead>
-                            <tr>
-                                <th>Nombre del Empleado</th>
-                                <th>Título del Contrato</th>
-                                <th>Fecha de Inicio</th>
-                                <th>Fecha de Fin</th>
-                                <th>Salario</th>
+                            <tr style="background-color: #2E86C1;">  <!-- Fondo azul -->
+                                <th style="padding: 10px; border: 1px solid #ddd; color: black;">Código de Contrato</th>
+                                <th style="padding: 10px; border: 1px solid #ddd; color: black;">Empleado</th>
+                                <th style="padding: 10px; border: 1px solid #ddd; color: black;">Apellidos</th>
+                                <th style="padding: 10px; border: 1px solid #ddd; color: black;">Fecha de Inicio</th>
+                                <th style="padding: 10px; border: 1px solid #ddd; color: black;">Fecha de Fin</th>
+                                <th style="padding: 10px; border: 1px solid #ddd; color: black;">Salario</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <t t-foreach="docs" t-as="contract">
-                                <tr>
-                                    <td><span t-field="contract.employee_id.name"/></td>
-                                    <td><span t-field="contract.name"/></td>
-                                    <td><span t-field="contract.date_start"/></td>
-                                    <td><span t-field="contract.date_end"/></td>
-                                    <td><span t-field="contract.wage"/></td>
-                                </tr>
-                            </t>
+                            <!-- Recorrer todos los contratos -->
+                            <tr t-foreach="docs" t-as="contract" style="border-bottom: 1px solid #ddd;">
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <span t-field="contract.contract_code"/>
+                                </td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <span t-field="contract.employee_id.name"/>
+                                </td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <span t-field="contract.employee_surnames"/>
+                                </td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <span t-field="contract.date_start"/>
+                                </td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <span t-field="contract.date_end"/>
+                                </td>
+                                <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">
+                                    <span t-field="contract.wage" t-options="{'widget': 'monetary', 'display_currency': contract.currency_id}"/>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
+
+                    <!-- Pie de página -->
+                    <div style="margin-top: 30px; text-align: center; font-size: 12px; color: #777;">
+                        <p>Generado el <span t-esc="datetime.datetime.now().strftime('%d/%m/%Y %H:%M:%S')"/>.</p>
+                        <p>© Tu Empresa - Todos los derechos reservados.</p>
+                    </div>
                 </div>
             </t>
         </t>
     </template>
 
-
-    <!-- Definición del reporte -->
-    <record id="action_report_contract" model="ir.actions.report">
-        <field name="name">Contratos de Empleados</field>
+    <!-- Definir la acción de reporte -->
+    <record id="action_report_hr_contract" model="ir.actions.report">
+        <field name="name">Reporte de Contratos</field>
         <field name="model">hr.contract</field>
         <field name="report_type">qweb-pdf</field>
-        <field name="report_name">hr_contract.report_contract</field>
-        <field name="report_file">hr_contract.report_contract</field>
-        <field name="print_report_name">'Contratos_' + object.name</field>
-        <field name="binding_model_id" ref="hr.model_hr_employee"/>
+        <field name="report_name">employee.report_hr_contract_template</field>
+        <field name="report_file">employee.report_hr_contract_template</field>
+        <field name="binding_model_id" ref="hr_contract.model_hr_contract"/>
+        <field name="binding_type">report</field>
     </record>
-    
-
-
-
 </odoo>

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <odoo>
     <record id="view_hr_employee_form_inherit" model="ir.ui.view">
         <field name="name">hr.employee.form.inherit</field>
@@ -14,21 +13,4 @@
             </xpath>
         </field>
     </record>
-=======
-<odoo>
-    <record id="view_hr_employee_form_inherit" model="ir.ui.view">
-        <field name="name">hr.employee.form.inherit</field>
-        <field name="model">hr.employee</field>
-        <field name="inherit_id" ref="hr.view_employee_form"/>
-        <field name="arch" type="xml">
-            <xpath expr="//field[@name='mobile_phone']" position="before">
-                <field name="surnames" />
-                <field name="id_empleado" readonly="1"/>
-            </xpath>
-            <xpath expr="//field[@name='birthday']" position="after">
-                <field name="age" readonly="1"/>
-            </xpath>
-        </field>
-    </record>
->>>>>>> c481bcde8720d6ccbdd11842a5c0a27359ef42de
 </odoo>
