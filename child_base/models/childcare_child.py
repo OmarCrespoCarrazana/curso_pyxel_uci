@@ -9,6 +9,12 @@ class ChildcareChild(models.Model):
 
     name = fields.Char("Nombre", required=True)
     id_number = fields.Char("Número de Identificación")
+    image = fields.Image(
+        string="Foto del Niño",
+        max_width=1920,
+        max_height=1920,
+        help="Foto de perfil del niño"
+    )
     dob = fields.Date("Fecha de Nacimiento", compute="_compute_from_id_number", store=True)
     age = fields.Char("Edad",compute="_compute_age",store=True,help="Formato: X años Y meses")
 
@@ -18,24 +24,23 @@ class ChildcareChild(models.Model):
         compute="_compute_from_id_number",
         store=True
     )
-    tutor_ids = fields.Many2many(
-        "res.partner",
-        "childcare_child_res_partner_tutor_rel",  
-        "child_id",                               
-        "partner_id",                             
-        string="Tutores"
+    
+    #Modelo que guarda la relación entre el niño y sus tutores
+    tutor_ids = fields.One2many(
+        "childcare.child.tutor", 
+        "child_id", 
+        string="Relación Tutores"
     )
+    
     legal_guardian_ids = fields.Many2many(
         "res.partner",
-        "childcare_child_res_partner_guardian_rel",  
-        "child_id",                                  
-        "partner_id",                                
+        compute="_compute_legal_guardians",
         string="Tutores Legales",
-        domain="[('id', 'in', possible_guardian_ids)]"
+        store=True
     )
     possible_guardian_ids = fields.Many2many(
         "res.partner",
-        compute='_compute_possible_guardian_ids',string="Posibles Tutores Legales",store=False,readonly=True  
+        compute='_compute_possible_guardian_ids',string="Tutores",store=False,readonly=True  
     )
 
    
@@ -43,9 +48,15 @@ class ChildcareChild(models.Model):
    
     @api.depends('tutor_ids')
     def _compute_possible_guardian_ids(self):
-        for record in self:
-            record.possible_guardian_ids = record.tutor_ids.ids
+         for record in self:
+            record.possible_guardian_ids = record.tutor_ids.mapped('tutor_id')
 
+    @api.depends('tutor_ids.is_legal_guardian')
+    def _compute_legal_guardians(self):
+        for record in self:
+            record.legal_guardian_ids = record.tutor_ids.filtered(
+                lambda t: t.is_legal_guardian
+            ).mapped('tutor_id')
 
     @api.depends('id_number')
     def _compute_from_id_number(self):
