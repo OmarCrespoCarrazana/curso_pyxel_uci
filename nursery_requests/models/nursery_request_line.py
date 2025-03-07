@@ -20,8 +20,15 @@ class NurseryRequestLine(models.Model):
     )
 
     nurse_id = fields.Many2one(
-        string="Nurse",
+        string="Requested by",
         related="request_id.nurse_id",
+        store=True,
+        readonly=True,
+    )
+
+    storekeeper_id = fields.Many2one(
+        string=_("Processed by"),
+        related="request_id.storekeeper_id",
         store=True,
         readonly=True,
     )
@@ -41,6 +48,12 @@ class NurseryRequestLine(models.Model):
         readonly=True,
     )
 
+    category_name = fields.Char(
+        related="category_id.name",
+        string=_("Category Name"),
+        readonly=True,
+    )
+
     state = fields.Selection(
         related="request_id.state",
         string=_("Current State"),
@@ -52,24 +65,37 @@ class NurseryRequestLine(models.Model):
 
     @api.model
     def _get_product_domain(self):
-        """Retrieve products from allowed categories, including subcategories."""
-        allowed_categories = ["Medical Supplies", "Child Medications"]
+        """Retrieve products from allowed categories, including subcategories
+        with stock greater than zero."""
+        allowed_categories = ["Nursing"]
         category_ids = (
             self.env["product.category"]
-            .search(
-                [
-                    "|",
-                    ("complete_name", "ilike", allowed_categories[0]),
-                    ("complete_name", "ilike", allowed_categories[1]),
-                ]
-            )
+            .search([("complete_name", "ilike", allowed_categories[0])])
             .ids
         )
-
-        return [("categ_id", "in", category_ids)]
+        # Create a domain to filter products by category and stock availability
+        domain = [("categ_id", "in", category_ids), ("qty_available", ">", 0)]
+        return domain
 
     @api.constrains("quantity")
     def _check_quantity(self):
         for rec in self:
             if rec.quantity <= 0:
                 raise ValidationError(_("Quantity must be greater than zero"))
+
+    @api.constrains("product_id", "request_id")
+    def _check_duplicate_product(self):
+        for line in self:
+            # Search for other lines in the same request with the same product
+            duplicate_lines = self.search(
+                [
+                    ("request_id", "=", line.request_id.id),
+                    ("product_id", "=", line.product_id.id),
+                    ("id", "!=", line.id),  # Exclude the current line
+                ]
+            )
+            if duplicate_lines:
+                raise ValidationError(
+                    f"The product {line.product_id.name} is already in the request. \n"
+                    f"Please update the quantity instead of adding the same product again."
+                )
