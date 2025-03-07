@@ -62,7 +62,7 @@ class ChildcareChild(models.Model):
     
     def action_contact_tutors(self):
         self.ensure_one()
-        domain = repr([('id', 'in', self.tutor_ids.ids)])
+        domain = repr([('id', 'in', self.legal_guardian_ids.ids)])
         
         return {
             'name': ('Contactar Tutores'),
