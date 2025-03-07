@@ -11,8 +11,10 @@
     />
     <menuitem id="menu_nursery_requests" name="Nursery Requests" parent="menu_nursery_requests_root"
         action="nursery_requests.action_nursery_request"
+        groups="nursery_requests.group_nurse,nursery_requests.group_storekeeper,nursery_requests.group_manager,base.group_system"
         sequence="10" />
     <menuitem id="menu_nursery_requests_line" name="Nursing Request Lines" parent="menu_nursery_requests_root"
         action="nursery_requests.action_nursery_request_line"
+        groups="nursery_requests.group_storekeeper,nursery_requests.group_manager,base.group_system"
         sequence="20" />
 </odoo>

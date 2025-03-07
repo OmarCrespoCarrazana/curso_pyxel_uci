@@ -21,13 +21,15 @@
         <field name="arch" type="xml">
             <tree string="Nursery Supply Requests"
                 decoration-info="state == 'draft'"
-                decoration-success="state == 'approved'" decoration-danger="state == 'denied'">
+                decoration-success="state == 'approved'" decoration-danger="state == 'canceled'"
+                default_group_by="state" expand="1">
                 <field name="name" readonly='1' />
                 <field name="nurse_id" readonly='1' />
                 <field name="date_requested" readonly='1' />
                 <field name="date_processed" readonly='1' />
+                <field name="storekeeper_id" readonly='1' />
                 <field name="state" widget="badge" decoration-info="state == 'draft'"
-                    decoration-success="state == 'approved'" decoration-danger="state == 'denied'" />
+                    decoration-success="state == 'approved'" decoration-danger="state == 'canceled'" />
             </tree>
         </field>
     </record>
@@ -39,32 +41,46 @@
         <field name="arch" type="xml">
             <form string="Nursery Supply Request">
                 <header>
-                    <field name="state" widget="statusbar"
-                        options="{'yellow': 'draft', 'green': 'approved', 'red': 'denied'}" />
+                    <field name="state" widget="statusbar" readonly="1"/>
                     <button
                         name="action_approve"
-                        string="Approve"
+                        string="Approve Request"
                         type="object"
-                        class="oe_highlight"
+                        class="btn-success"
+                        invisible="state not in 'draft'"
+                        icon="fa-check-circle"
+                        groups="nursery_requests.group_storekeeper,nursery_requests.group_manager"
                     />
-                    <button name="action_approve" string="Approve" type="object"
-                        class="oe_highlight" invisible="[('state', '!=', 'draft')]" />
-                    <button name="action_deny" string="Deny" type="object" class="oe_secondary"
-                        invisible="[('state', '!=', 'draft')]" />
+                    <button
+                        name="action_cancel"
+                        string="Cancel Request"
+                        type="object"
+                        class="btn-danger"
+                        invisible="state != 'draft'"
+                        icon="fa-times-circle"
+                        groups="nursery_requests.group_nurse"
+                    />
                 </header>
                 <sheet>
                     <group>
-                        <field name="name" />
+                        <field name="name" readonly="1"/>
                         <field name="nurse_id" readonly="1" />
                         <field name="date_requested" readonly="1" />
                     </group>
                     <notebook>
                         <page string="Requested Items">
-                            <field name="request_line_ids" context="{'default_request_id': id}">
+                            <field name="request_line_ids" readonly="state != 'draft'"
+                            groups="nursery_requests.group_nurse"> 
                                 <tree editable="bottom">
-                                    <field name="product_id"
-                                    groups="nursery_requests.group_nurse,base.group_system"/>
-                                    <field name="quantity" />
+                                    <field name="product_id" required="1"/>
+                                    <field name="quantity" required="1"/>
+                                </tree>
+                            </field>
+                            <field name="request_line_ids" readonly="1"
+                            groups="nursery_requests.group_storekeeper,base.group_system"> 
+                                <tree editable="bottom">
+                                    <field name="product_id" required="1"/>
+                                    <field name="quantity" required="1"/>
                                 </tree>
                             </field>
                         </page>
@@ -86,14 +102,18 @@
         <field name="arch" type="xml">
             <search string="Search Nursery Requests">
                 <field name="name"
-                    filter_domain="['|','|', ('name', 'ilike', self), ('state', 'ilike', self), ('nurse_id','ilike', self)]" />
+                    filter_domain="['|','|','|','|', ('name', 'ilike', self), ('state', 'ilike', self), ('nurse_id','ilike', self), ('date_requested','ilike', self), ('date_processed','ilike', self)]" />
                 <group expand="1" string="Group By">
                     <filter string="Name" name="name" domain="[]"
                         context="{'group_by':'name'}" />
                     <filter string="State" name="state" domain="[]"
                         context="{'group_by':'state'}" />
-                    <filter string="Nurse" name="nurse_id" domain="[]"
+                    <filter string="Requested by" name="nurse_id" domain="[]"
                         context="{'group_by':'nurse_id'}" />
+                    <filter string="Requested date" name="date_requested" domain="[]"
+                        context="{'group_by':'date_requested'}" />
+                    <filter string="Proccesed  date" name="date_processed" domain="[]"
+                        context="{'group_by':'date_processed'}" />
                 </group>
             </search>
         </field>

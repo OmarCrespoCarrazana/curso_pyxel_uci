@@ -21,14 +21,16 @@
         <field name="arch" type="xml">
             <tree string="Requests for Nursing Supplies"
                 decoration-info="state == 'draft'"
-                decoration-success="state == 'approved'" decoration-danger="state == 'denied'">
+                decoration-success="state == 'approved'" decoration-danger="state == 'canceled'"
+                default_group_by="nurse_id" expand="1">
                 <field name="request_id" readonly='1' />
                 <field name="nurse_id" readonly='1' />
                 <field name="product_id" readonly='1' />
                 <field name="quantity" readonly='1' />
-                <field name="category_id" readonly='1' />
+                <field name="storekeeper_id" readonly='1' />
+                <field name="category_name" readonly='1' />
                 <field name="state" widget="badge" decoration-info="state == 'draft'"
-                    decoration-success="state == 'approved'" decoration-danger="state == 'denied'" />
+                    decoration-success="state == 'approved'" decoration-danger="state == 'canceled'" />
                 </tree>
         </field>
     </record>
@@ -40,7 +42,7 @@
         <field name="arch" type="xml">
             <search string="Search Requests for Nursing Supplies">
                 <field name="request_id"
-                    filter_domain="['|','|','|','|','|', ('request_id', 'ilike', self), ('nurse_id','ilike', self), ('product_id','ilike', self),('quantity','ilike', self), ('state', 'ilike', self), ('category_id', 'ilike', self)]" />
+                    filter_domain="['|','|','|','|','|', ('request_id', 'ilike', self), ('nurse_id','ilike', self), ('product_id','ilike', self),('quantity','ilike', self), ('state', 'ilike', self), ('category_name', 'ilike', self)]" />
                 <group expand="1" string="Group By">
                     <filter string="Request" name="request_id" domain="[]"
                         context="{'group_by':'request_id'}" />
@@ -52,8 +54,8 @@
                         context="{'group_by':'quantity'}" />
                     <filter string="State" name="state" domain="[]"
                         context="{'group_by':'state'}" />
-                    <filter string="Product Category" name="category_id" domain="[]"
-                        context="{'group_by':'category_id'}" />
+                    <filter string="Product Category" name="category_name" domain="[]"
+                        context="{'group_by':'category_name'}" />
                 </group>
             </search>
         </field>
