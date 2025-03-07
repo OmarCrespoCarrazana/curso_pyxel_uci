@@ -1,0 +1,43 @@
+<odoo>
+    <!-- Vista extendida de partner -->
+    <record id="view_partner_form_childcare" model="ir.ui.view">
+        <field name="name">res.partner.form.childcare</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="before">
+                <notebook>
+                    <page string="Tutorías" name="childcare_relations">
+                        <field name="childcare_children_ids" context="{'tree_view_ref': 'childcare.child_tutor_tree'}">
+                            <tree>
+                                <field name="child_id" widget="many2one_avatar"/>
+                                <field name="relationship"/>
+                                <field name="is_legal_guardian"/>
+                            </tree>
+                            <form>
+                                <group>
+                                    <field name="child_id" widget="many2one_avatar"/>
+                                    <field name="relationship"/>
+                                    <field name="is_legal_guardian"/>
+                                </group>
+                            </form>
+                        </field>
+                    </page>
+                </notebook>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Vista árbol personalizada para la relación -->
+    <record id="childcare_cchild_tutor_tree" model="ir.ui.view">
+        <field name="name">childcare.child.tutor.tree</field>
+        <field name="model">childcare.child.tutor</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="child_id"/>
+                <field name="relationship"/>
+                <field name="is_legal_guardian"/>
+            </tree>
+        </field>
+    </record>
+</odoo>
