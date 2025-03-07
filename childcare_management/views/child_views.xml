@@ -32,7 +32,6 @@
                             <field name="dob" readonly="1"/>
                             <field name="age" readonly="1"/>
                             <field name="gender" readonly="1"/>
-                            <field name="classroom_id"/>
                                                     
 
                         </group>
@@ -40,7 +39,8 @@
                             
                             <field name="possible_guardian_ids" readonly="1" required="1" widget="many2many_tags"/>
                             <field name="legal_guardian_ids" required="1" widget="many2many_tags"/>
-                            
+                            <field name="classroom_id"/>
+
                         </group>
                     </group>
                     
