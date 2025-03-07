@@ -5,8 +5,7 @@
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="base.view_partner_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//notebook" position="before">
-                <notebook>
+            <xpath expr="//page[@name='contact_addresses']" position="before">
                     <page string="Tutorías" name="childcare_relations">
                         <field name="childcare_children_ids" context="{'tree_view_ref': 'childcare.child_tutor_tree'}">
                             <tree>
@@ -23,7 +22,12 @@
                             </form>
                         </field>
                     </page>
-                </notebook>
+            </xpath>
+            <xpath expr="//field[@name='vat']" position="after">
+                <field name="id_number"/>
+                <field name="dob" readonly="1"/>
+                <field name="age" string="Edad" readonly="1"/>
+                <field name="gender" readonly="1"/>
             </xpath>
         </field>
     </record>

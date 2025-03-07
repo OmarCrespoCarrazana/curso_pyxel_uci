@@ -1,7 +1,8 @@
 from odoo import models, fields, api
 
 class ResPartner(models.Model):
-    _inherit = 'res.partner'
+    _name = 'res.partner'
+    _inherit = ['res.partner', 'id.number.mixin']
     
     childcare_children_ids = fields.One2many(
         'childcare.child.tutor', 
