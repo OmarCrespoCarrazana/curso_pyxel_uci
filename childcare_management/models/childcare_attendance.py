@@ -23,7 +23,8 @@ class ChildcareAttendance(models.Model):
     current_status = fields.Selection(
         [('in', 'En guardería'), ('out', 'Retirado')], 
         string="Estado",
-        compute='_compute_status'
+        compute='_compute_status',
+        store=True
     )
     
     @api.depends('check_out')
