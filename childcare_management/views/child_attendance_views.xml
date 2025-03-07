@@ -37,7 +37,6 @@
             <form>
                 <sheet>
                 <header>
-                    <button name="button_set_check_out" class="btn-primary" invisible="current_status=='out'" string="Checkout" type="object"/>                                            
                     <field name="current_status" widget="statusbar" statusbar_visible="in,out"/>
 
                 </header>
