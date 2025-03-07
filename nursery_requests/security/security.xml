@@ -26,12 +26,37 @@
         <field name="implied_ids" eval="[(4, ref('group_storekeeper'))]" />
     </record>
 
-    <!-- Rule: Restrict Nurses from Inventory Operations -->
-    <record id="nursery_request_nurse_rule" model="ir.rule">
+    <!--Visibility
+    Rules-->
+    <!-- Rule: Restrict Nurses from full Inventory Operations access -->
+    <record id="nursery_request_inventory_nurse_rule" model="ir.rule">
         <field name="name">Nurses Cannot Access Full Inventory</field>
         <field name="model_id" ref="stock.model_stock_picking" />
         <field name="groups" eval="[(4, ref('nursery_requests.group_nurse'))]" />
         <field name="domain_force">[('id', '=', False)]</field>
+    </record>
+
+    <record id="nursery_request_own_rule_nurse" model="ir.rule">
+        <field name="name">Nurses can see only their own requests</field>
+        <field name="model_id" ref="model_nursery_request" />
+        <field name="groups" eval="[(4, ref('nursery_requests.group_nurse'))]" />
+        <field name="domain_force">[('nurse_id', '=', user.employee_id.id)]</field>
+        <field name="perm_read" eval="True" />
+        <field name="perm_write" eval="True" />
+        <field name="perm_create" eval="True" />
+        <field name="perm_unlink" eval="False" />
+    </record>
+
+    <record id="nursery_request_rule_admin_storekeeper" model="ir.rule">
+        <field name="name">Admin and Storekeeper can see all requests but not edit</field>
+        <field name="model_id" ref="model_nursery_request" />
+        <field name="groups"
+            eval="[(4, ref('nursery_requests.group_storekeeper')), (4, ref('base.group_system'))]" />
+        <field name="domain_force">[]</field> <!-- No restriction, they see everything -->
+        <field name="perm_read" eval="True" />
+        <field name="perm_write" eval="False" /> <!-- They cannot edit -->
+        <field name="perm_create" eval="False" />
+        <field name="perm_unlink" eval="False" />
     </record>
 </odoo>
 
