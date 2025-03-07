@@ -138,3 +138,18 @@ class ChildcareChild(models.Model):
                 )
             else:
                 record.age = "Fecha de nacimiento desconocida"
+ 
+    @api.constrains('tutor_ids')
+    def _check_unique_tutors(self):
+        for record in self:
+            tutor_ids = []
+            duplicates = []
+            
+            for tutor in record.tutor_ids:
+                if tutor.tutor_id.id in tutor_ids:
+                    duplicates.append(tutor.tutor_id.name)
+                else:
+                    tutor_ids.append(tutor.tutor_id.id)
+            
+            if duplicates:
+                raise exceptions.ValidationError("No se puede repetir el mismo tutor")
