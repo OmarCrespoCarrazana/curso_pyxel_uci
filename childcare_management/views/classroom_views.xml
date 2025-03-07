@@ -20,7 +20,6 @@
                         }
                     }"
                     string="Ocupación"/>
-                <field name="child_ids" widget="many2many_tags" string="Niños" invisible="1"/>
             </tree>
         </field>
     </record>
