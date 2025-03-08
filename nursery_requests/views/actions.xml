@@ -5,15 +5,7 @@
         <field name="binding_model_id" ref="model_nursery_request" />
         <field name="state">code</field>
         <field name="code">record.action_approve()</field>
-        <field name="groups_id" eval="[(4, ref('nursery_requests.group_storekeeper')), (4, ref('nursery_requests.group_manager'))]"/>
+        <field name="groups_id"
+            eval="[(4, ref('nursery_requests.group_storekeeper')), (4, ref('nursery_requests.group_manager'))]" />
     </record>
-
-    <!--<record id="action_deny_nursery_request" model="ir.actions.server">
-        <field name="name">🗷 Deny Request</field>
-        <field name="model_id" ref="model_nursery_request" />
-        <field name="binding_model_id" ref="model_nursery_request" />
-        <field name="state">code</field>
-        <field name="code">record.action_deny()</field>
-        <field name="groups_id" eval="[(4, ref('nursery_requests.group_storekeeper')), (4, ref('nursery_requests.group_manager'))]"/>
-    </record>-->
 </odoo>

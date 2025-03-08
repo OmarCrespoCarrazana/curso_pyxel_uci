@@ -8,7 +8,7 @@
         <field name="domain">[]</field>
         <field name="context">{}</field>
         <field name="help" type="html">
-            <p class="oe_view_nocontent_create">
+            <p class="o_view_nocontent_smiling_face">
                 There is no examples click here to add new Nursery Request Line.
             </p>
         </field>
@@ -21,17 +21,32 @@
         <field name="arch" type="xml">
             <tree string="Requests for Nursing Supplies"
                 decoration-info="state == 'draft'"
-                decoration-success="state == 'approved'" decoration-danger="state == 'canceled'"
+                decoration-warning="state == 'pending'"
+                decoration-success="state == 'approved'"
+                decoration-danger="state == 'canceled'"
                 default_group_by="nurse_id" expand="1">
                 <field name="request_id" readonly='1' />
                 <field name="nurse_id" readonly='1' />
                 <field name="product_id" readonly='1' />
+                <field name="standard_price" readonly='1' />
+                <field name="list_price" readonly='1' />
                 <field name="quantity" readonly='1' />
                 <field name="storekeeper_id" readonly='1' />
                 <field name="category_name" readonly='1' />
-                <field name="state" widget="badge" decoration-info="state == 'draft'"
-                    decoration-success="state == 'approved'" decoration-danger="state == 'canceled'" />
-                </tree>
+                <field name="state" widget="badge"
+                    decoration-info="state == 'draft'"
+                    decoration-warning="state == 'pending'"
+                    decoration-success="state == 'approved'"
+                    decoration-danger="state == 'canceled'" />
+                <!-- Add Print Button TEST FOR MAKE OTHER ACTIONS-->
+                <!--<header>
+                    <button name="%(nursery_requests.action_report_nursery_request_line)d"
+                        string="Print"
+                        type="action"
+                        class="btn-primary"
+                        icon="fa-print" />
+                </header>-->
+            </tree>
         </field>
     </record>
 
