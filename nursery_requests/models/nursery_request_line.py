@@ -40,6 +40,18 @@ class NurseryRequestLine(models.Model):
         domain=lambda self: self._get_product_domain(),
     )
 
+    standard_price = fields.Float(
+        related="product_id.standard_price",
+        string=_("Cost"),
+        readonly=True,
+    )
+
+    list_price = fields.Float(
+        related="product_id.list_price",
+        string=_("Sales Price"),
+        readonly=True,
+    )
+
     category_id = fields.Many2one(
         string=_("Product Category"),
         comodel_name="product.category",

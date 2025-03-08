@@ -138,7 +138,7 @@ class NurseryRequest(models.Model):
 
         for request in self:
             if request.state not in ["draft", "pending"]:
-                raise ValidationError("You can only approve draft requests.")
+                raise ValidationError("Approved or cancelled applications cannot be upgraded to other states.")
 
             # Stock MOVE TEST Feature [2]
             picking_vals = {
