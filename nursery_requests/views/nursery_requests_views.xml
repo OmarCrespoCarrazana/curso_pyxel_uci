@@ -21,15 +21,20 @@
         <field name="arch" type="xml">
             <tree string="Nursery Supply Requests"
                 decoration-info="state == 'draft'"
-                decoration-success="state == 'approved'" decoration-danger="state == 'canceled'"
-                default_group_by="state" expand="1">
+                decoration-warning="state == 'pending'"
+                decoration-success="state == 'approved'"
+                decoration-danger="state == 'canceled'"
+                default_group_by="state" expand="1" limit="10">
                 <field name="name" readonly='1' />
                 <field name="nurse_id" readonly='1' />
                 <field name="date_requested" readonly='1' />
                 <field name="date_processed" readonly='1' />
                 <field name="storekeeper_id" readonly='1' />
-                <field name="state" widget="badge" decoration-info="state == 'draft'"
-                    decoration-success="state == 'approved'" decoration-danger="state == 'canceled'" />
+                <field name="state" widget="badge" 
+                    decoration-info="state == 'draft'"
+                    decoration-warning="state == 'pending'"
+                    decoration-success="state == 'approved'" 
+                    decoration-danger="state == 'canceled'" />
             </tree>
         </field>
     </record>
@@ -41,13 +46,13 @@
         <field name="arch" type="xml">
             <form string="Nursery Supply Request">
                 <header>
-                    <field name="state" widget="statusbar" readonly="1"/>
+                    <field name="state" widget="statusbar" readonly="1" />
                     <button
                         name="action_approve"
                         string="Approve Request"
                         type="object"
                         class="btn-success"
-                        invisible="state not in 'draft'"
+                        invisible="state not in ['draft', 'pending']"
                         icon="fa-check-circle"
                         groups="nursery_requests.group_storekeeper,nursery_requests.group_manager"
                     />
@@ -63,24 +68,24 @@
                 </header>
                 <sheet>
                     <group>
-                        <field name="name" readonly="1"/>
+                        <field name="name" readonly="1" />
                         <field name="nurse_id" readonly="1" />
                         <field name="date_requested" readonly="1" />
                     </group>
                     <notebook>
                         <page string="Requested Items">
-                            <field name="request_line_ids" readonly="state != 'draft'"
-                            groups="nursery_requests.group_nurse"> 
+                            <field name="request_line_ids" readonly="state not in ['draft', 'pending']"
+                                groups="nursery_requests.group_nurse">
                                 <tree editable="bottom">
-                                    <field name="product_id" required="1"/>
-                                    <field name="quantity" required="1"/>
+                                    <field name="product_id" />
+                                    <field name="quantity" />
                                 </tree>
                             </field>
                             <field name="request_line_ids" readonly="1"
-                            groups="nursery_requests.group_storekeeper,base.group_system"> 
+                                groups="nursery_requests.group_storekeeper,base.group_system">
                                 <tree editable="bottom">
-                                    <field name="product_id" required="1"/>
-                                    <field name="quantity" required="1"/>
+                                    <field name="product_id" />
+                                    <field name="quantity" />
                                 </tree>
                             </field>
                         </page>
