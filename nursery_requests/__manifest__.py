@@ -27,6 +27,7 @@
         "views/nursery_requests_views.xml",
         "views/nursery_request_line_views.xml",
         "views/nursery_requests_menu_views.xml",
+        "reports/nursery_requests_line_report.xml",
     ],
     "application": True,
     "installable": True,
