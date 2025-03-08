@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 import logging
 
-from odoo import models, fields, api, _
-from odoo.exceptions import UserError, ValidationError
+from odoo import models, fields, api
+from odoo.exceptions import ValidationError
 
 _logger = logging.getLogger(__name__)
 
@@ -22,13 +22,13 @@ class NurseryRequest(models.Model):
         default=lambda self: self.env["ir.sequence"].next_by_code("nursery.request"),
     )
     nurse_id = fields.Many2one(
-        string=_("Requested by"),
+        string=("Requested by"),
         comodel_name="hr.employee",
         required=True,
         default=lambda self: self.env.user.employee_id,
     )
     storekeeper_id = fields.Many2one(
-        string=_("Processed by"),
+        string=("Processed by"),
         comodel_name="hr.employee",
         required=False,
     )
@@ -36,13 +36,18 @@ class NurseryRequest(models.Model):
     date_requested = fields.Datetime(string="Request Date", default=fields.Datetime.now)
     date_processed = fields.Datetime(string="Process Date")
     state = fields.Selection(
-        [("draft", "Draft"), ("canceled", "Canceled"), ("approved", "Approved")],
+        [
+            ("draft", "Draft"),
+            ("canceled", "Canceled"),
+            ("pending", "Pending"),
+            ("approved", "Approved"),
+        ],
         string="Status",
         default="draft",
         tracking=True,
     )
     request_line_ids = fields.One2many(
-        string=_("Requested Items"),
+        string=("Requested Items"),
         comodel_name="nursery.request.line",
         inverse_name="request_id",
     )
@@ -74,7 +79,7 @@ class NurseryRequest(models.Model):
         # Create the request first
         request = super(NurseryRequest, self).create(vals)
         recipients = self._get_notification_recipients()
-        message_body = _("A new nursing request %s has been created by %s.") % (
+        message_body = ("A new nursing request %s has been created by %s.") % (
             request.name,
             request.nurse_id.name,
         )
@@ -87,27 +92,7 @@ class NurseryRequest(models.Model):
 
     @api.model
     def write(self, vals):
-        """Prevent duplicate products in the same request when editing & notifies Admins & Storekeepers."""
-        if "request_line_ids" in vals and vals["request_line_ids"]:
-            existing_product_ids = set(self.request_line_ids.mapped("product_id.id"))
-
-            for ops in vals["request_line_ids"]:
-                if isinstance(ops, (list, tuple)) and len(ops) > 2:
-                    operation_type, _, data = ops  # Extract operation details
-
-                    if operation_type in [0, 1] and "product_id" in data:
-                        product_id = data["product_id"]
-
-                        if product_id in existing_product_ids:
-                            raise ValidationError(
-                                _(
-                                    "You cannot add the same product more than once in a request."
-                                )
-                            )
-
-                        existing_product_ids.add(
-                            product_id
-                        )  # Add new product after checking
+        """Process products updates on nursery requests when editing & notifies Admins & Storekeepers."""
         # Update the request first
         request = super(NurseryRequest, self).write(vals)
 
@@ -117,7 +102,7 @@ class NurseryRequest(models.Model):
         if any(field in vals for field in notify_fields):
             for record in self:
                 recipients = record._get_notification_recipients()
-                message_body = _("The nursing request %s has been updated by %s.") % (
+                message_body = ("The nursing request %s has been updated by %s.") % (
                     record.name,
                     record.nurse_id.name,
                 )
@@ -132,13 +117,13 @@ class NurseryRequest(models.Model):
         # Get the current user's employee record
         employee = self.env.user.employee_id
         if not employee:
-            raise ValidationError(_("The current user is not linked to an employee."))
+            raise ValidationError("The current user is not linked to an employee.")
 
         # Permission check (do it once)
         if not self.env.user.has_group(
             "nursery_requests.group_storekeeper"
         ) and not self.env.user.has_group("nursery_requests.group_manager"):
-            raise ValidationError(_("You do not have permission to approve requests."))
+            raise ValidationError("You do not have permission to approve requests.")
 
         # Stock MOVE TEST Feature [1]
         stock_picking_type = self.env.ref(
@@ -152,8 +137,8 @@ class NurseryRequest(models.Model):
         )  # Destination (e.g., nurse’s station)
 
         for request in self:
-            if request.state != "draft":
-                raise ValidationError(_("You can only approve draft requests."))
+            if request.state not in ["draft", "pending"]:
+                raise ValidationError("You can only approve draft requests.")
 
             # Stock MOVE TEST Feature [2]
             picking_vals = {
@@ -166,14 +151,19 @@ class NurseryRequest(models.Model):
             }
             picking = self.env["stock.picking"].create(picking_vals)
 
-            stock_moves = []
+            stock_moves = []  # Stock MOVE TEST Feature [3]
+
+            # Check stock availability for all lines
+            exceeded_products = []  # TESTING QTY EXCEEDED
+
             for line in request.request_line_ids:
                 product = line.product_id
                 if product.qty_available < line.quantity:
-                    raise UserError(
-                        _("Requested quantity for %s exceeds stock." % product.name)
-                    )
-                # Stock MOVE TEST Feature [3]
+                    exceeded_products.append(
+                        product.name
+                    )  # Adding products that exceed the stock
+
+                # Stock MOVE TEST Feature [4]
                 # Correct stock deduction: Create a Stock Move
                 stock_moves.append(
                     {
@@ -187,7 +177,53 @@ class NurseryRequest(models.Model):
                         "state": "draft",
                     }
                 )
-            # Stock MOVE TEST Feature [4]
+
+            # If any product exceeds stock, update state to pending and notify the nurse
+            if exceeded_products:  # TESTING QTY EXCEEDED
+                request.write(
+                    {
+                        "state": "pending",
+                        "date_processed": "%s" % fields.Datetime.now(),
+                        "storekeeper_id": employee.id,
+                    }
+                )
+                # Notify the nurse
+                if (
+                    request.nurse_id
+                    and request.nurse_id.user_id
+                    and request.nurse_id.user_id.partner_id
+                ):
+                    request.message_post(
+                        body=(
+                            "Your request has been set to pending due to insufficient stock of these products: %s"
+                            % ", ".join(exceeded_products)
+                        ),
+                        partner_ids=[request.nurse_id.user_id.partner_id.id],
+                    )
+                    _logger.info(
+                        "Request %s set to pending due to insufficient stock for products: %s",
+                        request.name,
+                        ", ".join(exceeded_products),
+                    )
+                else:
+                    _logger.warning(
+                        "No valid partner found for nurse on request %s",
+                        request.id,
+                    )
+                # Return a client action to display the warning
+                return {
+                    "type": "ir.actions.client",
+                    "tag": "display_notification",
+                    "params": {
+                        "title": "Nursing Request exceed stock ⚠️",
+                        "message": f"The following products exceed available stock: {', '.join(exceeded_products)}.\n"
+                        f"The request has been set to pending.",
+                        "type": "warning",  # Used 'warning' for a warning-style notification
+                        "sticky": True,  # Make the notification sticky (user must dismiss it)
+                    },
+                }
+
+            # Stock MOVE TEST Feature [5]
             # Process stock moves if there are any
             if stock_moves:
                 move = self.env["stock.move"].create(stock_moves)
@@ -199,7 +235,7 @@ class NurseryRequest(models.Model):
             picking.action_assign()
             picking.button_validate()
 
-            # Moved write() outside the loop to increase performance
+            # If no products exceed stock, approve the request (OUT of LOOP to increase performance)
             request.write(
                 {
                     "state": "approved",
@@ -207,14 +243,14 @@ class NurseryRequest(models.Model):
                     "storekeeper_id": employee.id,
                 }
             )
-            # Notifying the nurse only once
+            # Notify the nurse
             if (
                 request.nurse_id
                 and request.nurse_id.user_id
                 and request.nurse_id.user_id.partner_id
             ):
                 request.message_post(
-                    body=_(
+                    body=(
                         "Your request for product: %s has been approved."
                         % ", ".join(
                             line.product_id.name for line in request.request_line_ids
@@ -234,7 +270,7 @@ class NurseryRequest(models.Model):
 
             # Notifying admins and storekeepers about approval
             recipients = self._get_notification_recipients()
-            message_body = _(
+            message_body = (
                 "The request %s has been approved and stock has been deducted."
                 % request.name
             )
@@ -251,9 +287,9 @@ class NurseryRequest(models.Model):
             raise ValidationError("The current user is not linked to an employee")
         for request in self:
             if request.nurse_id != employee:
-                raise ValidationError(_("You can only cancel you own requests."))
+                raise ValidationError("You can only cancel you own requests.")
             if request.state != "draft":
-                raise ValidationError(_("You can only cancel draft requests"))
+                raise ValidationError("You can only cancel draft requests")
             request.write(
                 {
                     "state": "canceled",
@@ -262,7 +298,7 @@ class NurseryRequest(models.Model):
                 }
             )
         recipients = self._get_notification_recipients()
-        message_body = _("Hi, I'm %s and I have canceled my nursing request: %s.") % (
+        message_body = ("Hi, I'm %s and I have canceled my nursing request: %s.") % (
             self.nurse_id.name,
             self.name,
         )
@@ -271,32 +307,3 @@ class NurseryRequest(models.Model):
             subtype_xmlid="mail.mt_comment",
             partner_ids=recipients.mapped("partner_id").ids,  # Send notifications
         )
-
-    def action_deny(self):
-        # Get the current user's employee record
-        employee = self.env.user.employee_id
-        if not employee:
-            raise ValidationError("The current user is not linked to an employee")
-        for request in self:
-            request.write(
-                {
-                    "state": "denied",
-                    "date_processed": "%s" % fields.Datetime.now(),
-                    "storekeeper_id": employee.id,
-                }
-            )
-            # Notifying the nurse
-            if (
-                request.nurse_id
-                and request.nurse_id.user_id
-                and request.nurse_id.user_id.partner_id
-            ):
-                request.message_post(
-                    body=_("Your request has been denied."),
-                    partner_ids=[request.nurse_id.user_id.partner_id.id],
-                )
-            else:
-                _logger.warning(
-                    "No valid partner found for the nurse on request %s",
-                    request.id,
-                )
