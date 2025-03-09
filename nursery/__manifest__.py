@@ -26,6 +26,7 @@
         'data/sequences.xml',
         'views/nursery_menu_views.xml',
         'views/nursery_clinical_history_views.xml',
+        'views/nursery_medical_event_views.xml',
         'views/nursery_medical_supply_views.xml'
     ],
     # only loaded in demonstration mode

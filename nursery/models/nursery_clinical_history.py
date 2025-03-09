@@ -25,8 +25,13 @@ class NurseryClinicalHistory(models.Model):
     )
     height = fields.Float(string="Estatura (cm)")
     weight = fields.Float(string="Peso (kg)")
-    vaccines = fields.Text(string="Vacunas")
-    medical_events = fields.Text(string="Eventos Médicos")
+    vaccines = fields.Many2many("nursery.vaccines", string="Vacunas",)
+    medical_events = fields.One2many(
+        "nursery.medical.event",
+        "child_hc",
+        string="Eventos médicos"
+    )
+    
     doctor_id = fields.Many2one(
         "hr.employee",
         string="Doctor",

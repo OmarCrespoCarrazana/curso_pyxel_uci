@@ -36,7 +36,7 @@ class ChildcareChild(models.Model):
         string="Peso (kg)",
         readonly=True
     )
-    medical_history_vaccines = fields.Text(
+    medical_history_vaccines = fields.Many2many(
         related='medical_history_id.vaccines',
         string="Vacunas",
         readonly=True
