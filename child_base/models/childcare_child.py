@@ -6,36 +6,31 @@ from dateutil.relativedelta import relativedelta
 class ChildcareChild(models.Model):
     _name = "childcare.child"
     _description = "Niño en Guardería"
-
+    _inherit="id.number.mixin"
     name = fields.Char("Nombre", required=True)
-    id_number = fields.Char("Número de Identificación")
-    dob = fields.Date("Fecha de Nacimiento", compute="_compute_from_id_number", store=True)
-    age = fields.Char("Edad",compute="_compute_age",store=True,help="Formato: X años Y meses")
-
-    gender = fields.Selection(
-        [('male', 'Masculino'), ('female', 'Femenino')],
-        string="Sexo",
-        compute="_compute_from_id_number",
-        store=True
+    image = fields.Image(
+        string="Foto del Niño",
+        max_width=1920,
+        max_height=1920,
+        help="Foto de perfil del niño"
     )
-    tutor_ids = fields.Many2many(
-        "res.partner",
-        "childcare_child_res_partner_tutor_rel",  
-        "child_id",                               
-        "partner_id",                             
-        string="Tutores"
+    
+    #Modelo que guarda la relación entre el niño y sus tutores
+    tutor_ids = fields.One2many(
+        "childcare.child.tutor", 
+        "child_id", 
+        string="Relación Tutores"
     )
+    
     legal_guardian_ids = fields.Many2many(
         "res.partner",
-        "childcare_child_res_partner_guardian_rel",  
-        "child_id",                                  
-        "partner_id",                                
+        compute="_compute_legal_guardians",
         string="Tutores Legales",
-        domain="[('id', 'in', possible_guardian_ids)]"
+        store=True
     )
     possible_guardian_ids = fields.Many2many(
         "res.partner",
-        compute='_compute_possible_guardian_ids',string="Posibles Tutores Legales",store=False,readonly=True  
+        compute='_compute_possible_guardian_ids',string="Tutores",store=False,readonly=True  
     )
 
    
@@ -43,9 +38,15 @@ class ChildcareChild(models.Model):
    
     @api.depends('tutor_ids')
     def _compute_possible_guardian_ids(self):
-        for record in self:
-            record.possible_guardian_ids = record.tutor_ids.ids
+         for record in self:
+            record.possible_guardian_ids = record.tutor_ids.mapped('tutor_id')
 
+    @api.depends('tutor_ids.is_legal_guardian')
+    def _compute_legal_guardians(self):
+        for record in self:
+            record.legal_guardian_ids = record.tutor_ids.filtered(
+                lambda t: t.is_legal_guardian
+            ).mapped('tutor_id')
 
     @api.depends('id_number')
     def _compute_from_id_number(self):
@@ -104,26 +105,49 @@ class ChildcareChild(models.Model):
 
     @api.depends('dob')
     def _compute_age(self):
-        """Calcula la edad en años y meses"""
+        """Versión especializada para niños con meses y validación"""
+        for record in self:
+            if not record.dob:
+                record.age = "Fecha de nacimiento desconocida"
+                return
+                
+            today = date.today()
+            delta = relativedelta(today, record.dob)
+            
+            years = delta.years
+            months = delta.months
+            
+            # Construcción del string
+            age_parts = []
+            if years > 0:
+                age_parts.append(f"{years} año{'s' if years != 1 else ''}")
+            if months > 0:
+                age_parts.append(f"{months} mes{'es' if months != 1 else ''}")
+            
+            record.age = " y ".join(age_parts) if age_parts else "Recién nacido"
+  
+    @api.constrains('dob')
+    def _check_max_age(self):
+        """Validación específica para niños"""
         for record in self:
             if record.dob:
-                today = date.today()
-                delta = relativedelta(today, record.dob)
-                
-                years = delta.years
-                months = delta.months
-                
-                age_parts = []
-                if years > 0:
-                    age_parts.append(f"{years} año{'s' if years != 1 else ''}")
-                if months > 0:
-                    age_parts.append(f"{months} mes{'es' if months != 1 else ''}")
-                
-                record.age = " y ".join(age_parts) if age_parts else "Recién nacido"
-
-                if years>=5:
+                delta = relativedelta(date.today(), record.dob)
+                if delta.years >= 5:
                     raise exceptions.ValidationError(
-                    "Edad máxima superada"
-                )
-            else:
-                record.age = "Fecha de nacimiento desconocida"
+                        "Edad máxima permitida es 5 años"
+                    )
+ 
+    @api.constrains('tutor_ids')
+    def _check_unique_tutors(self):
+        for record in self:
+            tutor_ids = []
+            duplicates = []
+            
+            for tutor in record.tutor_ids:
+                if tutor.tutor_id.id in tutor_ids:
+                    duplicates.append(tutor.tutor_id.name)
+                else:
+                    tutor_ids.append(tutor.tutor_id.id)
+            
+            if duplicates:
+                raise exceptions.ValidationError("No se puede repetir el mismo tutor")

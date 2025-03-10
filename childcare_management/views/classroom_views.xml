@@ -20,9 +20,29 @@
                         }
                     }"
                     string="Ocupación"/>
-                <field name="child_ids" widget="many2many_tags" string="Niños" invisible="1"/>
             </tree>
         </field>
+    </record>
+
+    <record id="view_childcare_classroom_search" model="ir.ui.view">
+            <field name="name">childcare.classroom.view.search</field>
+            <field name="model">childcare.classroom</field>
+            <field name="arch" type="xml">
+                <search string="Classroom">
+                    <field name="name" string="Aula"/>
+                    <field name="capacity" string="Capacidad Máxima"/>
+                    <field name="educator_id" string="Educadora"/>
+                    <field name="child_count"/>
+                    <filter string="Con capacidad" name="filter_has_capacity" domain="[('child_count', '&lt;', 10)]"/>
+                    <separator/>
+                    <filter string="Sin capacidad" name="filter_no_capacity" domain="[('child_count', '&gt;', 9)]"/>
+                    <separator/>      
+                    <group expand="0" string="Group By">
+                        <filter string="Cantidad de niños" name="child_count" domain="[]" context="{'group_by': 'child_count'}"/>
+                        <filter string="Educadora" name="educator_id" domain="[]" context="{'group_by': 'educator_id'}"/>                        
+                    </group>                                  
+                </search>
+            </field>
     </record>
 
     <!-- Vista Form para aulas -->

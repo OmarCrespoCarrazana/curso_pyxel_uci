@@ -13,7 +13,7 @@
     # always loaded
     "data": [
      #   'security/ir.model.access.csv',
-     #   "views/child_views.xml",
+        "views/partner_views.xml",
         'data/cron_jobs.xml',
        
     ],

@@ -9,10 +9,29 @@
                 <field name="check_in"/>
                 <field name="check_out"/>
                 <field name="extra_hours" string="Horas Extra"/>              
-                <button name="button_set_check_out" class="btn-primary" invisible="current_status=='out'" string="Checkout" type="object" />                                            
                 <field name="current_status" decoration-success= "current_status == 'in'" decoration-danger="current_status == 'out'" string="Estado"/>                
+                <button name="button_set_check_out" class="btn-primary" invisible="current_status=='out'" string="Checkout" type="object" />                                            
+
             </tree>
         </field>
+    </record>
+
+    <record id="view_childcare_attendance_search" model="ir.ui.view">
+            <field name="name">childcare.attendance.view.search</field>
+            <field name="model">childcare.attendance</field>
+            <field name="arch" type="xml">
+                <search string="Attendance">
+                    <field name="child_id"/>
+                    <field name="check_in"/>
+                    <field name="check_out"/>
+                    <field name="extra_hours" string="Horas Extra"/>              
+                    <field name="current_status"/>
+                    <filter string="In" name="filter_state_in" domain="[('current_status', '=', 'in')]"/>
+                    <separator/>
+                    <filter string="Out" name="filter_state_out" domain="[('current_status','=','out')]"/>
+                    <separator/>                                        
+                </search>
+            </field>
     </record>
 
     <!-- Vista Calendario de Asistencias -->
@@ -37,7 +56,6 @@
             <form>
                 <sheet>
                 <header>
-                    <button name="button_set_check_out" class="btn-primary" invisible="current_status=='out'" string="Checkout" type="object"/>                                            
                     <field name="current_status" widget="statusbar" statusbar_visible="in,out"/>
 
                 </header>

@@ -20,9 +20,10 @@ class ChildcareChild(models.Model):
         store=True,  
         help="Total de horas extra acumuladas por el niño."
     )
-    medical_history_id = fields.Many2one(
-        "nursery.clinical.history",
-        "Historia Clínica",
+    medical_history_id = fields.One2many(
+        "nursery.clinical.history", 
+        "child_id",  
+        string="Historia Clínica",  
         ondelete="cascade"
     )
     medical_history_height = fields.Float(
@@ -61,7 +62,7 @@ class ChildcareChild(models.Model):
     
     def action_contact_tutors(self):
         self.ensure_one()
-        domain = repr([('id', 'in', self.tutor_ids.ids)])
+        domain = repr([('id', 'in', self.legal_guardian_ids.ids)])
         
         return {
             'name': ('Contactar Tutores'),
