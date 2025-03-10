@@ -12,6 +12,7 @@
         "views/hr_employee_views.xml",
         "reports/hr_contract_report.xml",  
         "views/hr_contract_menu.xml",
+        'views/hr_work_location_views.xml',
         
         
         

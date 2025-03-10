@@ -1,5 +1,6 @@
 from odoo import models, fields, api
 from datetime import datetime
+from odoo.exceptions import ValidationError
 
 class HrEmployee(models.Model):
     _inherit = 'hr.employee'
@@ -54,3 +55,15 @@ class HrEmployee(models.Model):
         # Llamar al método create original
         return super(HrEmployee, self).create(vals)
     
+    
+    @api.constrains('work_location_id')
+    def _check_work_location_capacity(self):
+        for employee in self:
+            if employee.work_location_id:
+                location = employee.work_location_id
+                # Contar cuántos empleados están asignados a esta ubicación
+                employee_count = self.env['hr.employee'].search_count([('work_location_id', '=', location.id)])
+                if employee_count > location.max_capacity:
+                    raise ValidationError(
+                        f"La ubicación {location.name} ha alcanzado su capacidad máxima de {location.max_capacity} empleados."
+                    )
