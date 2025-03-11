@@ -39,6 +39,15 @@ class NurseryClinicalHistory(models.Model):
         domain=[('job_id', '=', 'Doctor')]
     )
 
+    personal_pathological_history = fields.Text(
+        string="Antecedentes Patológicos Personales"
+    )
+    family_pathological_history = fields.Text(
+        string="Antecedentes Patológicos Familiares"
+    )
+    general_physical_exam = fields.Text(
+        string="Examen Físico General"
+    )
 
     @api.constrains('height', 'weight')
     def _check_positive_values(self):

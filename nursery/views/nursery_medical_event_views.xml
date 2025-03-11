@@ -21,9 +21,10 @@
             <form string="Eventos Médicos">
                 <sheet>
                     <group>
-                        <field name="name"/>
-                        <field name="child_hc"/>
-                        <field name="child_name"/>
+                        <field name="name" required="1"/>
+                        <!-- Campo child_hc con bloqueo directo -->
+                        <field name="child_hc" readonly="context.get('child_hc') or False" required="1"/>
+                        <field name="child_name" readonly="1"/>
                         <field name="used_meds"/>
                         <field name="date"/>
                     </group>

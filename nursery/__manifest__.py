@@ -24,10 +24,12 @@
         # 'views/views.xml',
         # 'views/templates.xml',
         'data/sequences.xml',
-        'views/nursery_menu_views.xml',
+        'data/vaccines.xml',
         'views/nursery_clinical_history_views.xml',
         'views/nursery_medical_event_views.xml',
-        'views/nursery_medical_supply_views.xml'
+        'views/nursery_medical_supply_views.xml',
+        'views/nursery_vaccines_views.xml',
+        'views/nursery_menu_views.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
