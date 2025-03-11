@@ -16,7 +16,11 @@ class NurseryClinicalHistory(models.Model):
     child_id = fields.Many2one(
         "childcare.child",
         string="Niño",
-        required=True
+        required=True,
+        domain=lambda self: [
+        ('id', 'not in', self.env['nursery.clinical.history'].search([]).mapped('child_id.id'))
+        ],
+        options={'no_create': True}  # Desactiva la opción de crear nuevo niño
     )
     date = fields.Datetime(
         string="Fecha/Hora",
@@ -48,6 +52,18 @@ class NurseryClinicalHistory(models.Model):
     general_physical_exam = fields.Text(
         string="Examen Físico General"
     )
+
+    @api.constrains('child_id')
+    def _check_unique_medical_history(self):
+        for record in self:
+            # Verificar si ya existe una historia clínica para este niño
+            existing_history = self.search([
+                ('child_id', '=', record.child_id.id),
+                ('id', '!=', record.id)
+            ])
+            if existing_history:
+                raise UserError(f"El niño {record.child_id.name} ya tiene una historia clínica asignada.")
+
 
     @api.constrains('height', 'weight')
     def _check_positive_values(self):

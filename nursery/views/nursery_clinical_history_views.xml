@@ -23,7 +23,7 @@
                 <group>
                     <field name="name" readonly="1"/>
                     <field name="date" required="1"/>
-                    <field name="child_id" required="1"/>
+                    <field name="child_id" required="1" options="{'no_create': True}"/>
                     <field name="doctor_id" required="1"/>
                 </group>
                 <group>
