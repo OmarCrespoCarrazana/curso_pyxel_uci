@@ -28,15 +28,7 @@
 
     <!--Visibility
     Rules-->
-    <!-- Rule: Restrict Nurses from full Inventory Operations access -->
-    <record id="nursery_request_inventory_nurse_rule" model="ir.rule">
-        <field name="name">Nurses Cannot Access Full Inventory</field>
-        <field name="model_id" ref="stock.model_stock_picking" />
-        <field name="groups" eval="[(4, ref('nursery_requests.group_nurse'))]" />
-        <field name="domain_force">[('id', '=', False)]</field>
-    </record>
-
-    <record id="nursery_request_own_rule_nurse" model="ir.rule">
+     <record id="nursery_request_own_rule_nurse" model="ir.rule">
         <field name="name">Nurses can see only their own requests</field>
         <field name="model_id" ref="model_nursery_request" />
         <field name="groups" eval="[(4, ref('nursery_requests.group_nurse'))]" />
