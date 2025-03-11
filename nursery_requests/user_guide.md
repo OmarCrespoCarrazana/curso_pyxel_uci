@@ -18,7 +18,7 @@
 2. Enable product packagings in Products section
 3. Enable Lots & Serial Numbers, Expiration Dates and Display options in Traceability section
 4. Enable Landed Costs and Display Lots and Serial Numbers in Valuation section
-5. Enable Storage Locations and Storage Categorie in Warehouse section
+5. Enable Storage Locations and Storage Categories in Warehouse section
 6. Enable Security Lead time for purchase in Advanced Scheduling section
 
 ### Inventory Settings>Warehouse Management
