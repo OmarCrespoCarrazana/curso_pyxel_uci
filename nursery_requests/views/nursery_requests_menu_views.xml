@@ -3,6 +3,7 @@
     <!-- Standalone "Nursing Requests" menu for nurses -->
     <menuitem id="menu_nursery_requests_nurse_root" name="Nursing Requests"
         groups="nursery_requests.group_nurse"
+        web_icon="nursery_requests,static/description/icon.png"
         action="action_nursery_request"
         sequence="10" />
 

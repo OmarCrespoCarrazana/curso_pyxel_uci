@@ -20,6 +20,7 @@
         <field name="model">nursery.request.line</field>
         <field name="arch" type="xml">
             <tree string="Requests for Nursing Supplies"
+                create="False"
                 decoration-info="state == 'draft'"
                 decoration-warning="state == 'pending'"
                 decoration-success="state == 'approved'"
