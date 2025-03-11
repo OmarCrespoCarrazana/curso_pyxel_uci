@@ -10,4 +10,16 @@
             <field name="numbercall">-1</field>
         </record>
     </data>
+
+    <data noupdate="1">
+        <record id="ir_cron_add_new_invoice" model="ir.cron">
+            <field name="name">Create new invoice</field>
+            <field name="model_id" ref="model_insurance"/>
+            <field name="state">code</field>
+            <field name="code">model.add_new_invoice()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">months</field>
+            <field name="numbercall">-1</field>
+        </record>
+    </data>
 </odoo>

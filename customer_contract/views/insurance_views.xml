@@ -1,0 +1,49 @@
+<odoo>
+   <record id="view_insurance_form" model="ir.ui.view">
+        <field name="name">insurance.form</field>
+        <field name="model">insurance</field>
+        <field name="arch" type="xml">
+            <form string="Seguro">
+                <header>
+                    <button name="active_inactive"
+                            string="Reactivar seguro"
+                            class="oe_highlight"
+                            type="object"
+                            invisible="state == 'active'"
+                             />
+                    <button name="active_inactive"
+                            string="Cancelar seguro"
+                            class="oe_highlight"
+                            type="object"
+                            invisible="state != 'active'"
+                             />
+                  </header>              
+                <sheet>
+                    <group>
+                        <field name="state" widget="statusbar" statusbar_visible="active,inactive" readonly="1"/>
+                        <group>
+                            <field name="partner_id"/>
+                            <field name="child_id"/>
+                            <field name="amount"/>
+                            <field name="total_amount" readonly="1"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_insurance_tree" model="ir.ui.view">
+        <field name="name">insurance.tree</field>
+        <field name="model">insurance</field>
+        <field name="arch" type="xml">
+            <tree string="Seguro" >
+                <field name="state" readonly="1"/>
+                <field name="partner_id" readonly="1"/>
+                <field name="child_id" readonly="1"/>
+                <field name="amount" readonly="1"/>
+                <field name="total_amount" readonly="1"/>
+            </tree>
+        </field>
+    </record>
+</odoo>

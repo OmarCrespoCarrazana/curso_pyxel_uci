@@ -1,7 +1,13 @@
 <odoo>
     <record id="action_customer_contract" model="ir.actions.act_window">
-        <field name="name">Contract</field>
+        <field name="name">Contrato</field>
         <field name="res_model">customer.contract</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="action_insurance" model="ir.actions.act_window">
+        <field name="name">Seguro</field>
+        <field name="res_model">insurance</field>
         <field name="view_mode">tree,form</field>
     </record>
    
@@ -9,7 +15,10 @@
     <menuitem id="menu_customer_contract_root" name="Contract"
               web_icon="contract_invoice_managment,static/description/icon.png" sequence="1"/>
 
-    <menuitem id="menu_customer_contract" name="Contracts" parent="menu_customer_contract_root" action="action_customer_contract"
+    <menuitem id="menu_customer_contract" name="Contratos" parent="menu_customer_contract_root" action="action_customer_contract"
               sequence="10"/>
+   
+    <menuitem id="menu_insurance" name="Seguro" parent="menu_customer_contract_root" action="action_insurance"
+              sequence="20"/>
 
 </odoo>
