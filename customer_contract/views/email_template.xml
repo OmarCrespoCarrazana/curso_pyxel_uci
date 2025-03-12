@@ -7,11 +7,10 @@
         <field name="subject">Contract Expiration Notice</field>
         <field name="body_html">
             <![CDATA[
-            <p>Estimado/a ${object.partner_id.name},</p>
-            <p>Le informamos que el contrato ${object.name} ha expirado 
+            <p>Estimado/a {{object.partner_id.name}},</p>
+            <p>Le informamos que el contrato {{object.name}} ha expirado 
             sín posibilidad de renovación dado que su hijo ya tiene mas de 5 años</p>
             <p>Saludos,</p>
-            <p>De mi para tu.</p>
             ]]>
         </field>
     </record>
