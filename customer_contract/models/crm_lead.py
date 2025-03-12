@@ -3,7 +3,7 @@ from odoo import models, fields, api
 class CrmLead(models.Model):
     _inherit = "crm.lead"
 
-    child_id = fields.Many2one("childcare.child", string="Niño",)
+    child_id = fields.Many2one("childcare.child", string="Niño")
 
     
     def _create_contract(self,lead):

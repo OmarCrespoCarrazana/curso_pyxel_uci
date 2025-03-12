@@ -67,7 +67,7 @@ class CustomerContract(models.Model):
             partner = self.env['res.partner'].browse(vals.get('partner_id'))
             vals['name'] = self.code_generation(partner.vat)
         contract = super(CustomerContract, self).create(vals)  
-        
+        self.send_expiration_email(contract)
         return contract
          
     

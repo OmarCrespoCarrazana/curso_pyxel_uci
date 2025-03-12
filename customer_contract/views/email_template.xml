@@ -1,9 +1,9 @@
 <odoo>
     <record id="email_template_contract_expiration" model="mail.template">
         <field name="name">Contract Expiration Notification</field>
-        
-        <field name="email_from">${(object.partner_id.email or '').strip()}</field>
-        <field name="email_to">${(object.partner_id.email or '').strip()}</field>
+        <field name="model_id" ref="customer_contract.model_customer_contract"/>
+        <field name="email_from">jose.1999.rfg@gmail.com</field>
+        <field name="email_to">{{ object.partner_id.email }}</field>
         <field name="subject">Contract Expiration Notice</field>
         <field name="body_html">
             <![CDATA[
