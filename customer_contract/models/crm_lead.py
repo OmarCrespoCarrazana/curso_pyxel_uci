@@ -23,4 +23,6 @@ class CrmLead(models.Model):
             for lead in self:
                 if lead.stage_id.is_won:
                     lead._create_contract(lead)
+                if lead.stage_id.name == "No apto" and lead.child_id:
+                    lead.child_id.unlink()
         return res
