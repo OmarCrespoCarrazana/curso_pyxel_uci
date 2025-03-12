@@ -4,6 +4,7 @@ access_childcare_classroom,childcare.classroom,childcare_management.model_childc
 access_childcare_attendance,childcare.attendance,childcare_management.model_childcare_attendance,childcare_management.group_daycare_educator,1,1,1,0
 access_childcare_tutors,childcare.child.tutor,child_base.model_childcare_child_tutor,childcare_management.group_daycare_educator,1,1,1,1
 access_childcare_crm,childcare.child.crm,child_base.model_childcare_child,sales_team.group_sale_manager,1,1,1,1
+access_classroom_crm,childcare.classroom.crm,childcare_management.model_childcare_classroom,sales_team.group_sale_manager,1,1,0,0
 access_nursery_clinical_history,nursery.clinical.history,nursery.model_nursery_clinical_history,base.group_portal,1,0,0,0
 access_nursery_medical_events,nursery.clinical.events,nursery.model_nursery_medical_event,base.group_portal,1,0,0,0
 access_nursery_vaccines,nursery.vaccines,nursery.model_nursery_vaccines,base.group_portal,1,0,0,0
