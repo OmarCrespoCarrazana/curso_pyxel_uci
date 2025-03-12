@@ -9,6 +9,11 @@
             <field name="name">Educadora</field>
             <field name= "category_id" ref="childcare_management.module_category_childcare_management"/>
     </record>
+    <record id="group_daycare_educator_manager" model ="res.groups">
+            <field name="name">Educadora Manager</field>
+            <field name= "category_id" ref="childcare_management.module_category_childcare_management"/>
+            <field name="implied_ids" eval="[(4, ref('childcare_management.group_daycare_educator'))]"/>
+    </record>
 
     <!-- Daycare-->
     <record id="rule_educator_crud" model="ir.rule">
