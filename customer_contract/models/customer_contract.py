@@ -27,6 +27,16 @@ class CustomerContract(models.Model):
     
     payment_day = fields.Integer(string="Day to issue the invoice.", required=True, default=1)
     
+    hide_renew_button = fields.Boolean(compute="_compute_hide_renew_button")
+
+    @api.depends("child_id.age")
+    def _compute_hide_renew_button(self):
+        for contract in self:
+            if contract.child_id and contract.child_id.age:
+                age = int(contract.child_id.age.split(" ")[0])  
+                contract.hide_renew_button = age >= 5
+            else:
+                contract.hide_renew_button = False
     
     
     @api.constrains("payment_day")
@@ -57,7 +67,7 @@ class CustomerContract(models.Model):
             partner = self.env['res.partner'].browse(vals.get('partner_id'))
             vals['name'] = self.code_generation(partner.vat)
         contract = super(CustomerContract, self).create(vals)  
-            
+        
         return contract
          
     
@@ -68,9 +78,8 @@ class CustomerContract(models.Model):
         for contract in contracts:
             if contract.end_date and contract.end_date < today:
                 contract.state = 'expired'
-                
-                #if int(shild_id.age.split(' ',1)) >= 5: 
-                #   self.send_expiration_email(contract)
+                if contract.hide_renew_button: 
+                    self.send_expiration_email(contract)
                 
         
         contracts_to_invoice = self.search([
@@ -79,25 +88,54 @@ class CustomerContract(models.Model):
         for contract in contracts_to_invoice:
             end_date_last_day = date(contract.end_date.year, contract.end_date.month, monthrange(contract.end_date.year, contract.end_date.month)[1]) + relativedelta(months=1)
             if  today <= end_date_last_day:
-                self.generate_invoice_if_due(self, contract)
+                self.generate_invoice_if_due(contract)
 
 
     def generate_invoice_if_due(self, contract):
         """
-        incluir los insumos y cosos por mora 
+        - [] incluir los insumos
         """
+        #Buscar si tiene seguro para el descuento de los insumos
+        insurance = self.env["insurance"].search([("child_id", "=", contract.child_id.id)])
+        if insurance:
+            pay = insurance.total_amount
+            print(pay)
+            #Aqui devo contar los insumos para saber 
+            #si los cubre el seguro y si no pues cobrarlos.
+        
+        #Calculo de las horas extra del niño en la guardería
+        attendance_records = self.env["childcare.attendance"].search([("child_id", "=", contract.child_id.id)])
+        total_extra_hours = sum(attendance.extra_hours for attendance in attendance_records)
+        mora_amount = total_extra_hours * 50
+        
         income_account = self.env["account.account"].search([("account_type", "=", "income")], limit=1)
+        
+        #Pago base del contrato
+        invoice_lines = [
+        (0, 0, {
+            "name": f"Pago del contrato - {contract.name}",
+            "quantity": 1,
+            "price_unit": 500,
+            "account_id": income_account.id if income_account else False,
+        })
+        ]
+        #Incluir a la factura el pago por mora en caso de tener
+        if mora_amount > 0:
+            invoice_lines.append(
+                (0, 0, {
+                    "name": "Pago por concepto de mora",
+                    "quantity": total_extra_hours,
+                    "price_unit": mora_amount,
+                    "account_id": income_account.id if income_account else False,
+                })
+            )
+        
         invoice_vals = {
             "move_type": "out_invoice",
             "partner_id": contract.partner_id.id,
             "invoice_date": fields.Date.today(),
             "invoice_payment_term_id": False,
-            "invoice_line_ids": [(0, 0, {
-                "name": f"Contract Payment - {contract.name}",
-                "quantity": 1,
-                "price_unit": 500,
-                "account_id": income_account.id if income_account else False,
-            })],
+            "invoice_line_ids": invoice_lines,
         }
         invoice = self.env["account.move"].create(invoice_vals)
         contract.invoice_id = [(4, invoice.id)]
