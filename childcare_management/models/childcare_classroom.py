@@ -33,6 +33,11 @@ class ChildcareClassroom(models.Model):
                 educator.with_context(syncing_educator=True).write({'classroom_id': classroom.id})
         return classroom
     
+    def unlink(self):
+        for record in self:
+            if record.child_ids:
+                raise exceptions.UserError("No se puede eliminar el aula porque tiene niños asignados.  Primero, retire los niños del aula.")
+        return super(ChildcareClassroom, self).unlink()
     @api.depends('child_ids')
     def _compute_child_count(self):
         for classroom in self:
