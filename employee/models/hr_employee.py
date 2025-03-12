@@ -1,6 +1,7 @@
 from odoo import models, fields, api
 from datetime import datetime
 from odoo.exceptions import ValidationError
+import re
 
 class HrEmployee(models.Model):
     _inherit = 'hr.employee'
@@ -76,3 +77,22 @@ class HrEmployee(models.Model):
                     raise ValidationError(
                         "El puesto de trabajo no está permitido en esta ubicación."
                     )
+    
+    @api.constrains('name', 'surnames', 'identification_id')
+    def _check_employee_data(self):
+        for employee in self:
+            # Validación del nombre
+            if not employee.name or len(employee.name.strip()) < 2:
+                raise ValidationError("El nombre del empleado es obligatorio y debe tener al menos 2 caracteres.")
+            if not re.match(r"^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$", employee.name.strip()):
+                raise ValidationError("El nombre no puede contener números ni caracteres especiales.")
+
+            # Validación de los apellidos
+            if not employee.surnames or len(employee.surnames.strip()) < 2:
+                raise ValidationError("Los apellidos del empleado son obligatorios y deben tener al menos 2 caracteres.")
+            if not re.match(r"^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$", employee.surnames.strip()):
+                raise ValidationError("Los apellidos no pueden contener números ni caracteres especiales.")
+
+            # Validación del número de identificación
+            if not employee.identification_id or len(employee.identification_id) != 11 or not employee.identification_id.isdigit():
+                raise ValidationError("El número de identificación debe tener exactamente 11 dígitos.")
