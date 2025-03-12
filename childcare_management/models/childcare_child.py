@@ -87,4 +87,6 @@ class ChildcareChild(models.Model):
         sorted_classrooms = available_classrooms.sorted(
             key=lambda c: (c.child_count, -c.capacity)
         )                
-        self.classroom_id = sorted_classrooms[0]
+        new_classroom = sorted_classrooms[0]
+        self.classroom_id = new_classroom
+
