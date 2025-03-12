@@ -33,3 +33,11 @@ class NurseryMedicalEvent(models.Model):
         # Bloqueo dinámico: Evitar cambios si viene del contexto
         if self.env.context.get('default_child_hc') and self.child_hc:
             raise UserError("No puedes modificar el campo 'Historia Clínica' cuando se crea desde una historia clínica.")
+        
+    @api.model
+    def create(self, vals):
+        user = self.env.user
+        # Validar contexto para restringir la creación desde dentro de la historia clínica
+        if user.has_group('nursery.group_nursery_nurse') and self.env.context.get('default_child_hc'):
+            raise UserError("Las enfermeras no pueden crear eventos médicos desde una historia clínica.")
+        return super(NurseryMedicalEvent, self).create(vals)

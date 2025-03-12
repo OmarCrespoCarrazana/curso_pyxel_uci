@@ -62,6 +62,107 @@
                         </field>
                     </page>
                 </notebook>
+                <notebook>
+                    <!-- Página de Oftalmología -->
+                    <page string="Oftalmología">
+                        <field name="ophthalmology_exam_ids">
+                            <tree>
+                                <field name="date"/>
+                                <field name="vision_test"/>
+                            </tree>
+                            <form>
+                                <sheet>
+                                    <group>
+                                        <field name="date" required="1"/>
+                                        <field name="vision_test"/>
+                                        <field name="eye_pressure"/>
+                                        <field name="notes"/>
+                                    </group>
+                                </sheet>
+                            </form>
+                        </field>
+                    </page>
+                    <!-- Página de Estomatología -->
+                    <page string="Estomatología">
+                        <field name="stomatology_exam_ids">
+                            <tree>
+                                <field name="date"/>
+                                <field name="dental_health"/>
+                            </tree>
+                            <form>
+                                <sheet>
+                                    <group>
+                                        <field name="date" required="1"/>
+                                        <field name="dental_health"/>
+                                        <field name="gum_health"/>
+                                        <field name="notes"/>
+                                    </group>                                   
+                                </sheet>
+                            </form>
+                        </field>
+                    </page>
+                    <!-- Página de Hemograma -->
+                    <page string="Hemograma">
+                        <field name="hemogram_exam_ids">
+                            <tree>
+                                <field name="date"/>
+                                <field name="hemoglobin"/>
+                            </tree>
+                            <form>
+                                <sheet>
+                                    <group>
+                                        <field name="date" required="1"/>
+                                        <field name="red_blood_cells"/>
+                                        <field name="white_blood_cells"/>
+                                        <field name="platelets"/>
+                                        <field name="hemoglobin"/>
+                                        <field name="notes"/>
+                                    </group>
+                                </sheet>
+                            </form>
+                        </field>
+                    </page>
+                    <!-- Página de Heces Fecales -->
+                    <page string="Heces Fecales">
+                        <field name="feces_exam_ids">
+                            <tree>
+                                <field name="date"/>
+                                <field name="parasites"/>
+                            </tree>
+                            <form>
+                                <sheet>
+                                    <group>
+                                        <field name="date" required="1"/>
+                                        <field name="parasites"/>
+                                        <field name="consistency"/>
+                                        <field name="color"/>
+                                        <field name="notes"/>
+                                    </group>
+                                </sheet>
+                            </form>
+                        </field>
+                    </page>
+                    <!-- Página de Orina -->
+                    <page string="Orina">
+                        <field name="urine_exam_ids">
+                            <tree>
+                                <field name="date"/>
+                                <field name="ph"/>
+                            </tree>
+                            <form>
+                                <sheet>
+                                    <group>
+                                        <field name="date" required="1"/>
+                                        <field name="ph"/>
+                                        <field name="proteins"/>
+                                        <field name="glucose"/>
+                                        <field name="notes"/>
+                                    </group>
+                                </sheet>
+                            </form>
+                        </field>
+                    </page>
+                </notebook>
             </sheet>
         </form>
     </field>

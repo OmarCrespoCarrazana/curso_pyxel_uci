@@ -1,5 +1,5 @@
 from odoo import models, fields, api, _
-from odoo.exceptions import UserError
+from odoo.exceptions import AccessError, UserError
 from datetime import datetime
 
 class NurseryClinicalHistory(models.Model):
@@ -53,6 +53,32 @@ class NurseryClinicalHistory(models.Model):
         string="Examen Físico General"
     )
 
+    ophthalmology_exam_ids = fields.One2many(
+    "ophthalmology.exam",
+    "clinical_history_id",
+    string="Exámenes de Oftalmología"
+    )
+    stomatology_exam_ids = fields.One2many(
+        "stomatology.exam",
+        "clinical_history_id",
+        string="Exámenes de Estomatología"
+    )
+    hemogram_exam_ids = fields.One2many(
+        "hemogram.exam",
+        "clinical_history_id",
+        string="Exámenes de Hemograma"
+    )
+    feces_exam_ids = fields.One2many(
+        "feces.exam",
+        "clinical_history_id",
+        string="Exámenes de Heces Fecales"
+    )
+    urine_exam_ids = fields.One2many(
+        "urine.exam",
+        "clinical_history_id",
+        string="Exámenes de Orina"
+    )
+
     @api.constrains('child_id')
     def _check_unique_medical_history(self):
         for record in self:
@@ -72,3 +98,9 @@ class NurseryClinicalHistory(models.Model):
                 raise UserError("La estatura debe ser un valor positivo.")
             if record.weight <= 0:
                 raise UserError("El peso debe ser un valor positivo.")
+
+    @api.model
+    def write(self, vals):
+        if self.env.user.has_group('nursery.group_nursery_nurse'):
+            raise AccessError("Las enfermeras no tienen permitido modificar la información de la historia clínica.")
+        return super(NurseryClinicalHistory, self).write(vals)

@@ -19,7 +19,8 @@
     "depends": ["base", "website", "hr", "product", "stock", "crm", "account", "mail", "child_base"],
 
     # always loaded
-    'data': [
+    'data': [        
+        'security/nursery_security.xml',
         'security/ir.model.access.csv',
         # 'views/views.xml',
         # 'views/templates.xml',
