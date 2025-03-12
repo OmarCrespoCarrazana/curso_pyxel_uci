@@ -3,3 +3,4 @@
 from . import childcare_child
 from . import childcare_attendance
 from . import childcare_classroom
+from . import employee

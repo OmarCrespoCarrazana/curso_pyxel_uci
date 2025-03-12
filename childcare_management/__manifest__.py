@@ -17,6 +17,7 @@
         "views/child_views.xml",
         "views/classroom_views.xml",
         "views/child_attendance_views.xml",
+        "views/employee_views.xml",
         "views/reports.xml",
       #  'data/cron_jobs.xml',
        
