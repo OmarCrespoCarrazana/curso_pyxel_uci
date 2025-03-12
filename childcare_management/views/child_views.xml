@@ -141,7 +141,8 @@
   </record>
   <!-- Menuitems -->
   <menuitem id="menu_childcare_root" name="Daycare"
-              sequence="10" groups="childcare_management.group_daycare_educator"/>
+              sequence="10" 
+              groups="childcare_management.group_daycare_educator,nursery.group_nursery_doctor,nursery.group_nursery_nurse"/>
 
   <menuitem id="menu_child" name="Daycare" parent="menu_childcare_root" action="action_childcare_child"
               sequence="10"/>

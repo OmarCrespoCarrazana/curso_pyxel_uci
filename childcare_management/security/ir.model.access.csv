@@ -10,3 +10,6 @@ access_nursery_medical_events,nursery.clinical.events,nursery.model_nursery_medi
 access_nursery_vaccines,nursery.vaccines,nursery.model_nursery_vaccines,base.group_portal,1,0,0,0
 access_nursery_doctor_portal,nursery.doctor.portal,hr.model_hr_employee_public,base.group_portal,1,0,0,0
 access_nursery_product,nursery.product.portal,product.model_product_product,base.group_portal,1,0,0,0
+access_childcare_child_doctor,childcare.child.doctor,childcare_management.model_childcare_child,nursery.group_nursery_doctor,1,0,0,0
+access_childcare_child_nurse,childcare.child.nurse,childcare_management.model_childcare_child,nursery.group_nursery_nurse,1,0,0,0
+

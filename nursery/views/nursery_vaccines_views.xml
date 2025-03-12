@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_nursery_vaccines_tree" model="ir.ui.view">
+        <field name="name">nursery.vaccines.tree</field>
+        <field name="model">nursery.vaccines</field>
+        <field name="arch" type="xml">
+            <tree string="Vacunas">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_nursery_vaccines_form" model="ir.ui.view">
+        <field name="name">nursery.vaccines.form</field>
+        <field name="model">nursery.vaccines</field>
+        <field name="arch" type="xml">
+            <form string="Vacunas">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    
+</odoo>

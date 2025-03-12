@@ -1,0 +1,20 @@
+<odoo>
+    <data noupdate="0">
+        <record id="email_template_medical_event_notification" model="mail.template">
+            <field name="name">Notificación de Evento Médico</field>
+            <field name="email_from">${(user.email or 'no-reply@mycompany.com')}</field>
+            <field name="subject">Nuevo Evento Médico: ${object.name}</field>
+            <field name="model_id" ref="nursery.model_nursery_medical_event"/>
+            <field name="body_html"><![CDATA[
+                <p>Estimado/a,</p>
+                <p>Se ha registrado un nuevo evento médico relacionado con el niño ${object.child_hc.child_id.name}:</p>
+                <ul>
+                    <li><strong>Evento:</strong> ${object.name}</li>
+                    <li><strong>Descripción:</strong> ${object.description}</li>
+                    <li><strong>Fecha:</strong> ${object.date}</li>
+                </ul>
+                <p>Por favor, póngase en contacto si necesita más información.</p>
+            ]]></field>
+        </record>
+    </data>
+</odoo>

@@ -7,18 +7,28 @@
         <field name="view_mode">tree,form</field>
     </record>
 
+    <!-- Acción para abrir la vista de suministros médicos -->
     <record id="action_nursery_medical_supply" model="ir.actions.act_window">
         <field name="name">Insumos Médicos</field>
         <field name="res_model">nursery.medical.supply</field>
         <field name="view_mode">tree,form</field>
     </record>
 
+    <!-- Acción para abrir la vista de eventos médicos -->
     <record id="action_nursery_medical_event" model="ir.actions.act_window">
         <field name="name">Eventos Médicos</field>
         <field name="res_model">nursery.medical.event</field>
         <field name="view_mode">tree,form</field>
     </record>
 
+    <!-- Acción para abrir la vista de vacunas -->
+    <record id="action_nursery_vaccines" model="ir.actions.act_window">
+        <field name="name">Vacunas</field>
+        <field name="res_model">nursery.vaccines</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Menús -->
     <menuitem 
     id="menu_nursery_root" 
     name="Enfermería"
@@ -44,5 +54,12 @@
     parent="menu_nursery_root"
     action="action_nursery_medical_event"
     sequence="29"/>
+
+    <menuitem
+    id="menu_nursery_vaccines"
+    name="Vacunas"
+    parent="menu_nursery_root"
+    action="action_nursery_vaccines"
+    sequence="39"/>
 
 </odoo>

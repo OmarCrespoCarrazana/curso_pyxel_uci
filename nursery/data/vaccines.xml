@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Vacunas comúnmente aplicadas a niños -->
+        <record id="vaccine_bcg" model="nursery.vaccines">
+            <field name="name">BCG (Tuberculosis)</field>
+        </record>
+        <record id="vaccine_hepatitis_b" model="nursery.vaccines">
+            <field name="name">Hepatitis B</field>
+        </record>
+        <record id="vaccine_polio" model="nursery.vaccines">
+            <field name="name">Polio</field>
+        </record>
+        <record id="vaccine_mmr" model="nursery.vaccines">
+            <field name="name">Sarampión, Paperas y Rubéola (MMR)</field>
+        </record>
+        <record id="vaccine_dtap" model="nursery.vaccines">
+            <field name="name">Difteria, Tétanos y Pertussis (DTaP)</field>
+        </record>
+        <record id="vaccine_hib" model="nursery.vaccines">
+            <field name="name">Haemophilus influenzae tipo B (Hib)</field>
+        </record>
+        <record id="vaccine_rotavirus" model="nursery.vaccines">
+            <field name="name">Rotavirus</field>
+        </record>
+        <record id="vaccine_pcv" model="nursery.vaccines">
+            <field name="name">Neumocócica Conjugada (PCV)</field>
+        </record>
+    </data>
+</odoo>

@@ -19,15 +19,19 @@
     "depends": ["base", "website", "hr", "product", "stock", "crm", "account", "mail", "child_base"],
 
     # always loaded
-    'data': [
+    'data': [        
+        'security/nursery_security.xml',
         'security/ir.model.access.csv',
         # 'views/views.xml',
         # 'views/templates.xml',
+        'data/mail_templates.xml',
         'data/sequences.xml',
-        'views/nursery_menu_views.xml',
+        'data/vaccines.xml',
         'views/nursery_clinical_history_views.xml',
         'views/nursery_medical_event_views.xml',
-        'views/nursery_medical_supply_views.xml'
+        'views/nursery_medical_supply_views.xml',
+        'views/nursery_vaccines_views.xml',
+        'views/nursery_menu_views.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
