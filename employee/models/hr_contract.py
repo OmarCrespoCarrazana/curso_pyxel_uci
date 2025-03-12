@@ -11,7 +11,7 @@ class HrContract(models.Model):
     employee_surnames = fields.Char(
         string="Apellidos",
         related='employee_id.surnames',
-        store=True,  # Guarda el valor en la base de datos si es necesario
+        store=True, 
         readonly=True
     )
 
@@ -34,42 +34,3 @@ class HrContract(models.Model):
     
 
 
-"""    
-
-    def get_contracts_data(self):
-        
-        contracts_data = []
-        for contract in self:
-            contracts_data.append({
-                'contract_code': contract.contract_code or 'N/A',
-                'employee_name': contract.employee_id.name if contract.employee_id else 'N/A',
-                'employee_surnames': contract.employee_surnames or 'N/A',
-                'name': contract.name or 'N/A',
-                'date_start': contract.date_start.strftime('%Y-%m-%d') if contract.date_start else 'N/A',
-                'date_end': contract.date_end.strftime('%Y-%m-%d') if contract.date_end else 'N/A',
-                'wage': contract.wage or 'N/A',
-            })
-
-        # Pasar los datos como contexto
-        return self.env.ref('employee.action_report_contract').report_action(
-            self,
-            data={'contracts_data': contracts_data}
-        )
-
-
-class ContractReportController(http.Controller):
-
-    @http.route('/contracts/report', type='http', auth='user')
-    def contract_report(self):
-        # Obtener todos los contratos
-        contracts = request.env['hr.contract'].search([])
-
-        # Obtener los datos del reporte usando el método del modelo
-        contracts_data = contracts.get_contracts_data()
-
-        # Renderizar la plantilla QWeb con los datos
-        return request.render('employee.hr_contract_report', {
-            'contracts_data': contracts_data,
-        })
-
-    """

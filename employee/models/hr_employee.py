@@ -67,3 +67,12 @@ class HrEmployee(models.Model):
                     raise ValidationError(
                         f"La ubicación {location.name} ha alcanzado su capacidad máxima de {location.max_capacity} empleados."
                     )
+    @api.constrains('work_location_id', 'job_id')
+    def _check_job_location(self):
+        for employee in self:
+            if employee.work_location_id and employee.job_id:
+                allowed_jobs = employee.work_location_id.allowed_job_positions
+                if employee.job_id not in allowed_jobs:
+                    raise ValidationError(
+                        "El puesto de trabajo no está permitido en esta ubicación."
+                    )

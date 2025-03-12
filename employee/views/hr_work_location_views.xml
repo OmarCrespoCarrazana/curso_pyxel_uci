@@ -6,6 +6,7 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='name']" position="after">
                 <field name="max_capacity"/>
+                <field name="allowed_job_positions" widget="many2many_tags"/>
             </xpath>
         </field>
     </record>
