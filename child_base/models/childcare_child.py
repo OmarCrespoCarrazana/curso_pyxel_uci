@@ -78,14 +78,14 @@ class ChildcareChild(models.Model):
                 elif 6 <= century_digit <= 8:
                     year += 2000  # 21st Century
                 else:
-                    raise UserError("Dígito de siglo inválido en el número de identificación.")
+                    raise exceptions.ValidationError("Dígito de siglo inválido en el número de identificación.")
 
 
                 calculated_dob = date(year, month, day)
 
                 # Check if the date is in the future
                 if calculated_dob > date.today():
-                    raise UserError("La fecha de nacimiento no puede ser posterior a la fecha actual.")
+                    raise exceptions.ValidationError("La fecha de nacimiento no puede ser posterior a la fecha actual.")
 
 
                 record.dob = calculated_dob
@@ -98,10 +98,20 @@ class ChildcareChild(models.Model):
                     record.gender = 'female'
 
             except ValueError:
-                raise UserError("Fecha inválida en el número de identificación.")
+                raise exceptions.ValidationError("Fecha inválida en el número de identificación.")
             except Exception as e:
-                raise UserError(f"Error al procesar el número de identificación: {e}")
+                raise exceptions.ValidationError(f"Error al procesar el número de identificación: {e}")
 
+    @api.constrains('id_number')
+    def _check_unique_id_number(self):
+        for rec in self:
+            if rec.id_number:
+                existing = self.env['childcare.child'].search([
+                    ('id_number', '=', rec.id_number),
+                    ('id', '!=', rec.id)
+                ], limit=1)
+                if existing:
+                    raise exceptions.ValidationError("Ya existe un niño registrado con este número de carnet de identidad.")
 
     @api.depends('dob')
     def _compute_age(self):

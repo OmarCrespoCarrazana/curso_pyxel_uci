@@ -4,7 +4,7 @@ class ChildcareChildTutor(models.Model):
     _name = "childcare.child.tutor"
     _description = "Relación de Tutor con Niño"
 
-    child_id = fields.Many2one("childcare.child", required=True)
-    tutor_id = fields.Many2one("res.partner", required=True, string="Tutor",domain=[('is_company', '=', False)])
+    child_id = fields.Many2one("childcare.child", required=True,ondelete="cascade")
+    tutor_id = fields.Many2one("res.partner", required=True, string="Tutor",domain=[('is_company', '=', False)],ondelete="cascade")
     relationship = fields.Char(string="Parentesco", required=True)
     is_legal_guardian = fields.Boolean(string="Tutor Legal")

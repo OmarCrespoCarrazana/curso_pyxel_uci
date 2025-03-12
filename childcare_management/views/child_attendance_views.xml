@@ -65,7 +65,6 @@
                     
                     <group>
                         <field name="check_in"/>
-                        <field name="check_out"/>
                         <field name="extra_hours" string="Horas Extra"/> 
                     </group>
                     

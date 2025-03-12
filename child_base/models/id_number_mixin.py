@@ -1,4 +1,3 @@
-# models/id_number_mixin.py
 from odoo import models, fields, api
 from dateutil.relativedelta import relativedelta
 from datetime import date

@@ -67,5 +67,5 @@
         <field name="res_model">childcare.classroom</field>
         <field name="view_mode">tree,form</field>
     </record>
-    <menuitem id="menu_childcare_classroom" name="Classrooms" parent="menu_childcare_root" action="action_childcare_classroom" sequence="10"/>
+    <menuitem id="menu_childcare_classroom" name="Classrooms" parent="menu_childcare_root" action="action_childcare_classroom" groups="childcare_management.group_daycare_educator_manager" sequence="10"/>
 </odoo>
