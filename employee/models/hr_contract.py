@@ -17,6 +17,7 @@ class HrContract(models.Model):
 
     @api.model
     def create(self, vals):
+        # Generar el código de contrato automáticamente
         if not vals.get('contract_code'):
             year = fields.Date.today().strftime('%Y')
             last_contract = self.env['hr.contract'].search(
@@ -30,7 +31,11 @@ class HrContract(models.Model):
             else:
                 new_seq = 1
             vals['contract_code'] = f"{new_seq}/{year}"
-        return super(HrContract, self).create(vals)
-    
 
+        # Cambiar el estado del contrato a "En proceso" automáticamente
+        if 'state' not in vals or vals.get('state') == 'draft':
+            vals['state'] = 'open'
+
+        # Llamar al método original de creación
+        return super(HrContract, self).create(vals)
 
