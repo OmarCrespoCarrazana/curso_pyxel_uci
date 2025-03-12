@@ -56,12 +56,29 @@
                             </group>
                         </page>
                     </notebook>
+                    
                 </sheet>
             </form>
         </field>
     </record>
+    
+    <record id="view_payroll_form" model="ir.ui.view">
+        <field name="name">my_payroll.payroll.form</field>
+        <field name="model">my_payroll.payroll</field>
+        <field name="arch" type="xml">
+            <form>
+                <footer>
+                    <button string="Imprimir Reporte" 
+                        type="action" 
+                        name="%(action_report_payroll)d" 
+                        class="btn-primary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    
     <!-- Menú principal -->
-    <menuitem id="menu_my_payroll_root" name="Nómina" sequence="10"/>
+    <menuitem id="menu_my_payroll_root" parent="hr.menu_hr_root" name="Nómina" sequence="10"/>
 
     <!-- Submenú para Nómina -->
     <menuitem id="menu_my_payroll_payroll" name="Nóminas" parent="menu_my_payroll_root" sequence="20" action="action_my_payroll_payroll"/>
