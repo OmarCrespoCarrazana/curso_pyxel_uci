@@ -1,6 +1,4 @@
 <odoo>
-    
-
     <!-- Vista Tree para historia clínica -->
     <record id="view_nursery_clinical_history_tree" model="ir.ui.view">
         <field name="name">nursery.clinical.history.tree</field>
@@ -15,30 +13,44 @@
         </field>
     </record>
 
-    
-    <!-- Vista Form para historia clínica -->
     <record id="view_nursery_clinical_history_form" model="ir.ui.view">
-        <field name="name">nursery.clinical.history.form</field>
-        <field name="model">nursery.clinical.history</field>
-        <field name="arch" type="xml">
-            <form string="Historia Clínica">
-                <sheet>
-                    <group>
-                        <group>
-                            <field name="name"/>
-                            <field name="child_id"/>
-                            <field name="date"/>
-                            <field name="doctor_id"/>
-                        </group>
-                        <group>
-                            <field name="height"/>
-                            <field name="weight"/>
-                            <field name="vaccines"/>
-                            <field name="medical_events"/>
-                        </group>
-                    </group>
-                </sheet>
-            </form>
-        </field>
-    </record>
+    <field name="name">nursery.clinical.history.form</field>
+    <field name="model">nursery.clinical.history</field>
+    <field name="arch" type="xml">
+        <form string="Historia Clínica">
+            <sheet>
+                <group>
+                    <field name="name" readonly="1"/>
+                    <field name="date" required="1"/>
+                    <field name="child_id" required="1"/>
+                    <field name="doctor_id" required="1"/>
+                </group>
+                <group>
+                    <field name="height"/>
+                    <field name="weight"/>
+                </group>
+                <notebook>
+                    <page string="Vacunas">
+                        <field name="vaccines">
+                            <tree>
+                                <field name="name" string="Nombre de la Vacuna"/>
+                             </tree>
+                        </field>
+                    </page>
+                    <page string="Eventos Médicos">
+                        <field name="medical_events">
+                            <tree>
+                                <field name="name"/>
+                                <field name="description"/>
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
+            </sheet>
+        </form>
+    </field>
+</record>
+
+
+
 </odoo>
