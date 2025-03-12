@@ -24,6 +24,7 @@
         'security/ir.model.access.csv',
         # 'views/views.xml',
         # 'views/templates.xml',
+        'data/mail_templates.xml',
         'data/sequences.xml',
         'data/vaccines.xml',
         'views/nursery_clinical_history_views.xml',

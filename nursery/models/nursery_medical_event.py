@@ -19,7 +19,21 @@ class NurseryMedicalEvent(models.Model):
             vals['child_hc'] = self.env.context['default_child_hc']
         elif not vals.get('child_hc'):
             raise UserError("Debe seleccionar una Historia Clínica para el evento médico.")
-        return super(NurseryMedicalEvent, self).create(vals)
+        
+        # Lógica principal para crear el registro del evento
+        record = super(NurseryMedicalEvent, self).create(vals)
+
+        # Enviar notificación por correo electrónico
+        if record.child_hc.child_id.tutor_ids:
+            tutors = record.child_hc.child_id.tutor_ids
+            template = self.env.ref('nursery.email_template_medical_event_notification', raise_if_not_found=False)
+            if not template:
+                raise UserError("No se encontró la plantilla de correo para notificaciones de eventos médicos.")
+            
+            for tutor in tutors:
+                template.send_mail(record.id, email_values={'email_to': tutor.email}, force_send=True)
+
+        return record
     
     def default_get(self, fields_list):
         res = super(NurseryMedicalEvent, self).default_get(fields_list)

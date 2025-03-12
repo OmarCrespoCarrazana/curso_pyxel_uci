@@ -21,4 +21,28 @@
             <field name="perm_read" eval="1"/>
             <field name="perm_create" eval="0"/>
     </record>
+
+    <!-- permisos para los dosctores y enfermeras-->
+        <record id="rule_childcare_child_doctor_legal_guardian" model="ir.rule">
+                <field name="name">Acceso de Doctores a Tutores Legales</field>
+                <field name="model_id" ref="childcare_management.model_childcare_child"/>
+                <field name="groups" eval="[(4, ref('nursery.group_nursery_doctor'))]"/>
+                <field name="perm_read">1</field>
+                <field name="perm_write">0</field>
+                <field name="perm_create">0</field>
+                <field name="perm_unlink">0</field>
+                <field name="domain_force">[('id', '!=', False)]</field>
+        </record>
+
+        <record id="rule_childcare_child_nurse_legal_guardian" model="ir.rule">
+                <field name="name">Acceso de Enfermeras a Tutores Legales</field>
+                <field name="model_id" ref="childcare_management.model_childcare_child"/>
+                <field name="groups" eval="[(4, ref('nursery.group_nursery_nurse'))]"/>
+                <field name="perm_read">1</field>
+                <field name="perm_write">0</field>
+                <field name="perm_create">0</field>
+                <field name="perm_unlink">0</field>
+                <field name="domain_force">[('id', '!=', False)]</field>
+        </record>
+
 </odoo>
