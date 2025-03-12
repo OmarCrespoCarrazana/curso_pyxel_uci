@@ -8,7 +8,7 @@ class HrEmployee(models.Model):
         'childcare.classroom',
         string="Aula asignada",
         domain="[('educator_id', '=', False)]",  
-        unique=True  
+          
     )
     is_educator = fields.Boolean(
         string="Es Educadora",

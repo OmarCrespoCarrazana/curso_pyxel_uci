@@ -76,7 +76,7 @@ class ChildcareAttendance(models.Model):
 
                 current_date = next_day  # Siguiente día
 
-            record.extra_hours = extra_hours
+            record.extra_hours = round(extra_hours, 2)
 
     def button_set_check_out(self):
         self.ensure_one()
