@@ -1,66 +1,115 @@
-# Equipo 2
+# Project Summary
 
-Módulo: hr_department_management
-Este módulo permite gestionar los departamentos de la empresa, facilitando la administración de la plantilla, la asignación de centros de costo y áreas de nómina, y el mantenimiento de un historial de departamentos inactivos.
+The Child Care Management System is an Odoo 17-based solution designed to automate and streamline operations in a childcare facility. It covers child enrollment, contracts, medical records, classroom management, billing, payroll, and inventory control. The system ensures compliance with business rules such as automatic contract expiration, late fee calculations, and medical supply deductions.
 
-Funcionalidades Principales
-1. Creación de Nuevos Departamentos
-Se añadieron campos nuevos a los departamentos:
+## Project Base Structure
 
-Código único del departamento.
+```plaintext
+/childcare_management/
+├── /controllers/               # Contains controllers (HTTP routes)
+├── /data/                      # Demo and data xml
+├── /demo/                      # Loaded in demostration mode
+├── /models/                    # Models definition
+├── /security/                  # System security groups and access rules
+├── /static/                    # Contains the web assets, separated into css/js/, img/
+├── /views/                     # Contains the views and templates
+├── __manifest__.py             # Odoo module metadata
+├── __init__.py                 # Module initialization
+/README.md                      # Documentation
+```
 
-Centro de costo.
+## Contribution Guidelines
 
-Área de nómina.
+To ensure consistency and maintainability, follow Odoo 17's official development guidelines:
+ <https://www.odoo.com/documentation/17.0/es/contributing/development/coding_guidelines.html>
 
-Los departamentos se registran como "Activos".
+## Best Practices for Collaboration
 
-2. Asignación de Empleados a Departamentos
-Al asignar un empleado a un departamento, el sistema asigna automáticamente el centro de costo y el área de nómina asociados al departamento.
+1. Branch Naming: Use **feature/**, **fix/**, or **refactor/** prefixes (e.g., **feature/contract-renewal**).
+2. Code Reviews: Submit pull requests for review before merging.
+3. Documentation: Comment your code and update relevant documentation.
+4. Modularization: Each feature should be in its own module for maintainability.
+5. Avoid Core Modifications: Always use inheritance instead of modifying core models.
 
-Los empleados no pueden ser asignados a departamentos inactivos.
+## Conventional Commits
 
-3. Desactivación de Departamentos
-Los departamentos pueden ser desactivados, cambiando su estado a "Inactivo".
+For this project, we will use the **Conventional Commits** standard. The following are the prefixes and formats to follow when committing to the repository.
 
-Se registra la fecha de desactivación y se impide la asignación de nuevos empleados a departamentos inactivos.
+- link: <https://www.conventionalcommits.org/en/v1.0.0/>
 
-4. Consulta de Departamentos Activos e Inactivos
-Filtrado de departamentos por estado ("Activo" o "Inactivo").
+### General Format
 
-Visualización de la fecha de desactivación para departamentos inactivos.
+Each commit must follow this format:
 
-5. Generación de Informes de Plantilla
-Generación de informes detallados de la plantilla actual de un departamento, incluyendo:
+<type>(<area>): <short description>.
 
-Nombre del departamento.
+#### Format Description
 
-Centro de costo.
+- **`<type>`**: Type of change you are making.
 
-Área de nómina.
+- **`<<area>`**: Area of code affected, such as a specific file or component.
 
-Lista de empleados asignados con sus datos básicos (código, nombre, apellidos, cargo).
+- **`<<brief description>`**: A brief description of what the commit does.
 
-Exportación de informes en formato PDF.
+  - Use an imperative tone and lowercase (e.g., “adds”, “fixes”).
 
-6. Edición de Departamentos
-Modificación de los datos de un departamento existente.
+  - The description should be a maximum of 50 characters.
 
-Actualización automática del centro de costo y área de nómina en todos los empleados asignados al departamento.
+### Types of Commits
 
-Validaciones y Restricciones
-Campos Obligatorios: Al crear o editar un departamento, los campos obligatorios deben completarse (nombre, código, centro de costo, área de nómina).
+The following are the types of commits you can use:
 
-Desactivación de Departamentos: Requiere confirmación antes de proceder.
+#### 1. `feat`: New Features
 
-Asignación de Empleados: No se permite asignar empleados a departamentos inactivos.
+Use when you add a new feature or functionality to the project.
 
-Desactivación de Departamento:
+- feat(<component>): adds support for JWT authentication.
 
-El sistema debe cambiar el estado del departamento a "Inactivo" y registrar la fecha de desactivación.
+#### 2. `fix`: Bug Fixes
 
-No se permiten nuevas asignaciones de empleados a departamentos inactivos.
+For fixing bugs and errors.
 
-Edición de Departamentos:
+- fix(<module>): fixes error in totals calculation.
 
-El sistema debe actualizar automáticamente el centro de costo y área de nómina en todos los empleados asignados al departamento.
+#### 3. `docs`: Documentation
+
+When updating or modifying project documentation (README, comments, etc.).
+
+- docs(<file>): update installation documentation in README
+
+#### 4. `style`: Styles and Formatting
+
+Changes that do not affect the logic of the code, such as corrections to style, formatting, spaces, commas, etc.
+
+- style(<file>): adjusts identation and removes extra spaces.
+
+#### 5. `refactor`: Refactoring
+
+Code changes that do not fix a bug or add functionality, such as code structure improvements or cleanup.
+
+- refactor(<component>): optimizes render function
+
+#### 6. `test`: Testing
+
+Exclusive use for creating or modifying tests.
+
+- test(<service>): add unit tests for login function
+
+#### 7. `chore`: General Tasks
+
+For minor tasks or tasks that do not affect the code logic (dependencies update, configuration, etc.).
+
+- chore(<dependencies>): upgrade eslint version to 8.0.0
+
+#### 8. `perf`: Performance Improvements
+
+Optimization of the application in terms of performance.
+
+- perf(<component>): improved data table rendering efficiency.
+
+#### 9. `ci`: Continuous Integration
+
+Changes to CI configuration files and scripts (e.g., GitHub Actions, CircleCI).
+
+- ci(<pipeline>): add deployment script for production environment.
+
