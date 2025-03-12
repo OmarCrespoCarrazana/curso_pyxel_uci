@@ -18,6 +18,9 @@ class CustomerContract(models.Model):
     partner_id = fields.Many2one('res.partner', string='Tutor', related='lead_id.partner_id', readonly=True)
     child_id = fields.Many2one('childcare.child', string="Child", related='lead_id.child_id', readonly=True)
     
+    user_id = fields.Many2one(string="Email", related='lead_id.user_id', readonly=True)
+    
+    
     state = fields.Selection(selection=[
         ('valid', 'Valid'),
         ('expired', 'Expired'),

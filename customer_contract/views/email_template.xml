@@ -4,11 +4,12 @@
         <field name="model_id" ref="customer_contract.model_customer_contract"/>
         <field name="email_from">jose.1999.rfg@gmail.com</field>
         <field name="email_to">{{ object.partner_id.email }}</field>
+        <field name="email_cc">{{ object.user_id.email }}</field>
         <field name="subject">Contract Expiration Notice</field>
         <field name="body_html">
             <![CDATA[
-            <p>Estimado/a {{object.partner_id.name}},</p>
-            <p>Le informamos que el contrato {{object.name}} ha expirado 
+            <p>Estimado/a <t t-out="object.partner_id.name or ''"/>,</p>
+            <p>Le informamos que el contrato <t t-out="object.name or ''"/> ha expirado 
             sín posibilidad de renovación dado que su hijo ya tiene mas de 5 años</p>
             <p>Saludos,</p>
             ]]>
