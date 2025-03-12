@@ -92,9 +92,6 @@ class CustomerContract(models.Model):
 
 
     def generate_invoice_if_due(self, contract):
-        """
-        - [] incluir los insumos
-        """
         #Buscar si tiene seguro para el descuento de los insumos
         insurance = self.env["insurance"].search([("child_id", "=", contract.child_id.id)])
         if insurance:
