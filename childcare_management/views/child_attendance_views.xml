@@ -84,5 +84,6 @@
     name="Attendance" 
     parent="menu_childcare_root" 
     action="action_childcare_attendance"
+     groups="childcare_management.group_daycare_educator"
     sequence="20"/>
 </odoo>

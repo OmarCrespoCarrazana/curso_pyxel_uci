@@ -20,9 +20,9 @@ access_stomatology_exam_user,access.stomatology.exam.user,model_stomatology_exam
 access_hemogram_exam_user,access.hemogram.exam.user,model_hemogram_exam,nursery.group_nursery_doctor,1,1,1,1
 access_feces_exam_user,access.feces.exam.user,model_feces_exam,nursery.group_nursery_doctor,1,1,1,1
 access_urine_exam_user,access.urine.exam.user,model_urine_exam,nursery.group_nursery_doctor,1,1,1,1
-access_ophthalmology_exam_user,access.ophthalmology.exam.user,model_ophthalmology_exam,nursery.group_nursery_nurse,1,0,0,0
-access_stomatology_exam_user,access.stomatology.exam.user,model_stomatology_exam,nursery.group_nursery_nurse,1,0,0,0
-access_hemogram_exam_user,access.hemogram.exam.user,model_hemogram_exam,nursery.group_nursery_nurse,1,0,0,0
-access_feces_exam_user,access.feces.exam.user,model_feces_exam,nursery.group_nursery_nurse,1,0,0,0
-access_urine_exam_user,access.urine.exam.user,model_urine_exam,nursery.group_nursery_nurse,1,0,0,0
+access_ophthalmology_exam_user,access.ophthalmology.exam.user,model_ophthalmology_exam,nursery.group_nursery_nurse,1,1,1,1
+access_stomatology_exam_user,access.stomatology.exam.user,model_stomatology_exam,nursery.group_nursery_nurse,1,1,1,1
+access_hemogram_exam_user,access.hemogram.exam.user,model_hemogram_exam,nursery.group_nursery_nurse,1,1,1,1
+access_feces_exam_user,access.feces.exam.user,model_feces_exam,nursery.group_nursery_nurse,1,1,1,1
+access_urine_exam_user,access.urine.exam.user,model_urine_exam,nursery.group_nursery_nurse,1,1,1,1
 

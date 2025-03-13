@@ -12,4 +12,6 @@ access_nursery_doctor_portal,nursery.doctor.portal,hr.model_hr_employee_public,b
 access_nursery_product,nursery.product.portal,product.model_product_product,base.group_portal,1,0,0,0
 access_childcare_child_doctor,childcare.child.doctor,childcare_management.model_childcare_child,nursery.group_nursery_doctor,1,0,0,0
 access_childcare_child_nurse,childcare.child.nurse,childcare_management.model_childcare_child,nursery.group_nursery_nurse,1,0,0,0
+access_nursery_tutors,nursery.nurse.tutor,child_base.model_childcare_child_tutor,nursery.group_nursery_nurse,1,0,0,0
+access_nursery_tutors_doctor,nursery.doctor.tutor,child_base.model_childcare_child_tutor,nursery.group_nursery_doctor,1,0,0,0
 
