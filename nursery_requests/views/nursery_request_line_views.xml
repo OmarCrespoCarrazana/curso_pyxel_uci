@@ -1,0 +1,79 @@
+<odoo>
+    <!-- Action nursery.request.line -->
+    <record id="action_nursery_request_line" model="ir.actions.act_window">
+        <field name="name">Nursery Request Line</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">nursery.request.line</field>
+        <field name="view_mode">tree,search</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                There is no examples click here to add new Nursery Request Line.
+            </p>
+        </field>
+    </record>
+
+    <!-- Tree View for Storekeepers (Read Nursery Requests Line) -->
+    <record id="view_nursery_request_line_tree" model="ir.ui.view">
+        <field name="name">view.nursery.request.line.tree</field>
+        <field name="model">nursery.request.line</field>
+        <field name="arch" type="xml">
+            <tree string="Requests for Nursing Supplies"
+                create="False"
+                decoration-info="state == 'draft'"
+                decoration-warning="state == 'pending'"
+                decoration-success="state == 'approved'"
+                decoration-danger="state == 'canceled'"
+                default_group_by="nurse_id" expand="1">
+                <field name="request_id" readonly='1' />
+                <field name="nurse_id" readonly='1' />
+                <field name="product_id" readonly='1' />
+                <field name="standard_price" readonly='1' />
+                <field name="list_price" readonly='1' />
+                <field name="quantity" readonly='1' />
+                <field name="storekeeper_id" readonly='1' />
+                <field name="category_name" readonly='1' />
+                <field name="state" widget="badge"
+                    decoration-info="state == 'draft'"
+                    decoration-warning="state == 'pending'"
+                    decoration-success="state == 'approved'"
+                    decoration-danger="state == 'canceled'" />
+                <!-- Add Print Button TEST FOR MAKE OTHER ACTIONS-->
+                <!--<header>
+                    <button name="%(nursery_requests.action_report_nursery_request_line)d"
+                        string="Print"
+                        type="action"
+                        class="btn-primary"
+                        icon="fa-print" />
+                </header>-->
+            </tree>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_nursery_request_line_search" model="ir.ui.view">
+        <field name="name">view.nursery.request.line.search</field>
+        <field name="model">nursery.request.line</field>
+        <field name="arch" type="xml">
+            <search string="Search Requests for Nursing Supplies">
+                <field name="request_id"
+                    filter_domain="['|','|','|','|','|', ('request_id', 'ilike', self), ('nurse_id','ilike', self), ('product_id','ilike', self),('quantity','ilike', self), ('state', 'ilike', self), ('category_name', 'ilike', self)]" />
+                <group expand="1" string="Group By">
+                    <filter string="Request" name="request_id" domain="[]"
+                        context="{'group_by':'request_id'}" />
+                    <filter string="Nurse" name="nurse_id" domain="[]"
+                        context="{'group_by':'nurse_id'}" />
+                    <filter string="Product" name="product_id" domain="[]"
+                        context="{'group_by':'product_id'}" />
+                    <filter string="Quantity" name="quantity" domain="[]"
+                        context="{'group_by':'quantity'}" />
+                    <filter string="State" name="state" domain="[]"
+                        context="{'group_by':'state'}" />
+                    <filter string="Product Category" name="category_name" domain="[]"
+                        context="{'group_by':'category_name'}" />
+                </group>
+            </search>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="modal_base" name="Reusable Modal Base">
+        <!-- Parámetros:
+            - modal_id: ID único para el modal
+            - modal_title: Título del modal
+            - button_id: ID del botón que abre el modal (opcional)
+            - button_text: Texto del botón (opcional)
+            - button_icon: Icono del botón (opcional)
+            - button_class: Clase CSS adicional para el botón (opcional)
+        -->
+        
+        <!-- Botón para abrir el modal (si se proporciona button_id) -->
+        <t t-if="button_id">
+            <button t-att-id="button_id" t-attf-class="btn {{ button_class or 'btn-primary' }}" 
+                    data-toggle="modal" t-att-data-target="'#' + modal_id">
+                <i t-if="button_icon" t-attf-class="fas {{ button_icon }} mr-2"></i>
+                <t t-esc="button_text or 'Open'"/>
+            </button>
+        </t>
+        
+        <!-- Modal -->
+        <div class="modal fade" t-att-id="modal_id" tabindex="-1" role="dialog" 
+             t-attf-aria-labelledby="{{ modal_id }}_label" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" t-att-id="modal_id + '_label'">
+                            <t t-esc="modal_title or 'Modal'"/>
+                        </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&amp;times;</span>
+                        </button>
+                    </div>
+                    <t t-raw="0"/> 
+                </div>
+            </div>
+        </div>
+    </template>
+</odoo>

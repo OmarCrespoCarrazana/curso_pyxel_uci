@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Template principal actualizado -->
+    <template id="children_page" name="Children">
+        <t t-call="childcare_management.base_layout">
+            <h1 class="mb-4 fw-bold text-muted">Childrens</h1>
+            
+            <div class="row g-4">
+                <!-- Tarjetas dinámicas -->
+                <t t-foreach="children_data" t-as="child">
+                    <t t-call="childcare_management.child_card_template"/>
+                </t>
+                
+                <!-- Tarjeta para añadir nuevo (estática) --> 
+                <div class="col-md-6 col-lg-4">
+                    <owl-component name="childcare_management.ChildRegistration"/> 
+                </div>
+                
+            </div>
+        </t>
+    </template>
+</odoo>

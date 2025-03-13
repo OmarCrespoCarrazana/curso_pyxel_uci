@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Componente reutilizable de tarjeta -->
+    <template id="child_card_template">
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 shadow-sm">
+                <img t-attf-src="{{ child['photo_url'] or default_images[child['gender']] }}" 
+                    class="card-img-top" alt="Child" style="width: 290px; height: 290px; object-fit: cover;"/>
+                <div class="card-body">
+                    <h5 class="card-title fw-semibold"><t t-esc="child['name']"/></h5>
+                    <div class="card-text">
+                        <p class="text-muted mb-1">
+                            <i class="fas fa-birthday-cake me-2"></i>
+                            <t t-esc="child['age']"/> years
+                        </p>
+                        <p class="text-muted mb-1">
+                            <i class="fas fa-users me-2"></i>
+                            <t t-if="child['classroom_id']">
+                                <t t-esc="child['classroom_id']['name']"/>
+                            </t>
+                            <t t-else=''>
+                                <span class="text-muted">No asignado</span>
+                            </t>
+                        </p>
+                        <p class="text-muted mb-1">
+                            <i class="fas fa-calendar-alt me-2"></i>
+                            <t t-esc="child['dob']"/>
+                        </p>
+                        <p class="text-muted">
+                            <i class="fas fa-mars me-2" t-if="child['gender'] == 'male'"/>
+                            <i class="fas fa-venus me-2" t-if="child['gender'] == 'female'"/>
+                            <t t-esc="child['gender']"/>
+                        </p>
+                    </div>
+                    <a t-attf-href="/childcare/{{ child['id'] if child['id'] else '#' }}" 
+                    class="btn btn-primary w-100 mb-2"
+                    t-att-title="'View Details of ' + child['name']">
+                        <i class="fas fa-info-circle mr-1"></i>View Details
+                    </a>
+                    <a t-attf-href="/medical-records/{{ child['id'] if child['id'] else '#' }}" 
+                    class="btn btn-outline-primary w-100"
+                    t-att-title="'View Medical Records of ' + child['name']">
+                        <i class="fas fa-heartbeat mr-1"></i>
+                        View Medical Records
+                    </a>
+                </div>
+            </div>
+        </div>
+    </template>
+</odoo>

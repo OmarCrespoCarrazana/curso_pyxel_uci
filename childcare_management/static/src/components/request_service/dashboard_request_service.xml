@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+    <t t-name="childcare_management.DashboardButtonTemplate">
+
+        <div class="row mb-4">
+            <div class="col-12">
+                <button class="request-service-button">
+                    <div class="request-service-content">
+                        <div class="request-icon-container">
+                            <div class="service-pulse"></div>
+                            <i class="fas fa-hand-holding-heart fa-2x"></i>
+                        </div>
+                        <div class="request-service-title">Request our childcare service!</div>
+                        <div class="request-service-text">Personalized and professional care for your children</div>
+                        <div class="request-service-cta" t-on-click="openModal">Apply now</div>
+                    </div>
+                </button>
+            </div>
+        </div>
+            
+        <div t-att-class="'modal fade' + (state.isModalOpen ? ' show d-block' : '')" 
+                 role="dialog"
+                 t-att-style="state.isModalOpen ? 'background-color: rgba(0,0,0,0.5);' : ''"
+                 >
+                
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header bg-primary text-white">
+                            <h5 class="modal-title">Register Child</h5>
+                            <button type="button" class="close" t-on-click="closeModal">
+                                <span aria-hidden="true">&#215;</span>
+                            </button>
+                        </div>
+                        
+                        <div class="modal-body">
+                            <AlertDialog errorMessage='state.errorMessage'/>
+                            <form t-on-submit.prevent="submitForm" novalidate="">
+                                
+                                <!-- Campo Nombre -->
+                                <div class="form-group">
+                                    <label class="text-muted">Full Name</label>
+                                    <input type="text"
+                                           class="form-control"
+                                           t-att-class="state.wasValidated ? (state.nameValid ? 'is-valid' : 'is-invalid') : ''"
+                                           t-att-value="state.name"
+                                           t-on-input="onNameChange"
+                                           required="required"
+                                           maxlength="50"/>
+                                   <t t-if="state.wasValidated and !state.nameValid">
+                                        <div class="invalid-feedback">
+                                            Please enter a valid name (letters and spaces only).
+                                        </div>
+                                    </t>
+                                </div>
+
+                                <!-- Campo CI -->
+                                <div class="form-group">
+                                    <label class="text-muted">Identity card</label>
+                                    <input type="text"
+                                           class="form-control"
+                                           t-att-class="state.wasValidated ? (state.idNumberValid ? 'is-valid' : 'is-invalid') : ''"
+                                           t-att-value="state.idNumber"
+                                           t-on-input="onIdNumberChange"
+                                           required="required"
+                                           maxlength="11"
+                                           pattern="\d{11}"/>
+                                    <t t-if="state.wasValidated and !state.idNumberValid">
+                                        <div class="invalid-feedback">
+                                            <t t-if="state.idNumberError"><t t-esc="state.idNumberError"/></t>
+                                            Must be 11 valid digits (first 6 as birthdate YYMMDD).
+                                        </div>
+                                    </t>
+                                </div>
+
+                                <!-- Botones -->
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" t-on-click="closeModal">
+                                        Cancel
+                                    </button>
+                                    <button type="submit" class="btn btn-primary">
+                                        Submit
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </t>
+</templates>

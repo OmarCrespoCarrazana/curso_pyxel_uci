@@ -1,0 +1,1 @@
+from . import hr_employee, hr_contract, hr_work_location

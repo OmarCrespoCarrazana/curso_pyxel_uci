@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="childcare_management.AlertDialogTemplate">
+            <!-- Mensajes de éxito/error -->
+            <div t-if="state.successMessage" class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="fas fa-check-circle mr-2"></i><t t-esc="state.successMessage"/>
+                <button type="button" class="close" t-on-click="() => this.clearMessage('success')">
+                    <span aria-hidden="true">&#215;</span>
+                </button>
+            </div>
+
+            <div t-if="state.errorMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="fas fa-exclamation-circle mr-2"></i><t t-esc="state.errorMessage"/>
+                <button type="button" class="close" t-on-click="() => this.clearMessage('error')">
+                    <span aria-hidden="true">&#215;</span>
+                </button>
+            </div>
+    </t>
+</templates>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="account_layout" name="Childcare Base Layout">
+        <t t-call="childcare_management.base_layout">
+            <main class="container py-4 flex-grow-1">
+                <t t-raw="0"/>
+            </main>
+        </t>
+    </template>
+</odoo>

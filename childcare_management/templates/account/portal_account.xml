@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Hereda de base_layout usando inherit_id -->
+    <template id="portal_account_custom" name="My Account" inherit_id="childcare_management.account_layout">
+        <!-- Define dónde inyectar el contenido dentro de base_layout -->
+        <xpath expr="//main" position="replace">
+            <main class="container py-4 flex-grow-1">
+                <div class="container mt-5">
+                    <div class="row">
+                        <!-- Sidebar Menu -->
+                        <div class="col-md-3">
+                            <div class="card shadow-sm">
+                                <div class="card-header bg-white text-primary">
+                                    <h5 class="mb-0">My Account</h5>
+                                </div>
+                                <div class="list-group list-group-flush">
+                                    <a href="/account" t-attf-class="list-group-item list-group-item-action {{ 'active' if page_name == 'profile' else '' }}">
+                                        <i class="fas fa-user mr-2"></i>Personal Information
+                                    </a>
+                                    <a href="/account/security" t-attf-class="list-group-item list-group-item-action {{ 'active' if page_name == 'security' else '' }}">
+                                        <i class="fas fa-lock mr-2"></i>Security
+                                    </a>
+                                    <a href="/logout" class="list-group-item list-group-item-action text-danger">
+                                        <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Main Content -->
+                        <div class="col-md-9">
+                            <t t-if="page_name == 'profile'">
+                                <!-- <t t-call="childcare_management.account_profile"/> -->
+                                 <owl-component name="childcare_management.PersonalInfo"/> 
+                            </t>
+                            <t t-elif="page_name == 'security'">
+                                <!-- <t t-call="childcare_management.account_security"/> -->
+                                 <owl-component name="childcare_management.ChangePassword"/> 
+                            </t>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </xpath>
+    </template>
+</odoo>

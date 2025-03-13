@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="childcare_management.InvoicesTableTemplate" owl="1">
+        <div t-on-click="onActionClicked">
+            <GenericTable
+                columns="columns"
+                rows="state.filteredData"
+                initialPageSize="10"
+            >
+                <!-- Slot para filtros -->
+                <t t-set-slot="filters">
+                    <div class="d-flex flex-wrap align-items-center gap-3 p-3 bg-light rounded">
+                        <!-- Campo de búsqueda general -->
+                        <div class="flex-grow-1" style="min-width: 250px; max-width: 350px;">
+                            <div class="input-group">
+                                <input 
+                                    type="text" 
+                                    class="form-control" 
+                                    placeholder="Search for anything"
+                                    style="flex: 1 1 auto;"
+                                    t-on-input="(ev) => updateFilter('global', ev.target.value)"
+                                />
+                                <span class="input-group-text">
+                                    <i class="fas fa-search text-secondary"></i>
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Filtro para Due Date -->
+                        <div style="min-width: 200px; flex: 1 1 auto;">
+                            <div class="input-group">
+                                <input
+                                    type="date"
+                                    class="form-control"
+                                    placeholder="Due Date"
+                                    style="width: 100%;"
+                                    t-on-change="(ev) => updateFilter('invoice_date_due', ev.target.value)"
+                                />
+                            </div>
+                        </div>
+
+                        <!-- Filtro para Status -->
+                        <div style="min-width: 180px; flex: 1 1 auto;">
+                            <select 
+                                class="form-select" 
+                                style="width: 100%;"
+                                t-on-change="(ev) => updateFilter('payment_state', ev.target.value)"
+                            >
+                                <option value="">All Statuses</option>
+                                <option value="paid">Paid</option>
+                                <option value="not_paid">Not Paid</option>
+                                <option value="in_payment">In progress</option>
+                            </select>
+                        </div>
+
+                        <!-- Filtro para Monto Total -->
+                        <div style="min-width: 160px; flex: 1 1 auto;">
+                            <div class="input-group">
+                                <input 
+                                    type="number" 
+                                    class="form-control" 
+                                    placeholder="Total amount"
+                                    style="width: 100%;"
+                                    t-on-input="(ev) => updateFilter('amount_total', ev.target.value)"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </GenericTable>
+        </div>
+    </t>
+</templates>

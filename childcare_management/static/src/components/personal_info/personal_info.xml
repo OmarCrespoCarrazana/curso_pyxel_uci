@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="childcare_management.PersonalInfoTemplate">
+        <div class="personal-info-component">
+            <!-- Mensajes de éxito/error -->
+            <AlertDialog successMessage='state.successMessage' errorMessage='state.errorMessage'/>
+            
+            <form t-on-submit="submitForm" novalidate="">
+                <div class="card shadow-sm border-0">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0"><i class="fas fa-user-edit mr-2"></i>Personal Information</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <!-- Nombre completo -->
+                            <div class="col-md-6 mb-3">
+                                <label for="name" class="form-label text-muted">Full Name <span class="text-danger">*</span></label>
+                                <input 
+                                    type="text" 
+                                    class="form-control" 
+                                    id="name" 
+                                    t-att-class="{'is-invalid': state.wasValidated and !state.isValid.name}"
+                                    t-att-value="state.name"
+                                    t-on-input="(ev) => this.onFieldChange(ev, 'name')"
+                                    required="required"
+                                />
+                                <div class="invalid-feedback">
+                                    Please enter your full name (at least 2 characters).
+                                </div>
+                            </div>
+                            
+                            <!-- Email -->
+                            <div class="col-md-6 mb-3">
+                                <label for="email" class="form-label text-muted">Email <span class="text-danger">*</span></label>
+                                <input 
+                                    type="email" 
+                                    class="form-control" 
+                                    id="email" 
+                                    t-att-class="{'is-invalid': state.wasValidated and !state.isValid.email}"
+                                    t-att-value="state.email"
+                                    t-on-input="(ev) => this.onFieldChange(ev, 'email')"
+                                    required="required"
+                                />
+                                <div class="invalid-feedback">
+                                    Please enter a valid email address.
+                                </div>
+                            </div>
+                            
+                            <!-- Teléfono -->
+                            <div class="col-md-6 mb-3">
+                                <label for="phone" class="form-label text-muted">Phone</label>
+                                <input 
+                                    type="tel" 
+                                    class="form-control" 
+                                    id="phone" 
+                                    t-att-class="{'is-invalid': state.wasValidated and !state.isValid.phone}"
+                                    t-att-value="state.phone"
+                                    t-on-input="(ev) => this.onFieldChange(ev, 'phone')"
+                                />
+                                <div class="invalid-feedback">
+                                    Please enter a valid phone number.
+                                </div>
+                            </div>
+                            
+                            <!-- Dirección -->
+                            <div class="col-md-6 mb-3">
+                                <label for="street" class="form-label text-muted">Address <span class="text-danger">*</span></label>
+                                <input 
+                                    type="text" 
+                                    class="form-control" 
+                                    id="street" 
+                                    t-att-class="{'is-invalid': state.wasValidated and !state.isValid.street}"
+                                    t-att-value="state.street"
+                                    t-on-input="(ev) => this.onFieldChange(ev, 'street')"
+                                    required="required"
+                                />
+                                <div class="invalid-feedback">
+                                    Please enter your address (at least 3 characters).
+                                </div>
+                            </div>
+                            
+                            <!-- Dirección 2 -->
+                            <div class="col-md-6 mb-3">
+                                <label for="street2" class="form-label text-muted">Address Line 2</label>
+                                <input 
+                                    type="text" 
+                                    class="form-control" 
+                                    id="street2" 
+                                    t-att-value="state.street2"
+                                    t-on-input="(ev) => this.onFieldChange(ev, 'street2')"
+                                />
+                            </div>
+                            
+                            <!-- Ciudad -->
+                            <div class="col-md-6 mb-3">
+                                <label for="city" class="form-label text-muted">City</label>
+                                <input 
+                                    type="text" 
+                                    class="form-control" 
+                                    id="city" 
+                                    t-att-value="state.city"
+                                    t-on-input="(ev) => this.onFieldChange(ev, 'city')"
+                                />
+                            </div>
+                            
+                            <!-- Código postal -->
+                            <div class="col-md-6 mb-3">
+                                <label for="zip" class="form-label text-muted">Zip Code</label>
+                                <input 
+                                    type="text" 
+                                    class="form-control" 
+                                    t-att-class="{'is-invalid': state.wasValidated and !state.isValid.zip}"
+                                    id="zip" 
+                                    t-att-value="state.zip"
+                                    t-on-input="(ev) => this.onFieldChange(ev, 'zip')"
+                                />
+                                <div class="invalid-feedback">
+                                    Please zip must contain only numbers.
+                                </div>
+                            </div>
+                            
+                            <!-- País -->
+                            <div class="col-md-6 mb-3">
+                                <label for="country_id" class="form-label text-muted">Country</label>
+                                <select 
+                                    class="form-control" 
+                                    id="country_id" 
+                                    t-att-value="state.country_id"
+                                    t-on-change="(ev) => this.onFieldChange(ev, 'country_id')"
+                                >
+                                    <option value="">Select a country</option>
+                                    <t t-foreach="state.countries" t-as="country" t-key="country.id">
+                                        <option t-att-value="country.id" t-att-selected="state.country_id == country.id">
+                                            <t t-esc="country.name"/>
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
+                            
+                            <!-- Estado/Provincia -->
+                            <div class="col-md-6 mb-3">
+                                <label for="state_id" class="form-label text-muted">State/Province</label>
+                                <select 
+                                    class="form-control" 
+                                    id="state_id" 
+                                    t-att-value="state.state_id"
+                                    t-on-change="(ev) => this.onFieldChange(ev, 'state_id')"
+                                    t-att-disabled="!state.country_id || state.filteredStates.length === 0"
+                                >
+                                    <option value="">Select a state</option>
+                                    <t t-foreach="state.filteredStates" t-as="state_item" t-key="state_item.id">
+                                        <option t-att-value="state_item.id" t-att-selected="state.state_id == state_item.id">
+                                            <t t-esc="state_item.name"/>
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-white d-flex justify-content-end">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save mr-2"></i>Save Changes
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </t>
+</templates>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="breadcrumbs" name="Childcare Breadcrumbs">
+        <nav aria-label="breadcrumb" class="mb-4">
+            <ol class="breadcrumb bg-transparent p-3">
+                <li class="breadcrumb-item">
+                    <a href="/" class="text-decoration-none">
+                        <i class="fas fa-home me-1"></i>Home
+                    </a>
+                </li>
+                <t t-if="page_name">
+                    <li class="breadcrumb-item active" aria-current="page">
+                        <t t-if="page_name == 'children'">Children</t>
+                        <t t-elif="page_name == 'medical'">Medical Records</t>
+                        <t t-elif="page_name == 'invoices'">Invoices</t>
+                        <t t-else=""><t t-esc="page_title or 'Dashboard'"/></t>
+                    </li>
+                </t>
+            </ol>
+        </nav>
+    </template>
+</odoo>

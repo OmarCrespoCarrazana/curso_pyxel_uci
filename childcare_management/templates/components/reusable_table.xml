@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="reusable_table" name="Reusable Table Component">
+        <div class="card">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <t t-foreach="columns" t-as="col">
+                                <th><t t-esc="col['title']"/></th>
+                            </t>
+                            <t t-if="actions">
+                                <th>Actions</th>
+                            </t>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="data" t-as="row">
+                            <tr>
+                                <t t-foreach="columns" t-as="col">
+                                    <td><t t-esc="row[col['field']]"/></td>
+                                </t>
+                                <td t-if="actions">
+                                    <div class="d-flex gap-2">
+                                        <t t-foreach="actions" t-as="action">
+                                            
+                                            <button t-attf-class="btn btn-sm {{ action.get('classes', '') }} mr-1" 
+                                                    t-att-title="action.get('title', '')">
+                                                <i t-attf-class="fas {{ action.get('icon', '') }}"></i>
+                                            </button>
+                                        </t>
+                                    </div>
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </template>
+</odoo>

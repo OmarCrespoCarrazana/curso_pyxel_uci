@@ -1,0 +1,94 @@
+<odoo>
+    <!-- Plantilla QWeb para el reporte en PDF -->
+    <template id="report_payroll">
+        <t t-call="web.html_container">
+            <t t-call="web.internal_layout">
+                <div class="page">
+                    <div class="report-header">
+                        <h3>Informe de Nómina de Empleados</h3>
+                        <p>Mes: <span t-esc="month"/> - Año: <span t-esc="year"/></p>
+                    </div>
+                    <table class="table table-bordered table-striped">
+                        <!-- Encabezados con estilos mejorados -->
+                        <thead class="thead-dark">
+                            <tr>
+                                <th class="text-center">ID de Empleado</th>
+                                <th class="text-left">Nombre</th>
+                                <th class="text-left">Apellidos</th>
+                                <th class="text-left">Cargo</th>
+                                <th class="text-right">Salario Bruto</th>
+                                <th class="text-right">Deducciones</th>
+                                <th class="text-right">Bonificaciones</th>
+                                <th class="text-right">Salario Neto</th>
+                                <th class="text-center">Fecha de Nómina</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-set="total_gross" t-value="0"/>
+                            <t t-set="total_deductions" t-value="0"/>
+                            <t t-set="total_bonuses" t-value="0"/>
+                            <t t-set="total_net" t-value="0"/>
+
+                            <t t-foreach="docs" t-as="doc">
+                                <tr class="text-center">
+                                    <td><span t-esc="doc.employee_id.id or 'N/A'"/></td>
+                                    <td class="text-left"><span t-esc="doc.employee_id.name or 'N/A'"/></td>
+                                    <td class="text-left"><span t-esc="doc.employee_id.surnames or 'N/A'"/></td>
+                                    <td class="text-left"><span t-esc="doc.employee_id.job_title or 'N/A'"/></td>
+                                    <td class="text-right">
+                                        <span t-esc="doc.gross_salary or 'N/A'"/>
+                                        <t t-set="total_gross" t-value="total_gross + (doc.gross_salary or 0)"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-esc="doc.deductions or 'N/A'"/>
+                                        <t t-set="total_deductions" t-value="total_deductions + (doc.deductions or 0)"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-esc="doc.bonuses or 'N/A'"/>
+                                        <t t-set="total_bonuses" t-value="total_bonuses + (doc.bonuses or 0)"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-esc="doc.net_salary or 'N/A'"/>
+                                        <t t-set="total_net" t-value="total_net + (doc.net_salary or 0)"/>
+                                    </td>
+                                    <td><span t-esc="doc.payroll_date or 'N/A'"/></td>
+                                </tr>
+                            </t>
+
+                            <!-- Totales -->
+                            <tr class="table-footer bg-light">
+                                <td colspan="4" class="text-right font-weight-bold">Totales:</td>
+                                <td class="text-right font-weight-bold">
+                                    <span t-esc="total_gross"/>
+                                </td>
+                                <td class="text-right font-weight-bold">
+                                    <span t-esc="total_deductions"/>
+                                </td>
+                                <td class="text-right font-weight-bold">
+                                    <span t-esc="total_bonuses"/>
+                                </td>
+                                <td class="text-right font-weight-bold">
+                                    <span t-esc="total_net"/>
+                                </td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <!-- Informe asociado a la plantilla QWeb -->
+    <record id="action_report_payroll" model="ir.actions.report">
+        <field name="name">Reporte de Nómina</field>
+        <field name="model">my_payroll.report.wizard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">my_payroll.report_payroll</field>
+        <field name="report_file">my_payroll.report_payroll</field>
+        <field name="print_report_name">'Reporte_Nómina_%s' % (object.id)</field>
+        <field name="binding_model_id" ref="model_my_payroll_payroll"/>
+    </record>
+
+
+</odoo>

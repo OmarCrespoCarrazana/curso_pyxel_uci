@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="child_detail_page">
+        <t t-call="childcare_management.base_layout">
+            <div class="container mt-4">
+                <!-- Encabezado -->
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h1 class="fw-bold text-primary">
+                        <i class="fas fa-child me-2"></i>
+                        <t t-esc="child['name']"/>
+                    </h1>
+                    <a href="/childcare" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left me-2"></i>Back
+                    </a>
+                </div>
+
+                <!-- Sección principal -->
+                <div class="row">
+                    <!-- Columna izquierda - Información básica -->
+                    <div class="col-md-4 mb-4">
+                        <div class="card shadow">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>Basic Information</h5>
+                            </div>
+                            <div class="card-body">
+                                <ul class="list-unstyled">
+                                    <li class="mb-3">
+                                        <strong>ID Number:</strong>
+                                        <t t-esc="child['id_number']"/>
+                                    </li>
+                                    <li class="mb-3">
+                                        <strong>Date of Birth:</strong>
+                                        <t t-esc="child['dob']"/>
+                                    </li>
+                                    <li class="mb-3">
+                                        <strong>Age:</strong>
+                                        <t t-esc="child['age']"/> years
+                                    </li>
+                                    <li class="mb-3">
+                                        <strong>Gender:</strong>
+                                        <t t-esc="child['gender']"/>
+                                    </li>
+                                    <li class="mb-3">
+                                        <strong>Classroom:</strong>
+                                        <span t-if="child['classroom_id']" t-esc="child['classroom_id']['name']"/>
+                                        <span t-else='' class="text-muted">Not assigned</span>
+                                    </li>
+                                    <li>
+                                        <strong>Total Extra Hours:</strong>
+                                        <t t-esc="child['total_extra_hours']"/>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <a t-attf-href="/medical-records/{{ child['id'] if child['id'] else '#' }}" 
+                            class="btn btn-outline-primary w-100 mt-3"
+                            t-att-title="'View Medical Records of ' + child['name']">
+                                <i class="fas fa-heartbeat mr-1"></i>
+                                View Medical Records
+                        </a>
+                    </div>
+
+                    <!-- Columna derecha - Información detallada -->
+                    <div class="col-md-8">
+                        <!-- Tutores -->
+                        <div class="card mb-4 shadow">
+                            <div class="card-header bg-info text-white">
+                                <h5 class="mb-0"><i class="fas fa-users me-2"></i>Tutors</h5>
+                            </div>
+                            <div class="card-body">
+                                <div t-if="child['tutor_ids']" class="row">
+                                    <t t-foreach="child['tutor_ids']" t-as="tutor">
+                                        <div class="col-md-6 mb-3">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <h6 class="card-title">
+                                                        <i class="fas fa-user me-2"></i>
+                                                        <t t-esc="tutor['name']"/>
+                                                    </h6>
+                                                    <p class="mb-1">
+                                                        <i class="fas fa-envelope me-2"></i>
+                                                        <t t-esc="tutor['email']"/>
+                                                    </p>
+                                                    <p class="mb-0">
+                                                        <i class="fas fa-phone me-2"></i>
+                                                        <t t-esc="tutor['phone']"/>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </t>
+                                </div>
+                                <div t-else='' class="text-center text-muted py-3">
+                                    No registered tutors
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Información Médica -->
+                        <div class="card mb-4 shadow">
+                            <div class="card-header bg-success text-white">
+                                <h5 class="mb-0"><i class="fas fa-heartbeat me-2"></i>Medical Information</h5>
+                            </div>
+                            <div class="card-body">
+                                <div t-if="child['medical_history_id']">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <p><strong>Height:</strong> <t t-esc="child['medical_history_id']['height']"/> cm</p>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <p><strong>Weight:</strong> <t t-esc="child['medical_history_id']['weight']"/> kg</p>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <p><strong>Doctor:</strong> <t t-esc="child['medical_history_id']['doctor_id']['name']"/></p>
+                                        </div>
+                                    </div>
+                                    <div class="mt-3">
+                                        <h6>Vaccines:</h6>
+                                        <t t-esc="child['medical_history_id']['vaccines']"/>
+                                    </div>
+                                </div>
+                                <div t-else='' class="text-center text-muted py-3">
+                                    No medical information available
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Asistencia -->
+                        <div class="card shadow">
+                            <div class="card-header bg-warning text-dark">
+                                <h5 class="mb-0"><i class="fas fa-calendar-check me-2"></i>Attendance Records</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Check-in</th>
+                                                <th>Check-out</th>
+                                                <th>Extra Hours</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <t t-foreach="child['attendance_ids']" t-as="attendance">
+                                                <tr>
+                                                    <td><t t-esc="attendance['check_in'].split(' ')[0]"/></td>
+                                                    <td><t t-esc="attendance['check_in'].split(' ')[1]"/></td>
+                                                    <td>
+                                                        <t t-if="attendance['check_out']">
+                                                            <t t-esc="attendance['check_out'].split(' ')[1]"/>
+                                                        </t>
+                                                        <span t-else='' class="text-muted">-</span>
+                                                    </td>
+                                                    <td><t t-esc="attendance['extra_hours']"/></td>
+                                                </tr>
+                                            </t>
+                                            <t t-if="not child['attendance_ids']">
+                                                <tr>
+                                                    <td colspan="4" class="text-center text-muted">No attendance records</td>
+                                                </tr>
+                                            </t>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

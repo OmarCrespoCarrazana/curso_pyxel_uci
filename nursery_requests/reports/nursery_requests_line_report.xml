@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="report_nursery_request_line">
+        <t t-call="web.html_container">
+            <t t-call="web.internal_layout">
+                <div class="page">
+                    <h2>Nursery Request Line Details</h2>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Nursery Request</th>
+                                <th>Product</th>
+                                <th>Cost</th>
+                                <th>Sales Price</th>
+                                <th>Category</th>
+                                <th>Requested Quantity</th>
+                                <th>Requested By</th>
+                                <th>Processed By</th>
+                                <th>State</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="docs" t-as="line">
+                                <tr>
+                                    <td><span t-field="line.request_id.name"/></td>
+                                    <td><span t-field="line.product_id.name"/></td>
+                                    <td><span t-field="line.standard_price"/></td>
+                                    <td><span t-field="line.list_price"/></td>
+                                    <td><span t-field="line.category_id.name"/></td>
+                                    <td><span t-field="line.quantity"/></td>
+                                    <td><span t-field="line.nurse_id.name"/></td>
+                                    <td><span t-field="line.storekeeper_id.name"/></td>
+                                    <td><span t-field="line.state"/></td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <!-- Report Action-->
+    <record id="action_report_nursery_request_line" model="ir.actions.report">
+        <field name="name">NRL Print Report</field>
+        <field name="model">nursery.request.line</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">nursery_requests.report_nursery_request_line</field>
+        <field name="paperformat_id" ref="base.paperformat_euro" />
+        <field name="binding_model_id" ref="model_nursery_request_line" />
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Home Template -->
+    <template id="home" name="Childcare Dashboard">
+        <t t-call="childcare_management.base_layout">
+         <t t-if="is_logged_in">
+            <t t-call="childcare_management.dashboard"/>
+         </t>
+         <t t-else=''>
+            <div class="container mt-5">
+                <!-- Hero Section -->
+                <div class="row align-items-center py-5">
+                    <div class="col-lg-6">
+                        <h1 class="display-4 font-weight-bold text-primary">Welcome to Childcare Portal</h1>
+                        <p class="lead text-muted">Your trusted platform for managing childcare services and keeping track of your children's activities.</p>
+                        <a href="/portal/login" class="btn btn-primary btn-lg">
+                            <i class="fas fa-sign-in-alt mr-2"></i>Get Started
+                        </a>
+                    </div>
+                    <div class="col-lg-6">
+                        <img src="/childcare_management/static/src/img/landing_page_image.png" alt="Childcare Portal" class="img-fluid"/>
+                    </div>
+                </div>
+                <!-- Features Section -->
+                <div class="row py-5">
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body text-center">
+                                <i class="fas fa-child fa-3x text-primary mb-3 child-animation"></i>
+                                <h3>Child Management</h3>
+                                <p class="text-muted">Keep track of your children's activities and progress.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body text-center">
+                                <i class="fas fa-heartbeat fa-3x text-primary mb-3 heartbeat-animation-home"></i>
+                                <h3>Medical Records</h3>
+                                <p class="text-muted">Access and manage medical information securely.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body text-center">
+                                <i class="fas fa-calendar-check fa-3x text-primary mb-3 invoice-animation"></i>
+                                <h3>Check Invoices</h3>
+                                <p class="text-muted">Track invoices easily.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+         </t>
+        </t>
+    </template>
+</odoo>

@@ -1,0 +1,10 @@
+<odoo>
+    <data>
+        <record id="seq_nursery_request" model="ir.sequence">
+            <field name="name">Nursery Request</field>
+            <field name="code">nursery.request</field>
+            <field name="prefix">NR-</field>
+            <field name="padding">4</field>
+        </record>
+    </data>
+</odoo>

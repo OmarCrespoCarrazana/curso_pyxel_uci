@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="medical_records_page" name="Medical Records">
+        <t t-call="childcare_management.base_layout">
+            <owl-component name="childcare_management.MedicalRecordsTable" t-props="{ 'child_id': child_id }"/>
+        </t>
+    </template>
+</odoo>

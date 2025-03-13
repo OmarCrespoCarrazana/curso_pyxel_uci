@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="account_security" name="Account Security">
+        <div class="card shadow-sm">
+            <div class="card-header bg-white border-bottom">
+                <h4 class="mb-0">Security Settings</h4>
+            </div>
+            <div class="card-body">
+                <h5 class="mb-4">Change Password</h5>
+                
+                <div t-if="password_updated" class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="fas fa-check-circle mr-2"></i>
+                    Your password has been updated successfully.
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&amp;times;</span>
+                    </button>
+                </div>
+                
+                <div t-if="error" class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="fas fa-exclamation-circle mr-2"></i>
+                    <t t-esc="error"/>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&amp;times;</span>
+                    </button>
+                </div>
+                
+                <form action="/account/update_password" method="post">
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label for="current_password">Current Password</label>
+                                <input type="password" class="form-control" id="current_password" name="current_password" required="required"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="new_password">New Password</label>
+                                <input type="password" class="form-control" id="new_password" name="new_password" required="required"/>
+                                <small class="form-text text-muted">Password must be at least 8 characters long and include letters and numbers.</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="confirm_password">Confirm New Password</label>
+                                <input type="password" class="form-control" id="confirm_password" name="confirm_password" required="required"/>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Update Password</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </template>
+</odoo>

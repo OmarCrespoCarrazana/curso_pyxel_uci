@@ -1,0 +1,64 @@
+<odoo>
+    <template id="report_payroll">
+        <t t-call="web.html_container">
+            <div class="page">
+                <h2>Reporte de Nómina</h2>
+                <table class="table table-bordered mt-4">
+                    <thead>
+                        <tr>
+                            <th>Empleado</th>
+                            <th>Fecha</th>
+                            <th>Salario Base</th>
+                            <th>Horas Extras</th>
+                            <th>Salario Bruto</th>
+                            <th>Deducciones</th>
+                            <th>Bonificaciones</th>
+                            <th>Salario Neto</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="docs" t-as="payroll">
+                            <tr>
+                                <td><span t-field="payroll.employee_id.name"/></td>
+                                <td><span t-field="payroll.payroll_date"/></td>
+                                <td>
+                                    <span t-field="payroll.base_salary"
+                                          t-field-options='{"widget": "monetary", "display_currency": "payroll.employee_id.company_id.currency_id"}'/>
+                                </td>
+                                <td>
+                                    <span t-field="payroll.extra_salary"
+                                          t-field-options='{"widget": "monetary", "display_currency": "payroll.employee_id.company_id.currency_id"}'/>
+                                </td>
+                                <td>
+                                    <span t-field="payroll.gross_salary"
+                                          t-field-options='{"widget": "monetary", "display_currency": "payroll.employee_id.company_id.currency_id"}'/>
+                                </td>
+                                <td>
+                                    <span t-field="payroll.deductions"
+                                          t-field-options='{"widget": "monetary", "display_currency": "payroll.employee_id.company_id.currency_id"}'/>
+                                </td>
+                                <td>
+                                    <span t-field="payroll.bonuses"
+                                          t-field-options='{"widget": "monetary", "display_currency": "payroll.employee_id.company_id.currency_id"}'/>
+                                </td>
+                                <td>
+                                    <span t-field="payroll.net_salary"
+                                          t-field-options='{"widget": "monetary", "display_currency": "payroll.employee_id.company_id.currency_id"}'/>
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+            </div>
+        </t>
+    </template>
+    
+    <record id="action_report_payroll" model="ir.actions.report">
+        <field name="name">Reporte de Nómina</field>
+        <field name="model">my_payroll.payroll</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">my_payroll.report_payroll</field>
+        <field name="print_report_name">'Reporte_Nomina_%s' % (object.employee_id.name)</field>
+        <field name="binding_model_id" ref="model_my_payroll_payroll"/>
+    </record>
+</odoo>

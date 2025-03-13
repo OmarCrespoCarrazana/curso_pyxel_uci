@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="base_layout" name="Childcare Base Layout" inherit_id="web.frontend_layout">
+        <!-- Reemplazar el head para agregar nuestros estilos -->
+        <xpath expr="//head" position="inside">
+            <!-- Bootstrap 4 -->
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"/>
+            
+            <!-- Font Awesome -->
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
+            
+            <!-- CSS Personalizado -->
+            <link rel="stylesheet" href="/childcare_management/static/src/css/index.css"/>
+            <!-- <script src="https://unpkg.com/@tailwindcss/browser@4"></script> -->
+
+            
+            <style>
+                .main-wrapper {
+                    min-height: 100vh;
+                    display: flex;
+                    flex-direction: column;
+                }
+                .content-wrap {
+                    flex: 1;
+                }
+            </style>
+        </xpath>
+        
+        <!-- Reemplazar el header con nuestro navbar -->
+        <xpath expr="//header" position="replace">
+        <header>
+            <t t-call="childcare_management.navbar"/>
+        </header>
+        </xpath>
+        
+        <!-- Reemplazar el main content -->
+        <xpath expr="//main" position="replace">
+            <main class="container py-4 flex-grow-1 align-content-center">
+                <!-- Breadcrumbs -->
+                <!-- <t t-if="is_logged_in">
+                    <t t-call="childcare_management.breadcrumbs"/>
+                </t> -->
+    
+                <!-- Contenido Principal -->
+                <t t-raw="0"/>
+            </main>
+        </xpath>
+        
+        <!-- Reemplazar el footer -->
+        <xpath expr="//footer" position="replace">
+            <footer class="mt-auto">
+                <t t-call="childcare_management.footer"/>
+            </footer>
+        </xpath>
+        
+        <!-- Agregar nuestros scripts al final del body -->
+        <xpath expr="//body" position="inside">
+            <!-- jQuery y Bootstrap 4 JS -->
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"></script>
+        </xpath>
+    </template>
+</odoo>
